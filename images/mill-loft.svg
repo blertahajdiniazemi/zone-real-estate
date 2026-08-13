@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+  <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+    <path d="M25 0 L0 0 0 25" fill="none" stroke="#8FB0C4" stroke-width="0.6" opacity="0.5"/>
+  </pattern>
+  <pattern id="grid5" width="125" height="125" patternUnits="userSpaceOnUse">
+    <path d="M125 0 L0 0 0 125" fill="none" stroke="#8FB0C4" stroke-width="1.1" opacity="0.65"/>
+  </pattern>
+</defs>
+<rect width="800" height="600" fill="#E8DFC9"/>
+<rect width="800" height="600" fill="url(#grid)"/>
+<rect width="800" height="600" fill="url(#grid5)"/>
+<g fill="none" stroke="#2E5C7A" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+
+<line x1="40" y1="470" x2="760" y2="470" stroke-width="3"/>
+<rect x="225" y="190" width="360" height="280"/>
+<line x1="212" y1="190" x2="598" y2="190" stroke-width="3"/>
+<line x1="225" y1="228" x2="585" y2="228" stroke-width="1.4" opacity="0.6"/>
+<line x1="225" y1="400" x2="585" y2="400" stroke-width="1.4" opacity="0.6"/>
+<path d="M250 380 L250 265 A26 26 0 0 1 302 265 L302 380 Z" stroke-width="1.9"/>
+<line x1="276" y1="240" x2="276" y2="380" stroke-width="1.1"/>
+<line x1="250" y1="310" x2="302" y2="310" stroke-width="1.1"/>
+<path d="M332 380 L332 265 A26 26 0 0 1 384 265 L384 380 Z" stroke-width="1.9"/>
+<line x1="358" y1="240" x2="358" y2="380" stroke-width="1.1"/>
+<line x1="332" y1="310" x2="384" y2="310" stroke-width="1.1"/>
+<path d="M414 380 L414 265 A26 26 0 0 1 466 265 L466 380 Z" stroke-width="1.9"/>
+<line x1="440" y1="240" x2="440" y2="380" stroke-width="1.1"/>
+<line x1="414" y1="310" x2="466" y2="310" stroke-width="1.1"/>
+<path d="M496 380 L496 265 A26 26 0 0 1 548 265 L548 380 Z" stroke-width="1.9"/>
+<line x1="522" y1="240" x2="522" y2="380" stroke-width="1.1"/>
+<line x1="496" y1="310" x2="548" y2="310" stroke-width="1.1"/>
+
+<!-- steel door -->
+<rect x="352" y="412" width="106" height="58" stroke-width="2.2"/>
+<line x1="405" y1="412" x2="405" y2="470" stroke-width="1.3"/>
+<!-- roof lantern -->
+<path d="M300 190 L340 155 L420 155 L460 190" stroke-width="2"/>
+<line x1="340" y1="155" x2="340" y2="190" stroke-width="1.2"/>
+<line x1="420" y1="155" x2="420" y2="190" stroke-width="1.2"/>
+<!-- external stair -->
+<path d="M585 470 L640 470 L640 430 L668 430 L668 390 L696 390" stroke-width="1.9"/>
+<g stroke="#C9A24B" stroke-width="1.4">
+  <line x1="225" y1="505" x2="585" y2="505"/>
+  <line x1="225" y1="499" x2="225" y2="511"/>
+  <line x1="585" y1="499" x2="585" y2="511"/>
+</g>
+<text x="405.0" y="525" font-family="monospace" font-size="15" fill="#C9A24B"
+      text-anchor="middle" stroke="none">13.8 m</text>
+<g stroke="#C9A24B" stroke-width="1.4">
+  <line x1="195" y1="155" x2="195" y2="470"/>
+  <line x1="189" y1="155" x2="201" y2="155"/>
+  <line x1="189" y1="470" x2="201" y2="470"/>
+</g>
+<text x="185" y="312.5" font-family="monospace" font-size="15" fill="#C9A24B"
+      text-anchor="end" dominant-baseline="middle" stroke="none">11.2 m</text>
+<text x="640" y="352" font-family="monospace" font-size="14" fill="#C9A24B" stroke="none">LOFT</text>
+
+</g>
+</svg>

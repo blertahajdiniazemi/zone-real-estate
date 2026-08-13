@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+  <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+    <path d="M25 0 L0 0 0 25" fill="none" stroke="#8FB0C4" stroke-width="0.6" opacity="0.5"/>
+  </pattern>
+  <pattern id="grid5" width="125" height="125" patternUnits="userSpaceOnUse">
+    <path d="M125 0 L0 0 0 125" fill="none" stroke="#8FB0C4" stroke-width="1.1" opacity="0.65"/>
+  </pattern>
+</defs>
+<rect width="800" height="600" fill="#E8DFC9"/>
+<rect width="800" height="600" fill="url(#grid)"/>
+<rect width="800" height="600" fill="url(#grid5)"/>
+<g fill="none" stroke="#2E5C7A" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+
+<line x1="40" y1="470" x2="760" y2="470" stroke-width="3"/>
+<!-- body -->
+<rect x="220" y="250" width="330" height="220"/>
+<!-- gable roof -->
+<path d="M195 255 L385 140 L575 255"/>
+<line x1="385" y1="140" x2="385" y2="180" stroke-width="1.6"/>
+<!-- chimney -->
+<rect x="470" y="168" width="34" height="60"/>
+<!-- door -->
+<rect x="355" y="365" width="62" height="105"/>
+<circle cx="405" cy="420" r="4" fill="#C9A24B" stroke="#C9A24B"/>
+<!-- windows -->
+<rect x="255" y="300" width="70" height="70"/>
+<line x1="290" y1="300" x2="290" y2="370" stroke-width="1.4"/>
+<line x1="255" y1="335" x2="325" y2="335" stroke-width="1.4"/>
+<rect x="450" y="300" width="70" height="70"/>
+<line x1="485" y1="300" x2="485" y2="370" stroke-width="1.4"/>
+<line x1="450" y1="335" x2="520" y2="335" stroke-width="1.4"/>
+<!-- attic window -->
+<circle cx="385" cy="215" r="24"/>
+<line x1="361" y1="215" x2="409" y2="215" stroke-width="1.4"/>
+<!-- path -->
+<path d="M355 470 L330 520 M417 470 L442 520" stroke-width="1.6"/>
+<line x1="330" y1="520" x2="442" y2="520" stroke-width="1.6"/>
+<line x1="645" y1="470" x2="645" y2="400.0" stroke-width="2"/>
+<circle cx="645" cy="379.6" r="34.0" stroke-width="1.8"/>
+<circle cx="626.3" cy="394.9" r="20.4" stroke-width="1.6"/>
+<circle cx="663.7" cy="393.2" r="18.700000000000003" stroke-width="1.6"/>
+<line x1="130" y1="470" x2="130" y2="417.5" stroke-width="2"/>
+<circle cx="130" cy="402.2" r="25.5" stroke-width="1.8"/>
+<circle cx="115.975" cy="413.675" r="15.299999999999999" stroke-width="1.6"/>
+<circle cx="144.025" cy="412.4" r="14.025" stroke-width="1.6"/>
+<g stroke="#C9A24B" stroke-width="1.4">
+  <line x1="220" y1="505" x2="550" y2="505"/>
+  <line x1="220" y1="499" x2="220" y2="511"/>
+  <line x1="550" y1="499" x2="550" y2="511"/>
+</g>
+<text x="385.0" y="525" font-family="monospace" font-size="15" fill="#C9A24B"
+      text-anchor="middle" stroke="none">14.0 m</text>
+<g stroke="#C9A24B" stroke-width="1.4">
+  <line x1="190" y1="140" x2="190" y2="470"/>
+  <line x1="184" y1="140" x2="196" y2="140"/>
+  <line x1="184" y1="470" x2="196" y2="470"/>
+</g>
+<text x="180" y="305.0" font-family="monospace" font-size="15" fill="#C9A24B"
+      text-anchor="end" dominant-baseline="middle" stroke="none">8.2 m</text>
+
+</g>
+</svg>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zone Real Estate — Houses &amp; Apartments</title>
+<meta name="description" content="Zone Real Estate — houses and apartments for sale and rent. See a property you like, call the number directly.">
+<meta name="theme-color" content="#0F2436">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="wordmark" href="#top">ZONE<span class="wordmark__accent">·</span>REAL ESTATE</a>
+    <a class="topbar__call" href="tel:CALL_PHONE_DIGITS">
+      <span class="topbar__call-icon" aria-hidden="true">&#9742;</span>
+      <span class="topbar__call-text">
+        <span class="topbar__call-label">Call direct</span>
+        <span class="topbar__call-number" id="topbarPhone">—</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="hero__inner">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Houses &amp; apartments</p>
+      <h1 class="hero__title">Every listing.<br>One phone call.</h1>
+      <p class="hero__tagline">No agents in between, no forms to fill in, no account to create. Find a property you like and call the number — you'll reach me directly.</p>
+      <a class="hero__cta" href="#listings">See what's available</a>
+    </div>
+
+    <div class="titleblock" aria-label="Summary">
+      <div class="titleblock__head">Zone Real Estate</div>
+      <div class="titleblock__row">
+        <span class="titleblock__label">Area</span>
+        <span class="titleblock__value" id="hero-city">—</span>
+      </div>
+      <div class="titleblock__row">
+        <span class="titleblock__label">Listings</span>
+        <span class="titleblock__value" id="hero-count">—</span>
+      </div>
+      <div class="titleblock__row">
+        <span class="titleblock__label">Contact</span>
+        <span class="titleblock__value titleblock__value--phone" id="hero-phone">—</span>
+      </div>
+      <div class="titleblock__row">
+        <span class="titleblock__label">Updated</span>
+        <span class="titleblock__value" id="hero-updated">—</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="filterbar" id="listings">
+  <div class="filterbar__inner">
+    <span class="filterbar__legend">Show</span>
+    <div class="filterbar__buttons" role="group" aria-label="Filter listings">
+      <button class="filter is-active" data-filter="all" type="button">All</button>
+      <button class="filter" data-filter="For Sale" type="button">For sale</button>
+      <button class="filter" data-filter="For Rent" type="button">For rent</button>
+    </div>
+    <span class="filterbar__count" id="filterCount"></span>
+  </div>
+</div>
+
+<main class="listings" id="listingsGrid">
+  <!-- Listing cards are generated from listings.js -->
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <span class="wordmark wordmark--small">ZONE<span class="wordmark__accent">·</span>REAL ESTATE</span>
+    <p class="footer__note">Interested in a property? Call and ask — viewings arranged directly.</p>
+    <a class="footer__phone" href="tel:CALL_PHONE_DIGITS" id="footerPhone">—</a>
+  </div>
+</footer>
+
+<!-- Detail panel -->
+<div class="detail" id="detail" hidden>
+  <div class="detail__backdrop" data-close></div>
+  <div class="detail__panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <button class="detail__close" type="button" data-close aria-label="Close">&times;</button>
+    <div class="detail__scroll" id="detailBody"></div>
+  </div>
+</div>
+
+<script src="listings.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
