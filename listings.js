@@ -1,178 +1,217 @@
 /* =====================================================================
-   ZONE REAL ESTATE — EDIT THIS FILE TO MANAGE YOUR SITE
+   ZONE REAL ESTATE — SKEDARI QË REDAKTONI
    =====================================================================
-   This is the ONLY file you need to touch day to day.
-   Change text between the "quote marks", save, upload to GitHub.
-   Your live site updates in about a minute.
+   Ky është i vetmi skedar që ju duhet të prekni.
+   Ndryshoni tekstin mes thonjëzave "...", ruajeni, ngarkojeni në GitHub.
+   Faqja juaj përditësohet për një minutë.
    ===================================================================== */
 
 
 /* ---------------------------------------------------------------------
-   1) YOUR PHONE NUMBER  --  replace both lines below
+   1) NUMRI JUAJ I TELEFONIT
    ---------------------------------------------------------------------
-   DISPLAY_PHONE = what visitors SEE. Format it however you like.
-   CALL_PHONE    = what actually gets DIALED when they tap.
-                   Country code first, then digits only.
-                   No spaces, no dashes, no brackets.
-
-   Example, for the number +1 (555) 123-4567:
-     DISPLAY_PHONE = "+1 (555) 123-4567";
-     CALL_PHONE    = "+15551234567";
+   DISPLAY_PHONE = ajo që SHOHIN vizitorët. Formatojeni si të doni.
+   CALL_PHONE    = ajo që THIRRET kur dikush prek butonin.
+                   Kodi i shtetit i pari, pastaj vetëm shifra.
+                   Pa hapësira, pa viza, pa kllapa.
    --------------------------------------------------------------------- */
-const DISPLAY_PHONE = "+1 (555) 123-4567";
-const CALL_PHONE    = "+15551234567";
+const DISPLAY_PHONE = "+383 49 588 211";
+const CALL_PHONE    = "+38349588211";
 
-/* The area name shown in the summary box on the homepage. */
-const CITY = "Springfield";
+/* Zona që shfaqet në ballinë. */
+const CITY = "Prishtinë";
 
-/* Shown as "Updated" on the homepage. Change it when you add listings. */
-const LAST_UPDATED = "August 2026";
+/* Shfaqet si "Përditësuar". Ndryshojeni kur shtoni prona. */
+const LAST_UPDATED = "Gusht 2026";
 
 
 /* ---------------------------------------------------------------------
-   2) YOUR LISTINGS
+   2) TEKSTET E FAQES
    ---------------------------------------------------------------------
-   To ADD a property:    copy one whole block from {  to  },
-                         including the comma after the closing brace,
-                         paste it, then change the values.
-   To REMOVE a property: delete its whole block, including the comma.
-   To EDIT a property:   just change the text between the quote marks.
+   Këto janë fjalët që gjenerohen automatikisht nga faqja.
+   Ndryshoni çfarëdo teksti mes thonjëzave nëse doni formulim tjetër.
 
-   FIELDS
-     title       Property name or street. Shown as the card heading.
-     status      Either "For Sale" or "For Rent" (spelling matters —
-                 this is what the filter buttons use).
-     price       Free text, so write it exactly as you want it to read:
-                 "$245,000" or "$1,150/mo" or "Price on request".
-     beds        Number of bedrooms.
-     baths       Number of bathrooms.
-     size        Floor area, free text: "140 m²" or "1,500 sqft".
-     location    Neighbourhood / city line under the title.
-     summary     One or two sentences, shown on the card.
-     details     Longer description, shown when someone opens the
-                 property. Can be as long as you like.
-     features    Short bullet points. Add or remove as many as you want.
-     image       Photo file name inside the "images" folder.
-                 See the README for how to add your own photos.
+   KUJDES: statusShitje dhe statusQira duhet të përputhen SAKTËSISHT
+   me fjalët që përdorni te "status" i secilës pronë më poshtë, dhe me
+   butonat e filtrit. Nëse ndryshoni njërën, ndryshoni të gjitha.
+   --------------------------------------------------------------------- */
+const TEXT = {
+  statusShitje:  "Për shitje",
+  statusQira:    "Me qira",
+
+  butoniThirr:   "Telefono për këtë",
+  butoniDetajet: "Detajet",
+  eVecuar:       "E veçuar",
+
+  specÇmimi:     "Çmimi",
+  specDhoma:     "Dhoma gjumi",
+  specBanjo:     "Banjo",
+  specSiperfaqja:"Sipërfaqja",
+
+  /* Shkurtesat në kartela (hapësira është e ngushtë në telefon). */
+  shkurtDhoma:   "dh",
+  shkurtBanjo:   "bnj",
+
+  karakteristikat: "Karakteristikat",
+  telefono:        "Telefono",
+  shenimiThirrjes: "Pyetni për këtë pronë me emër —",
+
+  shikoDetajet:  "Shiko detajet për",
+  prona:         "prona",
+  pronaNjejes:   "pronë",
+  aktive:        "aktive",
+
+  bosh: "Asnjë pronë në këtë kategori për momentin. Telefononi",
+  boshFund: "dhe pyesni çfarë vjen së shpejti.",
+
+  shtoFoto: "SHTO FOTO"
+};
+
+
+/* ---------------------------------------------------------------------
+   3) PRONAT TUAJA
+   ---------------------------------------------------------------------
+   Për të SHTUAR një pronë:   kopjoni një bllok të tërë nga {  deri te },
+                              bashkë me presjen pas tij, ngjiteni, dhe
+                              ndryshoni vlerat.
+   Për të HEQUR një pronë:    fshini bllokun e tërë bashkë me presjen.
+   Për të NDRYSHUAR një pronë: ndryshoni tekstin mes thonjëzave.
+
+   FUSHAT
+     title       Emri i pronës ose rruga. Titulli i kartelës.
+     status      "Për shitje" ose "Me qira" (shkrimi duhet të përputhet
+                 saktësisht — butonat e filtrit e përdorin këtë fjalë).
+     price       Tekst i lirë: "145.000 €" ose "400 €/muaj".
+     beds        Numri i dhomave të gjumit.
+     baths       Numri i banjove.
+     size        Sipërfaqja: "140 m²".
+     location    Lagjja ose qyteti nën titull.
+     summary     Një ose dy fjali, shfaqen në kartelë.
+     details     Përshkrimi i gjatë, shfaqet kur hapet prona.
+     features    Pika të shkurtra. Shtoni ose hiqni sa të doni.
+     image       Emri i fotos brenda dosjes "images".
+
+   SHËNIM: prona e parë në këtë listë është ajo "E veçuar" që shfaqet
+   në ballinë. Zhvendoseni një bllok tjetër në krye për ta veçuar atë.
    --------------------------------------------------------------------- */
 const listings = [
 
   {
-    title: "24 Maple Street",
-    status: "For Sale",
-    price: "$245,000",
+    title: "Shtëpi në Arbëri",
+    status: "Për shitje",
+    price: "185.000 €",
     beds: 3,
     baths: 2,
     size: "140 m²",
-    location: "Maple Heights",
-    summary: "Detached family home with a private garden, updated kitchen and a two-car garage on a quiet residential street.",
-    details: "A well-kept three-bedroom detached house on one of the quietest streets in Maple Heights. The kitchen and both bathrooms were fully renovated two years ago, and the roof was replaced at the same time. The rear garden is fully enclosed and gets sun through the afternoon. Ten minutes' drive from the town centre, with a primary school and grocery store within walking distance. Available to view any day this month.",
+    location: "Arbëri, Prishtinë",
+    summary: "Shtëpi individuale me oborr privat, kuzhinë të re dhe garazh për dy vetura, në një rrugë të qetë.",
+    details: "Shtëpi e mirëmbajtur me tri dhoma gjumi, në një nga rrugët më të qeta të Arbërisë. Kuzhina dhe të dyja banjot janë renovuar plotësisht dy vjet më parë, dhe kulmi është ndërruar në të njëjtën kohë. Oborri i pasmë është i rrethuar dhe merr diell gjatë tërë pasdites. Dhjetë minuta me veturë nga qendra, me shkollë fillore dhe market brenda distancës për këmbë. Mund të vizitohet çdo ditë këtë muaj.",
     features: [
-      "Renovated kitchen and bathrooms",
-      "Enclosed rear garden",
-      "Two-car garage",
-      "New roof (2024)",
-      "Gas central heating"
+      "Kuzhinë dhe banjo të renovuara",
+      "Oborr i rrethuar",
+      "Garazh për dy vetura",
+      "Kulm i ri (2024)",
+      "Ngrohje qendrore"
     ],
     image: "images/maple-street.svg"
   },
 
   {
-    title: "Unit 12B, Riverside Apartments",
-    status: "For Rent",
-    price: "$1,150/mo",
+    title: "Banesë 12B, Bregu i Diellit",
+    status: "Me qira",
+    price: "420 €/muaj",
     beds: 2,
     baths: 1,
     size: "78 m²",
-    location: "Riverside District",
-    summary: "Top-floor apartment with river views, in-unit laundry and a covered parking space, minutes from the metro.",
-    details: "Bright top-floor two-bedroom apartment facing the river, with an open-plan living and dining area and a balcony running the width of the flat. In-unit washer and dryer, plus one covered parking space included in the rent. The building has a lift and secure entry. Two minutes' walk to the metro and a large grocery store. Minimum twelve-month lease, unfurnished, available from the first of next month.",
+    location: "Bregu i Diellit, Prishtinë",
+    summary: "Banesë në katin e fundit me ballkon, makinë larëse dhe vend parkimi të mbuluar, afër qendrës.",
+    details: "Banesë e ndritshme në katin e fundit me dy dhoma gjumi, me hapësirë të hapur ditore dhe ballkon përgjatë tërë gjatësisë së banesës. Makinë larëse dhe tharëse brenda banesës, plus një vend parkimi i mbuluar i përfshirë në qira. Ndërtesa ka ashensor dhe hyrje të sigurt. Dy minuta në këmbë deri te stacioni i autobusit dhe një market i madh. Qira minimum dymbëdhjetë muaj, e pamobiluar, e lirë nga data një e muajit të ardhshëm.",
     features: [
-      "Top floor, river-facing balcony",
-      "Washer and dryer in the unit",
-      "Covered parking included",
-      "Lift and secure entry",
-      "2 min walk to metro"
+      "Kati i fundit, ballkon i gjatë",
+      "Makinë larëse dhe tharëse brenda",
+      "Parking i mbuluar i përfshirë",
+      "Ashensor dhe hyrje e sigurt",
+      "2 minuta deri te stacioni"
     ],
     image: "images/riverside-12b.svg"
   },
 
   {
-    title: "8 Orchard Lane",
-    status: "For Sale",
-    price: "$389,000",
+    title: "Shtëpi në Ulpianë",
+    status: "Për shitje",
+    price: "268.000 €",
     beds: 4,
     baths: 3,
     size: "210 m²",
-    location: "Orchard Hill",
-    summary: "Spacious end-of-row townhouse over two floors, with a finished basement and a large south-facing back garden.",
-    details: "An end-of-row townhouse with considerably more space than it looks from the street. Four bedrooms upstairs including a large main bedroom with an ensuite, plus a finished basement currently used as a home office and playroom. The back garden faces south and backs onto green space rather than another property. Driveway parking for two cars. Ideal for a family that needs room to spread out.",
+    location: "Ulpianë, Prishtinë",
+    summary: "Shtëpi këndore në dy kate, me bodrum të përfunduar dhe oborr të madh nga jugu.",
+    details: "Shtëpi këndore me dukshëm më shumë hapësirë sesa duket nga rruga. Katër dhoma gjumi në katin e sipërm, përfshirë një dhomë kryesore me banjo private, plus një bodrum i përfunduar që tani përdoret si zyrë dhe dhomë loje. Oborri i pasmë është nga jugu dhe kufizohet me hapësirë të gjelbër, jo me shtëpi tjetër. Parking në oborr për dy vetura. Ideale për familje që kërkon hapësirë.",
     features: [
-      "End-of-row, extra side windows",
-      "Finished basement",
-      "South-facing garden backing green space",
-      "Main bedroom with ensuite",
-      "Driveway parking for two"
+      "Shtëpi këndore, dritare shtesë anash",
+      "Bodrum i përfunduar",
+      "Oborr nga jugu me hapësirë të gjelbër",
+      "Dhomë kryesore me banjo private",
+      "Parking për dy vetura"
     ],
     image: "images/orchard-lane.svg"
   },
 
   {
-    title: "5 Cedar Close",
-    status: "For Sale",
-    price: "$198,000",
+    title: "Shtëpi përdhese, Veternik",
+    status: "Për shitje",
+    price: "112.000 €",
     beds: 2,
     baths: 1,
     size: "96 m²",
-    location: "Cedar Close",
-    summary: "Single-storey bungalow with a covered porch and wide living room windows. No stairs anywhere in the property.",
-    details: "A comfortable two-bedroom bungalow on a small, quiet close. Everything is on one level with no steps at the entrance, which makes it a practical option for anyone wanting to avoid stairs. Wide windows make the living room unusually bright for its size, and the covered porch runs the full width of the front. Low-maintenance garden. Would suit a couple, a small family, or someone downsizing.",
+    location: "Veternik, Prishtinë",
+    summary: "Shtëpi njëkatëshe me verandë të mbuluar dhe dritare të gjera. Pa shkallë askund në pronë.",
+    details: "Shtëpi komode me dy dhoma gjumi në një rrugicë të qetë. Gjithçka është në një nivel, pa shkallë as në hyrje, çka e bën praktike për këdo që dëshiron të shmangë shkallët. Dritaret e gjera e bëjnë dhomën e ndenjes jashtëzakonisht të ndritshme për madhësinë e saj, dhe veranda e mbuluar shtrihet përgjatë tërë pjesës së përparme. Oborr i lehtë për mirëmbajtje. I përshtatet një çifti, një familjeje të vogël, ose dikujt që dëshiron hapësirë më të vogël.",
     features: [
-      "Everything on one level, no steps",
-      "Covered full-width porch",
-      "Bright living room",
-      "Low-maintenance garden",
-      "Quiet cul-de-sac"
+      "Gjithçka në një nivel, pa shkallë",
+      "Verandë e mbuluar përgjatë fasadës",
+      "Dhomë ndenjeje e ndritshme",
+      "Oborr i lehtë për mirëmbajtje",
+      "Rrugicë e qetë pa kalim"
     ],
     image: "images/cedar-bungalow.svg"
   },
 
   {
-    title: "Mill Loft, Building 3",
-    status: "For Rent",
-    price: "$1,450/mo",
+    title: "Lokal banimi, Qendër",
+    status: "Me qira",
+    price: "600 €/muaj",
     beds: 1,
     baths: 1,
     size: "112 m²",
-    location: "Old Mill Quarter",
-    summary: "Converted warehouse loft with arched windows, exposed brick and a mezzanine sleeping level.",
-    details: "A one-bedroom loft in a converted mill building, with the original arched windows and brickwork left exposed. The main space is open plan with a mezzanine sleeping level above the kitchen, and ceilings high enough that it never feels like a one-bedroom. Heating is underfloor. The building has a shared courtyard and a bike store. Suits one person or a couple who want an unusual space rather than a standard flat.",
+    location: "Qendër, Prishtinë",
+    summary: "Hapësirë e konvertuar me dritare harkore, tulla të dukshme dhe nivel gjumi në mezanin.",
+    details: "Hapësirë banimi me një dhomë gjumi në një objekt të konvertuar, ku dritaret origjinale harkore dhe tullat janë lënë të dukshme. Hapësira kryesore është e hapur, me nivel gjumi në mezanin mbi kuzhinë, dhe tavane aq të larta sa nuk ndihet kurrë si banesë njëdhomëshe. Ngrohja është nën dysheme. Objekti ka oborr të përbashkët dhe vend për biçikleta. I përshtatet një personi ose një çifti që kërkon hapësirë të veçantë, jo banesë standarde.",
     features: [
-      "Original arched windows and brickwork",
-      "Mezzanine sleeping level",
-      "Underfloor heating",
-      "Shared courtyard and bike store",
-      "Pets considered"
+      "Dritare harkore dhe tulla origjinale",
+      "Nivel gjumi në mezanin",
+      "Ngrohje nën dysheme",
+      "Oborr i përbashkët dhe vend biçikletash",
+      "Kafshët shtëpiake merren parasysh"
     ],
     image: "images/mill-loft.svg"
   },
 
   {
-    title: "Hillside Villa",
-    status: "For Sale",
-    price: "$720,000",
+    title: "Vilë në Matiçan",
+    status: "Për shitje",
+    price: "465.000 €",
     beds: 5,
     baths: 4,
     size: "310 m²",
-    location: "North Hillside",
-    summary: "Modern villa with full-height glazing, a lower wing and a heated outdoor pool on a private plot.",
-    details: "A contemporary five-bedroom villa set back on a private plot with views down over the valley. The main block holds the bedrooms and a double-height living area with full-height glazing along the garden side; the lower wing houses a guest suite and a garage. The pool is heated and screened from the road by mature planting. Underfloor heating throughout and solar panels on the wing roof. Viewings by appointment.",
+    location: "Matiçan, Prishtinë",
+    summary: "Vilë moderne me xhamllëk nga dyshemeja në tavan, krah të ulët dhe pishinë të ngrohur në parcelë private.",
+    details: "Vilë bashkëkohore me pesë dhoma gjumi, e vendosur në një parcelë private me pamje nga lugina. Blloku kryesor përmban dhomat e gjumit dhe një hapësirë ditore me lartësi të dyfishtë me xhamllëk nga dyshemeja në tavan përgjatë anës së oborrit; krahu i ulët përmban një apartament për mysafirë dhe garazhin. Pishina është e ngrohur dhe e mbuluar nga rruga me bimësi të rritur. Ngrohje nën dysheme kudo dhe panele solare në kulmin e krahut. Vizitat me paralajmërim.",
     features: [
-      "Heated outdoor pool",
-      "Full-height glazing, valley views",
-      "Separate guest suite in lower wing",
-      "Solar panels and underfloor heating",
-      "Private gated plot"
+      "Pishinë e ngrohur",
+      "Xhamllëk i plotë, pamje nga lugina",
+      "Apartament i ndarë për mysafirë",
+      "Panele solare dhe ngrohje nën dysheme",
+      "Parcelë private me portë"
     ],
     image: "images/hillside-villa.svg"
   }
@@ -181,6 +220,6 @@ const listings = [
 
 
 /* ---------------------------------------------------------------------
-   Don't edit below this line — this passes your details to the page.
+   Mos redaktoni nën këtë vijë.
    --------------------------------------------------------------------- */
-window.ZONE_CONFIG = { DISPLAY_PHONE, CALL_PHONE, CITY, LAST_UPDATED, listings };
+window.ZONE_CONFIG = { DISPLAY_PHONE, CALL_PHONE, CITY, LAST_UPDATED, TEXT, listings };

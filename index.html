@@ -1,97 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zone Real Estate — Houses &amp; Apartments</title>
-<meta name="description" content="Zone Real Estate — houses and apartments for sale and rent. See a property you like, call the number directly.">
-<meta name="theme-color" content="#0F2436">
+<title>Zone Real Estate — Shtëpi dhe banesa</title>
+<meta name="description" content="Zone Real Estate — shtëpi dhe banesa për shitje dhe me qira në Prishtinë. Shihni një pronë që ju pëlqen dhe telefononi drejtpërdrejt.">
+<meta name="theme-color" content="#140C1C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script>document.documentElement.className += " js";</script>
 </head>
 <body>
 
+<!-- ============================================================
+     Ambient liquid field. Fixed behind everything; masses rise
+     and drift right on long, unsynchronised cycles so the loop
+     never visibly repeats.
+     ============================================================ -->
+<div class="flux" aria-hidden="true">
+  <span class="flux__mass flux__mass--a"></span>
+  <span class="flux__mass flux__mass--b"></span>
+  <span class="flux__mass flux__mass--c"></span>
+  <span class="flux__mass flux__mass--d"></span>
+  <span class="flux__mass flux__mass--e"></span>
+  <span class="flux__grain"></span>
+</div>
+
+<!-- Pointer wake: a slow warm smear that trails the cursor -->
+<div class="wake" id="wake" aria-hidden="true"></div>
+
+<!-- ============================================================
+     Signature: the liquid gauge. Fills as you scroll; the
+     meniscus overshoots and wobbles when you stop.
+     ============================================================ -->
+<div class="gauge" aria-hidden="true">
+  <div class="gauge__tube">
+    <div class="gauge__fill" id="gaugeFill">
+      <svg class="gauge__meniscus" viewBox="0 0 40 12" preserveAspectRatio="none">
+        <path id="meniscusPath" d="M0 6 q10 -5 20 0 t20 0 V12 H0 Z" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+  <span class="gauge__readout" id="gaugeReadout">00</span>
+</div>
+
 <header class="topbar">
   <div class="topbar__inner">
-    <a class="wordmark" href="#top">ZONE<span class="wordmark__accent">·</span>REAL ESTATE</a>
-    <a class="topbar__call" href="tel:CALL_PHONE_DIGITS">
-      <span class="topbar__call-icon" aria-hidden="true">&#9742;</span>
-      <span class="topbar__call-text">
-        <span class="topbar__call-label">Call direct</span>
-        <span class="topbar__call-number" id="topbarPhone">—</span>
+    <a class="wordmark" href="#top">ZONE<span class="wordmark__drop"></span>REAL ESTATE</a>
+    <a class="callbtn" href="tel:CALL_PHONE_DIGITS">
+      <span class="callbtn__ripple" aria-hidden="true"></span>
+      <span class="callbtn__icon" aria-hidden="true">&#9742;</span>
+      <span class="callbtn__text">
+        <span class="callbtn__label">Telefono direkt</span>
+        <span class="callbtn__number" id="topbarPhone">—</span>
       </span>
     </a>
   </div>
 </header>
 
 <section class="hero" id="top">
-  <div class="hero__grid" aria-hidden="true"></div>
   <div class="hero__inner">
-    <div class="hero__content">
-      <p class="hero__eyebrow">Houses &amp; apartments</p>
-      <h1 class="hero__title">Every listing.<br>One phone call.</h1>
-      <p class="hero__tagline">No agents in between, no forms to fill in, no account to create. Find a property you like and call the number — you'll reach me directly.</p>
-      <a class="hero__cta" href="#listings">See what's available</a>
+    <div class="hero__col">
+    <p class="hero__eyebrow surface" data-delay="0">Shtëpi dhe banesa</p>
+    <h1 class="hero__title surface" data-delay="1">
+      <span class="hero__line">Çdo pronë.</span>
+      <span class="hero__line hero__line--flow">Një telefonatë.</span>
+    </h1>
+    <p class="hero__tagline surface" data-delay="2">Pa agjentë në mes, pa formularë për të plotësuar, pa llogari për të krijuar. Gjeni një pronë që ju pëlqen dhe telefononi numrin — do të flisni drejtpërdrejt me mua.</p>
+    <a class="hero__cta surface" data-delay="3" href="#listings">
+      <span>Shihni çfarë ofrohet</span>
+      <span class="hero__cta-drop" aria-hidden="true"></span>
+    </a>
+
+    <dl class="hero__facts surface" data-delay="4">
+      <div class="fact"><dt>Zona</dt><dd id="hero-city">—</dd></div>
+      <div class="fact"><dt>Prona</dt><dd id="hero-count">—</dd></div>
+      <div class="fact"><dt>Përditësuar</dt><dd id="hero-updated">—</dd></div>
+    </dl>
     </div>
 
-    <div class="titleblock" aria-label="Summary">
-      <div class="titleblock__head">Zone Real Estate</div>
-      <div class="titleblock__row">
-        <span class="titleblock__label">Area</span>
-        <span class="titleblock__value" id="hero-city">—</span>
-      </div>
-      <div class="titleblock__row">
-        <span class="titleblock__label">Listings</span>
-        <span class="titleblock__value" id="hero-count">—</span>
-      </div>
-      <div class="titleblock__row">
-        <span class="titleblock__label">Contact</span>
-        <span class="titleblock__value titleblock__value--phone" id="hero-phone">—</span>
-      </div>
-      <div class="titleblock__row">
-        <span class="titleblock__label">Updated</span>
-        <span class="titleblock__value" id="hero-updated">—</span>
-      </div>
-    </div>
+    <!-- Featured property, held in a drop that never stops reforming.
+         Filled from the first listing in listings.js. -->
+    <button class="drop surface" data-delay="2" id="heroDrop" type="button">
+      <span class="drop__skin">
+        <img class="drop__photo" id="heroDropPhoto" alt="">
+        <span class="drop__sheen" aria-hidden="true"></span>
+      </span>
+      <span class="drop__tag">
+        <span class="drop__tag-label">E veçuar</span>
+        <span class="drop__tag-title" id="heroDropTitle">—</span>
+        <span class="drop__tag-price" id="heroDropPrice">—</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Divider: two waves travelling right at different speeds.
+       Amplitude is driven by scroll velocity via --churn. -->
+  <div class="divider divider--hero" aria-hidden="true">
+    <svg class="divider__svg" viewBox="0 0 2880 150" preserveAspectRatio="none">
+      <path class="divider__back" d="M0,75 C180,6 540,144 720,75 C900,6 1260,144 1440,75 C1620,6 1980,144 2160,75 C2340,6 2700,144 2880,75 L2880,150 L0,150 Z"/>
+      <path class="divider__front" d="M0,75 C180,132 540,14 720,75 C900,132 1260,14 1440,75 C1620,132 1980,14 2160,75 C2340,132 2700,14 2880,75 L2880,150 L0,150 Z"/>
+    </svg>
   </div>
 </section>
 
 <div class="filterbar" id="listings">
   <div class="filterbar__inner">
-    <span class="filterbar__legend">Show</span>
-    <div class="filterbar__buttons" role="group" aria-label="Filter listings">
-      <button class="filter is-active" data-filter="all" type="button">All</button>
-      <button class="filter" data-filter="For Sale" type="button">For sale</button>
-      <button class="filter" data-filter="For Rent" type="button">For rent</button>
+    <div class="filterbar__buttons" role="group" aria-label="Filtro pronat">
+      <button class="filter is-active" data-filter="all" type="button"><span>Të gjitha</span></button>
+      <button class="filter" data-filter="Për shitje" type="button"><span>Për shitje</span></button>
+      <button class="filter" data-filter="Me qira" type="button"><span>Me qira</span></button>
     </div>
     <span class="filterbar__count" id="filterCount"></span>
   </div>
 </div>
 
 <main class="listings" id="listingsGrid">
-  <!-- Listing cards are generated from listings.js -->
+  <!-- Kartelat gjenerohen nga listings.js -->
 </main>
 
+<div class="divider divider--footer" aria-hidden="true">
+  <svg class="divider__svg" viewBox="0 0 2880 150" preserveAspectRatio="none">
+      <path class="divider__back" d="M0,75 C180,6 540,144 720,75 C900,6 1260,144 1440,75 C1620,6 1980,144 2160,75 C2340,6 2700,144 2880,75 L2880,150 L0,150 Z"/>
+      <path class="divider__front" d="M0,75 C180,132 540,14 720,75 C900,132 1260,14 1440,75 C1620,132 1980,14 2160,75 C2340,132 2700,14 2880,75 L2880,150 L0,150 Z"/>
+    </svg>
+</div>
+
 <footer class="footer">
-  <div class="footer__inner">
-    <span class="wordmark wordmark--small">ZONE<span class="wordmark__accent">·</span>REAL ESTATE</span>
-    <p class="footer__note">Interested in a property? Call and ask — viewings arranged directly.</p>
+  <div class="footer__inner surface">
+    <span class="wordmark wordmark--small">ZONE<span class="wordmark__drop"></span>REAL ESTATE</span>
+    <p class="footer__note">Ju intereson një pronë? Telefononi dhe pyesni — vizitat caktohen drejtpërdrejt.</p>
     <a class="footer__phone" href="tel:CALL_PHONE_DIGITS" id="footerPhone">—</a>
   </div>
 </footer>
 
-<!-- Detail panel -->
+<!-- Paneli i detajeve: hapet si lëng nga kartela që prekët -->
 <div class="detail" id="detail" hidden>
   <div class="detail__backdrop" data-close></div>
   <div class="detail__panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
-    <button class="detail__close" type="button" data-close aria-label="Close">&times;</button>
+    <button class="detail__close" type="button" data-close aria-label="Mbyll">&times;</button>
     <div class="detail__scroll" id="detailBody"></div>
   </div>
 </div>
 
 <script src="listings.js"></script>
 <script src="script.js"></script>
+<script src="liquid.js"></script>
 </body>
 </html>
