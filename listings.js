@@ -1,99 +1,39 @@
 /* =====================================================================
-   ZONE REAL ESTATE — SKEDARI QË REDAKTONI
+   ZONE REAL ESTATE — SKEDARI I PRONAVE
    =====================================================================
-   Ky është i vetmi skedar që ju duhet të prekni.
-   Ndryshoni tekstin mes thonjëzave "...", ruajeni, ngarkojeni në GitHub.
-   Faqja juaj përditësohet për një minutë.
+   Gjeneruar nga paneli i administrimit më 8/14/2026, 4:30:09 AM
    ===================================================================== */
 
-
-/* ---------------------------------------------------------------------
-   1) NUMRI JUAJ I TELEFONIT
-   ---------------------------------------------------------------------
-   DISPLAY_PHONE = ajo që SHOHIN vizitorët. Formatojeni si të doni.
-   CALL_PHONE    = ajo që THIRRET kur dikush prek butonin.
-                   Kodi i shtetit i pari, pastaj vetëm shifra.
-                   Pa hapësira, pa viza, pa kllapa.
-   --------------------------------------------------------------------- */
 const DISPLAY_PHONE = "+383 49 588 211";
 const CALL_PHONE    = "+38349588211";
 
-/* Zona që shfaqet në ballinë. */
 const CITY = "Prishtinë";
-
-/* Shfaqet si "Përditësuar". Ndryshojeni kur shtoni prona. */
 const LAST_UPDATED = "Gusht 2026";
 
-
-/* ---------------------------------------------------------------------
-   2) TEKSTET E FAQES
-   ---------------------------------------------------------------------
-   Këto janë fjalët që gjenerohen automatikisht nga faqja.
-   Ndryshoni çfarëdo teksti mes thonjëzave nëse doni formulim tjetër.
-
-   KUJDES: statusShitje dhe statusQira duhet të përputhen SAKTËSISHT
-   me fjalët që përdorni te "status" i secilës pronë më poshtë, dhe me
-   butonat e filtrit. Nëse ndryshoni njërën, ndryshoni të gjitha.
-   --------------------------------------------------------------------- */
 const TEXT = {
-  statusShitje:  "Për shitje",
-  statusQira:    "Me qira",
-
-  butoniThirr:   "Telefono për këtë",
+  statusShitje: "Për shitje",
+  statusQira: "Me qira",
+  butoniThirr: "Telefono për këtë",
   butoniDetajet: "Detajet",
-  eVecuar:       "E veçuar",
-
-  specÇmimi:     "Çmimi",
-  specDhoma:     "Dhoma gjumi",
-  specBanjo:     "Banjo",
-  specSiperfaqja:"Sipërfaqja",
-
-  /* Shkurtesat në kartela (hapësira është e ngushtë në telefon). */
-  shkurtDhoma:   "dh",
-  shkurtBanjo:   "bnj",
-
+  eVecuar: "E veçuar",
+  "specÇmimi": "Çmimi",
+  specDhoma: "Dhoma gjumi",
+  specBanjo: "Banjo",
+  specSiperfaqja: "Sipërfaqja",
+  shkurtDhoma: "dh",
+  shkurtBanjo: "bnj",
   karakteristikat: "Karakteristikat",
-  telefono:        "Telefono",
+  telefono: "Telefono",
   shenimiThirrjes: "Pyetni për këtë pronë me emër —",
-
-  shikoDetajet:  "Shiko detajet për",
-  prona:         "prona",
-  pronaNjejes:   "pronë",
-  aktive:        "aktive",
-
+  shikoDetajet: "Shiko detajet për",
+  prona: "prona",
+  pronaNjejes: "pronë",
+  aktive: "aktive",
   bosh: "Asnjë pronë në këtë kategori për momentin. Telefononi",
   boshFund: "dhe pyesni çfarë vjen së shpejti.",
-
   shtoFoto: "SHTO FOTO"
 };
 
-
-/* ---------------------------------------------------------------------
-   3) PRONAT TUAJA
-   ---------------------------------------------------------------------
-   Për të SHTUAR një pronë:   kopjoni një bllok të tërë nga {  deri te },
-                              bashkë me presjen pas tij, ngjiteni, dhe
-                              ndryshoni vlerat.
-   Për të HEQUR një pronë:    fshini bllokun e tërë bashkë me presjen.
-   Për të NDRYSHUAR një pronë: ndryshoni tekstin mes thonjëzave.
-
-   FUSHAT
-     title       Emri i pronës ose rruga. Titulli i kartelës.
-     status      "Për shitje" ose "Me qira" (shkrimi duhet të përputhet
-                 saktësisht — butonat e filtrit e përdorin këtë fjalë).
-     price       Tekst i lirë: "145.000 €" ose "400 €/muaj".
-     beds        Numri i dhomave të gjumit.
-     baths       Numri i banjove.
-     size        Sipërfaqja: "140 m²".
-     location    Lagjja ose qyteti nën titull.
-     summary     Një ose dy fjali, shfaqen në kartelë.
-     details     Përshkrimi i gjatë, shfaqet kur hapet prona.
-     features    Pika të shkurtra. Shtoni ose hiqni sa të doni.
-     image       Emri i fotos brenda dosjes "images".
-
-   SHËNIM: prona e parë në këtë listë është ajo "E veçuar" që shfaqet
-   në ballinë. Zhvendoseni një bllok tjetër në krye për ta veçuar atë.
-   --------------------------------------------------------------------- */
 const listings = [
 
   {
@@ -214,12 +154,24 @@ const listings = [
       "Parcelë private me portë"
     ],
     image: "images/hillside-villa.svg"
+  },
+
+  {
+    title: "Test",
+    status: "Për shitje",
+    price: "18000",
+    beds: 4,
+    baths: 2,
+    size: "150",
+    location: "Test",
+    summary: "Test",
+    details: "Test",
+    features: [
+      "Test"
+    ],
+    image: "images/test-xd5x.jpg"
   }
 
 ];
 
-
-/* ---------------------------------------------------------------------
-   Mos redaktoni nën këtë vijë.
-   --------------------------------------------------------------------- */
 window.ZONE_CONFIG = { DISPLAY_PHONE, CALL_PHONE, CITY, LAST_UPDATED, TEXT, listings };
