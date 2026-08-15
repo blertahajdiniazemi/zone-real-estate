@@ -1,13 +1,13 @@
 /* =====================================================================
    ZONE REAL ESTATE — SKEDARI I PRONAVE
    =====================================================================
-   Gjeneruar nga paneli i administrimit më 8/14/2026, 4:30:09 AM
+   Gjeneruar nga paneli i administrimit më 8/15/2026, 8:33:53 PM
    ===================================================================== */
 
 const DISPLAY_PHONE = "+383 49 588 211";
 const CALL_PHONE    = "+38349588211";
 
-const CITY = "Prishtinë";
+const CITY         = "Prishtinë";
 const LAST_UPDATED = "Gusht 2026";
 
 const TEXT = {
@@ -157,7 +157,7 @@ const listings = [
   },
 
   {
-    title: "Test",
+    title: "Test Blerta",
     status: "Për shitje",
     price: "18000",
     beds: 4,
