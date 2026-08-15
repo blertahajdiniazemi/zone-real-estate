@@ -19,7 +19,7 @@
 window.ZONE_ADMIN_CONFIG = {
 
   /* Supabase → Project Settings → Data API → Project URL */
-  SUPABASE_URL: "https://pigwoiskmxcjenhjqsp.supabase.co",
+  SUPABASE_URL: "https://pigwoiskmxicjenhjqsp.supabase.co",
 
   /* Supabase → Project Settings → API Keys → anon / publishable key.
      Ky çelës është i sigurt për shfletuesin. */
@@ -27,7 +27,7 @@ window.ZONE_ADMIN_CONFIG = {
 
   /* Adresa e funksionit serverik (Supabase Edge Function).
      Zakonisht: https://YOUR-PROJECT-REF.supabase.co/functions/v1/zone-admin */
-  FUNCTION_URL: "https://pigwoiskmxcjenhjqsp.supabase.co/functions/v1/zone-admin",
+  FUNCTION_URL: "https://pigwoiskmxicjenhjqsp.supabase.co/functions/v1/zone-admin",
   
   /* Adresa e faqes live — përdoret vetëm për të shfaqur fotot ekzistuese
      në listën e pronave. Lëreni bosh nëse nuk jeni të sigurt. */
