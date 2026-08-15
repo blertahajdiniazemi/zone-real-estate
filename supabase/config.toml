@@ -1,0 +1,11 @@
+# Përdoret vetëm nëse e vendosni funksionin me Supabase CLI.
+# Nëse e vendosni nga dashboard-i, ky skedar nuk lexohet.
+#
+# Zëvendësoni project_id me "Reference ID" nga
+# Supabase → Project Settings → General.
+
+project_id = "YOUR-PROJECT-REF"
+
+[functions.zone-admin]
+# JWT-ja verifikohet nga platforma DHE nga vetë funksioni.
+verify_jwt = true
