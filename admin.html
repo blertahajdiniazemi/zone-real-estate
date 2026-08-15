@@ -2,290 +2,356 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Zone Real Estate — Administrimi</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --void:#140C1C; --void-2:#1E1229;
-    --flux-1:#E0518A; --flux-2:#F2874E; --flux-3:#8B5CD6; --gold:#F6C56B;
-    --lume:#FFF1E2; --lume-mid:rgba(255,241,226,.66); --lume-dim:rgba(255,241,226,.40);
-    --glass:rgba(255,241,226,.045); --edge:rgba(255,241,226,.14);
-    --ok:#6BD39B; --bad:#E0518A;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--void);color:var(--lume);
-    font-family:"Outfit",system-ui,sans-serif;font-weight:300;line-height:1.55;padding-bottom:90px}
-  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
-  header{border-bottom:1px solid var(--edge);padding:24px 0 20px;margin-bottom:24px;
-    background:linear-gradient(160deg,rgba(139,92,214,.18),transparent)}
-  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(24px,4vw,34px);
-    letter-spacing:-.02em;margin:0 0 6px}
-  .sub{color:var(--lume-mid);margin:0;max-width:660px;font-size:15px}
-  h2{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 4px}
-  .hint{color:var(--lume-dim);font-size:13px;margin:0 0 16px}
-  .panel{background:var(--glass);border:1px solid var(--edge);border-radius:20px;
-    padding:22px;margin-bottom:20px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:700px){.grid{grid-template-columns:1fr}}
-  .full{grid-column:1/-1}
-  label{display:block;font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;
-    letter-spacing:.13em;color:var(--lume-dim);margin-bottom:6px}
-  input,textarea,select{width:100%;background:rgba(20,12,28,.72);color:var(--lume);
-    border:1px solid var(--edge);border-radius:11px;padding:10px 13px;
-    font-family:"Outfit",sans-serif;font-size:15px;font-weight:300}
-  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
-  textarea{min-height:84px;resize:vertical}
-  .field{margin-bottom:14px}
-  button{font:inherit;cursor:pointer;border:none;border-radius:40px;padding:12px 24px;
-    font-family:"DM Mono",monospace;font-size:13.5px;font-weight:500}
-  button[disabled]{opacity:.45;cursor:not-allowed}
-  .primary{background:linear-gradient(120deg,var(--gold),var(--flux-2) 58%,var(--flux-1));color:var(--void)}
-  .ghost{background:none;border:1px solid var(--edge);color:var(--lume-mid)}
-  .ghost:hover:not([disabled]){border-color:var(--gold);color:var(--lume)}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .drop{border:1.5px dashed var(--edge);border-radius:14px;padding:20px;text-align:center;
-    color:var(--lume-dim);font-size:14px;cursor:pointer}
-  .drop:hover,.drop.over{border-color:var(--gold);background:rgba(246,197,107,.06)}
-  .thumb{display:flex;gap:14px;align-items:center;margin-top:13px}
-  .thumb img{width:104px;height:78px;object-fit:cover;border-radius:10px;border:1px solid var(--edge)}
-  .thumb .meta{font-family:"DM Mono",monospace;font-size:12px;color:var(--lume-mid);line-height:1.7}
-  .thumb .meta b{color:var(--gold);font-weight:500}
-  ul.list{list-style:none;padding:0;margin:0}
-  ul.list li{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--edge)}
-  ul.list li:last-child{border-bottom:none}
-  .li-img{width:62px;height:47px;flex:none;border-radius:8px;border:1px solid var(--edge);object-fit:cover}
-  .li-body{flex:1;min-width:0}
-  .li-title{font-family:"Fraunces",serif;font-weight:600;font-size:16px;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .li-meta{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--lume-dim);margin-top:2px}
-  .li-meta .px{color:var(--gold)}
-  .badge{display:inline-block;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.1em;
-    text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-left:6px;
-    background:linear-gradient(120deg,var(--flux-3),var(--flux-1));color:var(--lume)}
-  .badge.feat{background:linear-gradient(120deg,var(--gold),var(--flux-2));color:var(--void)}
-  .icons{display:flex;gap:3px;flex:none}
-  .icons button{background:none;border:1px solid var(--edge);color:var(--lume-dim);
-    width:32px;height:32px;padding:0;border-radius:9px;font-size:14px;line-height:1}
-  .icons button:hover{border-color:var(--gold);color:var(--lume)}
-  .empty{color:var(--lume-dim);font-family:"DM Mono",monospace;font-size:13px;text-align:center;padding:24px 0}
-  .note{background:rgba(139,92,214,.12);border:1px solid rgba(139,92,214,.34);border-radius:13px;
-    padding:13px 17px;font-size:13.5px;color:var(--lume-mid);margin-top:14px}
-  .note.warn{background:rgba(224,81,138,.10);border-color:rgba(224,81,138,.35)}
-  .note b{color:var(--lume);font-weight:500}
-  .note a{color:var(--gold)}
-  .msg{font-family:"DM Mono",monospace;font-size:13px;margin-left:4px}
-  .msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)} .msg.busy{color:var(--gold)}
-  .editing{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(246,197,107,.3)}
-  .gate{position:fixed;inset:0;background:var(--void);z-index:99;display:grid;place-items:center;padding:24px}
-  .gate .box{width:min(420px,100%);text-align:center}
-  .gate h1{margin-bottom:14px}
-  .log{font-family:"DM Mono",monospace;font-size:12.5px;color:var(--lume-mid);
-    background:rgba(10,5,16,.6);border:1px solid var(--edge);border-radius:13px;
-    padding:14px 16px;margin-top:14px;max-height:210px;overflow-y:auto;white-space:pre-wrap}
-  .log .g{color:var(--ok)} .log .r{color:var(--bad)}
-  .steps{counter-reset:s;list-style:none;padding:0;margin:8px 0 0;font-size:14px;color:var(--lume-mid)}
-  .steps li{counter-increment:s;position:relative;padding:0 0 9px 30px}
-  .steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:20px;height:20px;
-    border-radius:50%;background:rgba(246,197,107,.15);color:var(--gold);
-    font-family:"DM Mono",monospace;font-size:10px;display:grid;place-items:center}
-  code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
-  details summary{cursor:pointer;color:var(--gold);font-size:13.5px;
-    font-family:"DM Mono",monospace;margin-top:6px}
+:root{
+  --void:#140C1C; --void-2:#1E1229;
+  --flux-1:#E0518A; --flux-2:#F2874E; --flux-3:#8B5CD6; --gold:#F6C56B;
+  --lume:#FFF1E2; --lume-mid:rgba(255,241,226,.66); --lume-dim:rgba(255,241,226,.40);
+  --glass:rgba(255,241,226,.045); --edge:rgba(255,241,226,.14);
+  --ok:#6BD39B; --bad:#E0518A;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--void);color:var(--lume);
+  font-family:"Outfit",system-ui,sans-serif;font-weight:300;line-height:1.55;padding-bottom:90px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--edge);padding:24px 0 20px;margin-bottom:24px;
+  background:linear-gradient(160deg,rgba(139,92,214,.18),transparent)}
+h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(24px,4vw,34px);
+  letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--lume-mid);margin:0;max-width:660px;font-size:15px}
+h2{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 4px}
+.hint{color:var(--lume-dim);font-size:13px;margin:0 0 16px}
+.panel{background:var(--glass);border:1px solid var(--edge);border-radius:20px;
+  padding:22px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.full{grid-column:1/-1}
+label{display:block;font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:.13em;color:var(--lume-dim);margin-bottom:6px}
+input,textarea,select{width:100%;background:rgba(20,12,28,.72);color:var(--lume);
+  border:1px solid var(--edge);border-radius:11px;padding:10px 13px;
+  font-family:"Outfit",sans-serif;font-size:15px;font-weight:300}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
+textarea{min-height:84px;resize:vertical}
+.field{margin-bottom:14px}
+button{font:inherit;cursor:pointer;border:none;border-radius:40px;padding:12px 24px;
+  font-family:"DM Mono",monospace;font-size:13.5px;font-weight:500}
+button[disabled]{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.primary{background:linear-gradient(120deg,var(--gold),var(--flux-2) 58%,var(--flux-1));color:var(--void)}
+.ghost{background:none;border:1px solid var(--edge);color:var(--lume-mid)}
+.ghost:hover:not([disabled]){border-color:var(--gold);color:var(--lume)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.drop{border:1.5px dashed var(--edge);border-radius:14px;padding:20px;text-align:center;
+  color:var(--lume-dim);font-size:14px;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--gold);background:rgba(246,197,107,.06)}
+.thumb{display:flex;gap:14px;align-items:center;margin-top:13px;flex-wrap:wrap}
+.thumb img{width:104px;height:78px;object-fit:cover;border-radius:10px;border:1px solid var(--edge)}
+.thumb .meta{font-family:"DM Mono",monospace;font-size:12px;color:var(--lume-mid);line-height:1.7}
+.thumb .meta b{color:var(--gold);font-weight:500}
+ul.list{list-style:none;padding:0;margin:0}
+ul.list li{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--edge)}
+ul.list li:last-child{border-bottom:none}
+.li-img{width:62px;height:47px;flex:none;border-radius:8px;border:1px solid var(--edge);object-fit:cover}
+.li-body{flex:1;min-width:0}
+.li-title{font-family:"Fraunces",serif;font-weight:600;font-size:16px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-meta{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--lume-dim);margin-top:2px}
+.li-meta .px{color:var(--gold)}
+.badge{display:inline-block;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-left:6px;
+  background:linear-gradient(120deg,var(--flux-3),var(--flux-1));color:var(--lume)}
+.badge.feat{background:linear-gradient(120deg,var(--gold),var(--flux-2));color:var(--void)}
+.icons{display:flex;gap:3px;flex:none}
+.icons button{background:none;border:1px solid var(--edge);color:var(--lume-dim);
+  width:32px;height:32px;padding:0;border-radius:9px;font-size:14px;line-height:1}
+.icons button:hover{border-color:var(--gold);color:var(--lume)}
+.empty{color:var(--lume-dim);font-family:"DM Mono",monospace;font-size:13px;text-align:center;padding:24px 0}
+.note{background:rgba(139,92,214,.12);border:1px solid rgba(139,92,214,.34);border-radius:13px;
+  padding:13px 17px;font-size:13.5px;color:var(--lume-mid);margin-top:14px}
+.note.warn{background:rgba(224,81,138,.10);border-color:rgba(224,81,138,.35)}
+.note b{color:var(--lume);font-weight:500}
+.note a{color:var(--gold)}
+.msg{font-family:"DM Mono",monospace;font-size:13px;margin-left:4px}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)} .msg.busy{color:var(--gold)}
+.editing{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(246,197,107,.3)}
+.log{font-family:"DM Mono",monospace;font-size:12.5px;color:var(--lume-mid);
+  background:rgba(10,5,16,.6);border:1px solid var(--edge);border-radius:13px;
+  padding:14px 16px;margin-top:14px;max-height:210px;overflow-y:auto;white-space:pre-wrap}
+.log .g{color:var(--ok)} .log .r{color:var(--bad)}
+code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
+
+/* ---------- Ekranet e hyrjes ---------- */
+.screen{position:fixed;inset:0;background:var(--void);z-index:99;display:grid;place-items:center;
+  padding:24px;overflow-y:auto}
+.screen .box{width:min(420px,100%);text-align:center}
+.screen h1{margin-bottom:10px}
+.screen form{text-align:left;margin-top:20px}
+.screen .field{margin-bottom:14px}
+.screen .foot{margin-top:16px;font-family:"DM Mono",monospace;font-size:12.5px}
+.screen .foot a{color:var(--gold);cursor:pointer;text-decoration:none}
+.screen .foot a:hover{text-decoration:underline}
+.screen .msg{display:block;min-height:20px;margin:12px 0 0;text-align:center}
+@media(max-width:520px){
+  .screen{padding:18px;align-content:center}
+  .screen button{width:100%}
+}
+.boot{z-index:120;color:var(--lume-dim);font-family:"DM Mono",monospace;font-size:13px}
+
+/* ---------- Shiriti i punonjësit ---------- */
+.userbar{display:flex;gap:12px;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;margin-top:18px}
+.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0;
+  font-family:"DM Mono",monospace;font-size:12.5px;color:var(--lume-dim)}
+.who .em{color:var(--lume);max-width:min(60vw,320px);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.rolebadge{display:inline-block;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 9px;border-radius:20px;
+  background:linear-gradient(120deg,var(--flux-3),var(--flux-1));color:var(--lume)}
+.rolebadge.admin{background:linear-gradient(120deg,var(--gold),var(--flux-2));color:var(--void)}
+.userbar button{padding:9px 18px}
+@media(max-width:520px){.userbar{gap:10px}.userbar button{width:100%}}
+
+/* ---------- Gjendjet e ngarkimit ---------- */
+.dots::after{content:"";animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+@media(prefers-reduced-motion:reduce){.dots::after{content:"…";animation:none}}
 </style>
 </head>
 <body>
 
-<!-- ================= GATE ================= -->
-<div class="gate" id="gate">
+<!-- ================= 1. KONTROLLI I SESIONIT ================= -->
+<div class="screen boot" id="boot">
+  <div class="box"><span class="dots">Duke kontrolluar sesionin</span></div>
+</div>
+
+<!-- ================= 2. HYRJA ================= -->
+<div class="screen" id="login" hidden>
   <div class="box">
     <h1>Administrimi</h1>
-    <p class="sub" style="margin-bottom:20px;color:var(--lume-dim)">Shkruani fjalëkalimin për të vazhduar.</p>
-    <div class="field"><input id="pass" type="password" placeholder="Fjalëkalimi" autocomplete="off"></div>
-    <button class="primary" id="btnGate" style="width:100%">Hyr</button>
-    <p class="msg bad" id="gateMsg" style="min-height:20px;margin-top:12px"></p>
+    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Kyçuni me email-in dhe fjalëkalimin e punës.</p>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" inputmode="email"
+               placeholder="emri@kompania.com" required>
+      </div>
+      <div class="field">
+        <label for="password">Fjalëkalimi</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="primary" type="submit" id="btnLogin" style="width:100%">Hyr</button>
+    </form>
+    <p class="msg" id="loginMsg"></p>
+    <p class="foot"><a id="linkForgot" role="button" tabindex="0">Keni harruar fjalëkalimin?</a></p>
   </div>
 </div>
 
-<!-- ================= APP ================= -->
+<!-- ================= 3. RIVENDOSJA E FJALËKALIMIT ================= -->
+<div class="screen" id="forgot" hidden>
+  <div class="box">
+    <h1>Rivendos fjalëkalimin</h1>
+    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Do t'ju dërgojmë një link në email.</p>
+    <form id="forgotForm" novalidate>
+      <div class="field">
+        <label for="forgotEmail">Email</label>
+        <input id="forgotEmail" type="email" autocomplete="username" inputmode="email" required>
+      </div>
+      <button class="primary" type="submit" id="btnForgot" style="width:100%">Dërgo linkun</button>
+    </form>
+    <p class="msg" id="forgotMsg"></p>
+    <p class="foot"><a id="linkBackToLogin" role="button" tabindex="0">Kthehu te hyrja</a></p>
+  </div>
+</div>
+
+<!-- ================= 4. FJALËKALIM I RI ================= -->
+<div class="screen" id="recover" hidden>
+  <div class="box">
+    <h1>Fjalëkalim i ri</h1>
+    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Zgjidhni një fjalëkalim me së paku 8 shenja.</p>
+    <form id="recoverForm" novalidate>
+      <div class="field">
+        <label for="newPass">Fjalëkalimi i ri</label>
+        <input id="newPass" type="password" autocomplete="new-password" required>
+      </div>
+      <div class="field">
+        <label for="newPass2">Përsëriteni</label>
+        <input id="newPass2" type="password" autocomplete="new-password" required>
+      </div>
+      <button class="primary" type="submit" id="btnRecover" style="width:100%">Ruaj fjalëkalimin</button>
+    </form>
+    <p class="msg" id="recoverMsg"></p>
+  </div>
+</div>
+
+<!-- ================= 5. QASJA E NDALUAR ================= -->
+<div class="screen" id="denied" hidden>
+  <div class="box">
+    <h1>Qasje e ndaluar</h1>
+    <p class="sub" style="color:var(--lume-dim);margin:0 auto" id="deniedMsg"></p>
+    <div style="margin-top:22px"><button class="ghost" id="btnDeniedOut">Dil</button></div>
+  </div>
+</div>
+
+<!-- ================= 6. PANELI ================= -->
 <div id="app" hidden>
+  <header>
+    <div class="wrap">
+      <h1>Paneli i administrimit</h1>
+      <p class="sub">Shtoni dhe redaktoni pronat, pastaj publikoni drejtpërdrejt në faqe. Ndryshimet dalin live për një deri dy minuta.</p>
+      <div class="userbar">
+        <span class="who">
+          <span class="em" id="whoEmail"></span>
+          <span class="rolebadge" id="whoRole"></span>
+        </span>
+        <span class="row">
+          <button class="ghost" id="btnReload">Ringarko</button>
+          <button class="ghost" id="btnLogout">Dil</button>
+        </span>
+      </div>
+      <p class="msg" id="loadMsg" style="margin-left:0"></p>
+    </div>
+  </header>
 
-<header>
   <div class="wrap">
-    <h1>Paneli i administrimit</h1>
-    <p class="sub">Shtoni dhe redaktoni pronat, pastaj publikoni drejtpërdrejt në faqe. Ndryshimet dalin live për një deri dy minuta.</p>
-  </div>
-</header>
 
-<div class="wrap">
-
-  <!-- 1 · CONNECT -->
-  <div class="panel">
-    <h2>1 · Lidhja me GitHub</h2>
-    <p class="hint">Tokeni është çelësi i vërtetë. Pa të, askush nuk mund të ndryshojë asgjë.</p>
-
-    <div class="grid">
-      <div class="field"><label for="owner">Llogaria</label>
-        <input id="owner" value="blertahajdiniazemi"></div>
-      <div class="field"><label for="repo">Depoja</label>
-        <input id="repo" value="zone-real-estate"></div>
-      <div class="field full"><label for="token">GitHub token</label>
-        <input id="token" type="password" placeholder="github_pat_..." autocomplete="off"></div>
-    </div>
-
-    <div class="row">
-      <button class="primary" id="btnConnect">Lidhu dhe ngarko pronat</button>
-      <span class="msg" id="connMsg"></span>
-    </div>
-
-    <details>
-      <summary>Si të krijoj një token? (një herë, zgjat 90 ditë)</summary>
-      <ol class="steps">
-        <li>Hyni në GitHub → foto juaj lart djathtas → <b>Settings</b>.</li>
-        <li>Poshtë fare në të majtë: <b>Developer settings</b>.</li>
-        <li><b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>.</li>
-        <li>Emri: <code>zone-admin</code>. Skadimi: 90 ditë.</li>
-        <li><b>Repository access</b> → <b>Only select repositories</b> → zgjidhni <code>zone-real-estate</code>.</li>
-        <li><b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b> → vendoseni në <b>Read and write</b>.</li>
-        <li>Klikoni <b>Generate token</b> dhe kopjoni vlerën që shfaqet.</li>
-      </ol>
-      <div class="note warn">
-        <b>Rëndësishme:</b> tokeni shfaqet vetëm një herë. Ruajeni diku të sigurt.
-        Mos ia jepni askujt dhe mos e shkruani brenda skedarëve të faqes.
-        Nëse humbet, fshijeni në GitHub dhe krijoni një të ri.
-      </div>
-    </details>
-  </div>
-
-  <!-- 2 · SETTINGS -->
-  <div class="panel" id="settingsPanel" hidden>
-    <h2>2 · Cilësimet</h2>
-    <div class="grid">
-      <div class="field"><label for="dispPhone">Numri që shfaqet</label><input id="dispPhone"></div>
-      <div class="field"><label for="callPhone">Numri që thirret (vetëm shifra)</label><input id="callPhone"></div>
-      <div class="field"><label for="city">Zona</label><input id="city"></div>
-      <div class="field"><label for="updated">Përditësuar</label><input id="updated"></div>
-    </div>
-  </div>
-
-  <!-- 3 · FORM -->
-  <div class="panel" id="formPanel" hidden>
-    <h2 id="formTitle">3 · Shto një pronë</h2>
-    <p class="hint">Fushat me yll janë të domosdoshme.</p>
-    <div class="grid">
-      <div class="field"><label for="f_title">Titulli *</label><input id="f_title" placeholder="Shtëpi në Arbëri"></div>
-      <div class="field"><label for="f_status">Statusi *</label>
-        <select id="f_status"><option>Për shitje</option><option>Me qira</option></select></div>
-      <div class="field"><label for="f_price">Çmimi *</label><input id="f_price" placeholder="185.000 €"></div>
-      <div class="field"><label for="f_location">Lokacioni *</label><input id="f_location" placeholder="Arbëri, Prishtinë"></div>
-      <div class="field"><label for="f_beds">Dhoma gjumi *</label><input id="f_beds" type="number" min="0"></div>
-      <div class="field"><label for="f_baths">Banjo *</label><input id="f_baths" type="number" min="0"></div>
-      <div class="field"><label for="f_size">Sipërfaqja *</label><input id="f_size" placeholder="140 m²"></div>
-      <div class="field"><label for="f_image">Emri i fotos</label><input id="f_image" placeholder="plotësohet vetë"></div>
-      <div class="field full"><label for="f_summary">Përshkrimi i shkurtër *</label><textarea id="f_summary"></textarea></div>
-      <div class="field full"><label for="f_details">Përshkrimi i plotë</label><textarea id="f_details"></textarea></div>
-      <div class="field full"><label for="f_features">Karakteristikat — një për rresht</label><textarea id="f_features"></textarea></div>
-      <div class="field full">
-        <label>Fotoja</label>
-        <div class="drop" id="dropZone">Klikoni ose tërhiqni një foto këtu<br>
-          <span style="font-size:12.5px;opacity:.7">Zvogëlohet vetë në 1200px dhe riemërtohet pa ë, ç apo hapësira</span>
-        </div>
-        <input type="file" id="filePhoto" accept="image/*" hidden>
-        <div class="thumb" id="thumbBox" hidden>
-          <img id="thumbImg" alt="">
-          <div class="meta" id="thumbMeta"></div>
-          <button class="ghost" id="btnDropPhoto" style="padding:8px 15px">Hiqe</button>
-        </div>
+    <!-- 1 · SETTINGS -->
+    <div class="panel" id="settingsPanel" hidden>
+      <h2>1 · Cilësimet</h2>
+      <p class="hint">Këto shfaqen në të gjithë faqen.</p>
+      <div class="grid">
+        <div class="field"><label for="dispPhone">Numri që shfaqet</label><input id="dispPhone"></div>
+        <div class="field"><label for="callPhone">Numri që thirret (vetëm shifra)</label><input id="callPhone"></div>
+        <div class="field"><label for="city">Zona</label><input id="city"></div>
+        <div class="field"><label for="updated">Përditësuar</label><input id="updated"></div>
       </div>
     </div>
-    <div class="row" style="margin-top:6px">
-      <button class="primary" id="btnSave">Shto pronën</button>
-      <button class="ghost" id="btnCancel" hidden>Anulo</button>
-      <button class="ghost" id="btnClear">Pastro</button>
-      <span class="msg ok" id="saveMsg"></span>
-    </div>
-  </div>
 
-  <!-- 4 · LIST -->
-  <div class="panel" id="listPanel" hidden>
-    <h2>4 · Pronat <span id="count" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:15px"></span></h2>
-    <p class="hint">E para në listë shfaqet si “E veçuar” në ballinë.</p>
-    <ul class="list" id="list"></ul>
-    <p class="empty" id="listEmpty">Ende asnjë pronë.</p>
-  </div>
-
-  <!-- 5 · PUBLISH -->
-  <div class="panel" id="pubPanel" hidden>
-    <h2>5 · Publiko</h2>
-    <p class="hint">Ndryshimet dërgohen në GitHub dhe dalin live për një deri dy minuta.</p>
-    <div class="row">
-      <button class="primary" id="btnPublish">Publiko ndryshimet</button>
-      <span class="msg" id="pubMsg"></span>
+    <!-- 2 · FORM -->
+    <div class="panel" id="formPanel" hidden>
+      <h2 id="formTitle">2 · Shto një pronë</h2>
+      <p class="hint">Fushat me yll janë të domosdoshme.</p>
+      <div class="grid">
+        <div class="field"><label for="f_title">Titulli *</label><input id="f_title" placeholder="Shtëpi në Arbëri"></div>
+        <div class="field"><label for="f_status">Statusi *</label>
+          <select id="f_status"><option>Për shitje</option><option>Me qira</option></select></div>
+        <div class="field"><label for="f_price">Çmimi *</label><input id="f_price" placeholder="185.000 €"></div>
+        <div class="field"><label for="f_location">Lokacioni *</label><input id="f_location" placeholder="Arbëri, Prishtinë"></div>
+        <div class="field"><label for="f_beds">Dhoma gjumi *</label><input id="f_beds" type="number" min="0"></div>
+        <div class="field"><label for="f_baths">Banjo *</label><input id="f_baths" type="number" min="0"></div>
+        <div class="field"><label for="f_size">Sipërfaqja *</label><input id="f_size" placeholder="140 m²"></div>
+        <div class="field"><label for="f_image">Emri i fotos</label><input id="f_image" placeholder="plotësohet vetë"></div>
+        <div class="field full"><label for="f_summary">Përshkrimi i shkurtër *</label><textarea id="f_summary"></textarea></div>
+        <div class="field full"><label for="f_details">Përshkrimi i plotë</label><textarea id="f_details"></textarea></div>
+        <div class="field full"><label for="f_features">Karakteristikat — një për rresht</label><textarea id="f_features"></textarea></div>
+        <div class="field full">
+          <label>Fotoja</label>
+          <div class="drop" id="dropZone">Klikoni ose tërhiqni një foto këtu<br>
+            <span style="font-size:12.5px;opacity:.7">Zvogëlohet vetë në 1200px dhe riemërtohet pa ë, ç apo hapësira</span>
+          </div>
+          <input type="file" id="filePhoto" accept="image/*" hidden>
+          <div class="thumb" id="thumbBox" hidden>
+            <img id="thumbImg" alt="">
+            <div class="meta" id="thumbMeta"></div>
+            <button class="ghost" id="btnDropPhoto" style="padding:8px 15px">Hiqe</button>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <button class="primary" id="btnSave">Shto pronën</button>
+        <button class="ghost" id="btnCancel" hidden>Anulo</button>
+        <button class="ghost" id="btnClear">Pastro</button>
+        <span class="msg ok" id="saveMsg"></span>
+      </div>
     </div>
-    <div class="log" id="log" hidden></div>
-    <div class="note warn">
-      <b>Para se ta mbyllni:</b> ndryshimet e paruajtura humbin. Klikoni <b>Publiko</b> kur të mbaroni.
-    </div>
-  </div>
 
+    <!-- 3 · LIST -->
+    <div class="panel" id="listPanel" hidden>
+      <h2>3 · Pronat <span id="count" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:15px"></span></h2>
+      <p class="hint">E para në listë shfaqet si “E veçuar” në ballinë.</p>
+      <ul class="list" id="list"></ul>
+      <p class="empty" id="listEmpty">Ende asnjë pronë.</p>
+    </div>
+
+    <!-- 4 · PUBLISH -->
+    <div class="panel" id="pubPanel" hidden>
+      <h2>4 · Publiko</h2>
+      <p class="hint">Ndryshimet dërgohen përmes serverit të sigurt dhe dalin live për një deri dy minuta.</p>
+      <div class="row">
+        <button class="primary" id="btnPublish">Publiko ndryshimet</button>
+        <span class="msg" id="pubMsg"></span>
+      </div>
+      <div class="log" id="log" hidden></div>
+      <div class="note warn" id="pubBlocked" hidden>
+        <b>Nuk keni leje për të publikuar.</b>
+        Roli juaj nuk lejon dërgimin e ndryshimeve. Kontaktoni një administrator.
+      </div>
+      <div class="note warn" id="pubReminder">
+        <b>Para se ta mbyllni:</b> ndryshimet e paruajtura humbin. Klikoni <b>Publiko</b> kur të mbaroni.
+      </div>
+    </div>
+
+  </div>
 </div>
-</div>
 
-<script>
-(function(){
+<!-- Konfigurimi publik: vetëm URL dhe çelësi anon. Asnjë sekret këtu. -->
+<script src="admin-config.js"></script>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
 "use strict";
 
 /* ===================================================================
-   Passphrase gate.
-   Honest note: this keeps casual visitors out, nothing more. The page
-   is public, so a determined person can read this file. The real
-   protection is the GitHub token — without it, nothing can be changed.
-   Default passphrase: zone2026
-   To change it, run the passphrase through any SHA-256 generator and
-   replace the value below.
+   Konfigurimi
    =================================================================== */
-var PASS_HASH = "466a59f50514aeb6fc3cd8ce1963837c0e0b1cd86bd8929e1fbe2d71269c0f84";
+const CFG = window.ZONE_ADMIN_CONFIG || {};
+const PUBLISH_ROLES = CFG.PUBLISH_ROLES || ["admin", "editor"];
+const ROLE_LABEL = { admin: "Administrator", editor: "Redaktor" };
 
-var $ = function(id){ return document.getElementById(id); };
+const $ = (id) => document.getElementById(id);
 
-function sha256(str){
-  var data = new TextEncoder().encode(str);
-  return crypto.subtle.digest("SHA-256", data).then(function(buf){
-    return Array.from(new Uint8Array(buf))
-      .map(function(b){ return b.toString(16).padStart(2, "0"); }).join("");
-  });
+if (!CFG.SUPABASE_URL || !CFG.SUPABASE_ANON_KEY || !CFG.FUNCTION_URL ||
+    CFG.SUPABASE_URL.indexOf("YOUR-PROJECT-REF") !== -1) {
+  document.body.innerHTML =
+    '<div class="screen"><div class="box"><h1>Konfigurim i paplotësuar</h1>' +
+    '<p class="sub" style="color:var(--lume-dim)">Plotësoni <code>admin-config.js</code> me URL-në e Supabase, ' +
+    'çelësin publik anon dhe adresën e funksionit.</p></div></div>';
+  throw new Error("admin-config.js is not filled in");
 }
 
-function tryGate(){
-  var v = $("pass").value;
-  if (!v) return;
-  sha256(v).then(function(h){
-    if (h === PASS_HASH){
-      $("gate").remove();
-      $("app").hidden = false;
-    } else {
-      $("gateMsg").textContent = "Fjalëkalim i gabuar.";
-      $("pass").value = "";
-    }
-  }).catch(function(){
-    $("gateMsg").textContent = "Kërkohet një shfletues modern me HTTPS.";
-  });
-}
-$("btnGate").onclick = tryGate;
-$("pass").addEventListener("keydown", function(e){ if (e.key === "Enter") tryGate(); });
+const supabase = createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,       // sesioni mbijeton rifreskimin e faqes
+    autoRefreshToken: true,     // rinovohet vetë derisa është i vlefshëm
+    detectSessionInUrl: true,   // për linkun e rivendosjes së fjalëkalimit
+    storageKey: "zone-admin-auth"
+  }
+});
 
 /* ===================================================================
-   State
+   Gjendja
    =================================================================== */
-var gh = { owner:"", repo:"", token:"", branch:"main", sha:null };
-var config = { DISPLAY_PHONE:"", CALL_PHONE:"", CITY:"", LAST_UPDATED:"", TEXT:null };
-var listings = [];
-var newPhotos = {};   // filename -> { blob, dataUrl, bytes }
-var editIndex = -1;
-var pendingPhoto = null;
+let me = null;                 // { email, role, active }
+let dataLoaded = false;
+let entering = false;
+// Linku i rivendosjes së fjalëkalimit njihet para se të nisë çdo gjë tjetër.
+let recovering = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
 
-var DEFAULT_TEXT = {
+let repoInfo = { branch: "", sha: null };
+let config = { DISPLAY_PHONE:"", CALL_PHONE:"", CITY:"", LAST_UPDATED:"", TEXT:null };
+let listings = [];
+let newPhotos = {};            // filename -> { blob, dataUrl, ... }
+let editIndex = -1;
+let pendingPhoto = null;
+let dirty = false;             // ka ndryshime të papublikuara?
+
+const DEFAULT_TEXT = {
   statusShitje:"Për shitje", statusQira:"Me qira",
   butoniThirr:"Telefono për këtë", butoniDetajet:"Detajet", eVecuar:"E veçuar",
   "specÇmimi":"Çmimi", specDhoma:"Dhoma gjumi", specBanjo:"Banjo", specSiperfaqja:"Sipërfaqja",
@@ -297,138 +363,299 @@ var DEFAULT_TEXT = {
   boshFund:"dhe pyesni çfarë vjen së shpejti.", shtoFoto:"SHTO FOTO"
 };
 
-var PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
+const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48">' +
   '<rect width="64" height="48" fill="#241435"/>' +
   '<path d="M32 16 L22 25 L25 25 L25 33 L39 33 L39 25 L42 25 Z" fill="none" ' +
   'stroke="#F6C56B" stroke-width="1.6" stroke-linejoin="round" opacity="0.55"/></svg>');
 
+/* ===================================================================
+   Ndihmësa të vegjël
+   =================================================================== */
 function msg(id, text, cls){
-  var el = $(id);
-  el.textContent = text;
+  const el = $(id);
+  el.textContent = text || "";
   el.className = "msg" + (cls ? " " + cls : "");
 }
-
 function log(text, cls){
-  var el = $("log");
+  const el = $("log");
   el.hidden = false;
-  var span = document.createElement("span");
+  const span = document.createElement("span");
   if (cls) span.className = cls;
   span.textContent = text + "\n";
   el.appendChild(span);
   el.scrollTop = el.scrollHeight;
 }
+function esc(s){
+  return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function isDirty(){
+  return dirty || Object.keys(newPhotos).length > 0 || pendingPhoto !== null;
+}
+
+const SCREENS = ["boot","login","forgot","recover","denied","app"];
+function show(which){
+  SCREENS.forEach((id) => { $(id).hidden = (id !== which); });
+}
 
 /* ===================================================================
-   Base64 that survives Albanian characters.
-   btoa() breaks on ë and ç, so text goes through TextEncoder first.
+   Base64 që i mbijeton shkronjave shqipe
    =================================================================== */
 function utf8ToB64(str){
-  var bytes = new TextEncoder().encode(str);
-  var bin = "";
-  for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
   return btoa(bin);
 }
-
-function b64ToUtf8(b64){
-  var bin = atob(b64.replace(/\s/g, ""));
-  var bytes = new Uint8Array(bin.length);
-  for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return new TextDecoder("utf-8").decode(bytes);
-}
-
 function blobToB64(blob){
-  return new Promise(function(res, rej){
-    var r = new FileReader();
-    r.onload = function(){ res(String(r.result).split(",")[1]); };
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(",")[1]);
     r.onerror = rej;
     r.readAsDataURL(blob);
   });
 }
 
 /* ===================================================================
-   GitHub API
+   API e sigurt — GitHub preket VETËM nga serveri.
+   Shfletuesi dërgon tokenin e Supabase, kurrë tokenin e GitHub.
    =================================================================== */
-function api(path, options){
-  options = options || {};
-  return fetch("https://api.github.com/repos/" + gh.owner + "/" + gh.repo + path, {
-    method: options.method || "GET",
-    headers: {
-      "Authorization": "Bearer " + gh.token,
-      "Accept": "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28"
-    },
-    body: options.body ? JSON.stringify(options.body) : undefined
-  }).then(function(r){
-    return r.text().then(function(t){
-      var data = null;
-      try { data = t ? JSON.parse(t) : null; } catch(e){}
-      if (!r.ok){
-        var m = (data && data.message) || ("Gabim HTTP " + r.status);
-        if (r.status === 401) m = "Token i pavlefshëm ose i skaduar.";
-        if (r.status === 403) m = "Tokenit i mungon leja Contents: Read and write.";
-        if (r.status === 404) m = "Skedari ose depoja nuk u gjet. Kontrolloni emrin e llogarisë dhe depos.";
-        if (r.status === 409) m = "Konflikt — dikush e ndryshoi skedarin. Rifreskoni faqen dhe provoni sërish.";
-        var err = new Error(m); err.status = r.status; throw err;
-      }
-      return data;
+class ApiError extends Error {
+  constructor(message, status){ super(message); this.status = status; }
+}
+
+async function callApi(action, payload){
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    await handleExpired();
+    throw new ApiError("Sesioni ka skaduar. Kyçuni sërish.", 401);
+  }
+
+  let res;
+  try {
+    res = await fetch(CFG.FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + session.access_token,
+        "apikey": CFG.SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify(Object.assign({ action }, payload || {}))
     });
-  });
+  } catch (e) {
+    throw new ApiError("Serveri nuk u arrit. Kontrolloni lidhjen me internetin.", 0);
+  }
+
+  const text = await res.text();
+  let body = null;
+  try { body = text ? JSON.parse(text) : null; } catch (e) {}
+
+  if (!res.ok) {
+    const message = (body && body.error) || ("Gabim serveri (" + res.status + ").");
+    if (res.status === 401) { await handleExpired(message); }
+    if (res.status === 403) { showDenied(message); }
+    throw new ApiError(message, res.status);
+  }
+  return body;
 }
 
-function getFile(path){
-  return api("/contents/" + path + "?ref=" + gh.branch);
+async function handleExpired(text){
+  me = null; dataLoaded = false;
+  try { await supabase.auth.signOut(); } catch (e) {}
+  show("login");
+  msg("loginMsg", text || "Sesioni ka skaduar. Kyçuni sërish.", "bad");
 }
 
-function putFile(path, contentB64, message, sha){
-  var body = { message: message, content: contentB64, branch: gh.branch };
-  if (sha) body.sha = sha;
-  return api("/contents/" + path, { method:"PUT", body: body });
+function showDenied(text){
+  $("deniedMsg").textContent = text || "Llogaria juaj nuk ka leje për këtë panel.";
+  show("denied");
 }
 
 /* ===================================================================
-   Connect + load
+   Rrjedha e hyrjes
    =================================================================== */
-$("btnConnect").onclick = function(){
-  gh.owner = $("owner").value.trim();
-  gh.repo  = $("repo").value.trim();
-  gh.token = $("token").value.trim();
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = $("email").value.trim();
+  const password = $("password").value;
 
-  if (!gh.owner || !gh.repo || !gh.token){
-    msg("connMsg", "Plotësoni të tre fushat.", "bad");
+  if (!email || !password) { msg("loginMsg", "Plotësoni email-in dhe fjalëkalimin.", "bad"); return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg("loginMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return; }
+
+  $("btnLogin").disabled = true;
+  $("btnLogin").textContent = "Duke u kyçur…";
+  msg("loginMsg", "");
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  $("btnLogin").disabled = false;
+  $("btnLogin").textContent = "Hyr";
+
+  if (error) {
+    msg("loginMsg", loginErrorText(error), "bad");
+    $("password").value = "";
+    $("password").focus();
+    return;
+  }
+  $("password").value = "";
+  await enterPanel();
+});
+
+function loginErrorText(error){
+  const raw = (error && error.message ? error.message : "").toLowerCase();
+  const code = error && error.code ? error.code : "";
+  if (code === "invalid_credentials" || raw.includes("invalid login credentials"))
+    return "Email ose fjalëkalim i gabuar.";
+  if (raw.includes("email not confirmed"))
+    return "Email-i nuk është konfirmuar ende. Kontrolloni kutinë postare.";
+  if (code === "user_banned" || raw.includes("banned"))
+    return "Kjo llogari është çaktivizuar.";
+  if (code === "over_request_rate_limit" || raw.includes("rate limit") || raw.includes("too many"))
+    return "Shumë përpjekje. Prisni pak minuta dhe provoni sërish.";
+  if (raw.includes("failed to fetch") || raw.includes("network"))
+    return "Nuk u arrit serveri. Kontrolloni lidhjen me internetin.";
+  return "Kyçja dështoi. Provoni sërish ose kontaktoni administratorin.";
+}
+
+/* Rivendosja e fjalëkalimit */
+function clickable(id, fn){
+  const el = $(id);
+  el.onclick = fn;
+  el.onkeydown = (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fn(); } };
+}
+clickable("linkForgot", () => { $("forgotEmail").value = $("email").value.trim(); msg("forgotMsg",""); show("forgot"); });
+clickable("linkBackToLogin", () => { msg("loginMsg",""); show("login"); });
+
+$("forgotForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = $("forgotEmail").value.trim();
+  if (!email) { msg("forgotMsg", "Shkruani email-in tuaj.", "bad"); return; }
+  $("btnForgot").disabled = true;
+  msg("forgotMsg", "Duke dërguar…", "busy");
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: location.origin + location.pathname
+  });
+  $("btnForgot").disabled = false;
+  if (error) { msg("forgotMsg", "Nuk u dërgua dot. Provoni sërish.", "bad"); return; }
+  msg("forgotMsg", "Nëse adresa ekziston, linku u dërgua ✓", "ok");
+});
+
+$("recoverForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const a = $("newPass").value, b = $("newPass2").value;
+  if (a.length < 8) { msg("recoverMsg", "Fjalëkalimi duhet së paku 8 shenja.", "bad"); return; }
+  if (a !== b) { msg("recoverMsg", "Fjalëkalimet nuk përputhen.", "bad"); return; }
+  $("btnRecover").disabled = true;
+  msg("recoverMsg", "Duke ruajtur…", "busy");
+  const { error } = await supabase.auth.updateUser({ password: a });
+  $("btnRecover").disabled = false;
+  if (error) { msg("recoverMsg", "Nuk u ruajt dot. Provoni linkun sërish.", "bad"); return; }
+  msg("recoverMsg", "U ruajt ✓", "ok");
+  recovering = false;
+  $("newPass").value = ""; $("newPass2").value = "";
+  await enterPanel();
+});
+
+/* Dalja */
+async function doLogout(){
+  if (isDirty() && !confirm("Keni ndryshime të papublikuara. Të dilni gjithsesi?")) return;
+  me = null; dataLoaded = false;
+  newPhotos = {}; pendingPhoto = null; listings = []; dirty = false;
+  await supabase.auth.signOut();
+  show("login");
+  msg("loginMsg", "");
+}
+$("btnLogout").onclick = doLogout;
+$("btnDeniedOut").onclick = doLogout;
+
+/* ===================================================================
+   Hyrja në panel: verifikimi i rolit, pastaj ngarkimi i të dhënave
+   =================================================================== */
+async function enterPanel(){
+  if (entering) return;
+  entering = true;
+  try {
+    await enterPanelInner();
+  } finally {
+    entering = false;
+  }
+}
+
+async function enterPanelInner(){
+  show("boot");
+  $("boot").querySelector(".box").innerHTML = '<span class="dots">Duke verifikuar lejet</span>';
+
+  let profile;
+  try {
+    const r = await callApi("me");
+    profile = r.profile;
+  } catch (e) {
+    if (e.status === 403 || e.status === 401) return;  // ekranet u shfaqën tashmë
+    show("login");
+    msg("loginMsg", e.message, "bad");
     return;
   }
 
-  this.disabled = true;
-  msg("connMsg", "Duke u lidhur…", "busy");
+  me = profile;
 
-  // Find the default branch first, in case it isn't called "main"
-  api("").then(function(info){
-    gh.branch = info.default_branch || "main";
-    return getFile("listings.js");
-  }).then(function(file){
-    gh.sha = file.sha;
-    var code = b64ToUtf8(file.content);
-    var cfg = new Function("window", code + "\nreturn window.ZONE_CONFIG;")({});
+  if (!me.active) { showDenied("Llogaria juaj është çaktivizuar. Kontaktoni një administrator."); return; }
+  if (!PUBLISH_ROLES.includes(me.role) && me.role !== "admin") {
+    showDenied("Roli juaj nuk lejon qasje në këtë panel.");
+    return;
+  }
+
+  $("whoEmail").textContent = me.email;
+  $("whoRole").textContent = ROLE_LABEL[me.role] || me.role;
+  $("whoRole").className = "rolebadge" + (me.role === "admin" ? " admin" : "");
+
+  const canPublish = PUBLISH_ROLES.includes(me.role);
+  $("btnPublish").disabled = !canPublish;
+  $("pubBlocked").hidden = canPublish;
+  $("pubReminder").hidden = !canPublish;
+
+  show("app");
+  if (!dataLoaded) await loadData();
+}
+
+/* ===================================================================
+   Ngarkimi i listings.js përmes serverit
+   =================================================================== */
+async function loadData(){
+  $("btnReload").disabled = true;
+  msg("loadMsg", "Duke ngarkuar pronat…", "busy");
+  try {
+    const r = await callApi("load");
+    repoInfo.branch = r.branch;
+    repoInfo.sha = r.sha;
+
+    const cfg = new Function("window", r.content + "\nreturn window.ZONE_CONFIG;")({});
     if (!cfg || !cfg.listings) throw new Error("listings.js nuk u lexua dot.");
 
     config.DISPLAY_PHONE = cfg.DISPLAY_PHONE || "";
-    config.CALL_PHONE = cfg.CALL_PHONE || "";
-    config.CITY = cfg.CITY || "";
-    config.LAST_UPDATED = cfg.LAST_UPDATED || "";
-    config.TEXT = cfg.TEXT || null;
+    config.CALL_PHONE    = cfg.CALL_PHONE || "";
+    config.CITY          = cfg.CITY || "";
+    config.LAST_UPDATED  = cfg.LAST_UPDATED || "";
+    config.TEXT          = cfg.TEXT || null;
     listings = cfg.listings.slice();
 
     fillSettings();
-    ["settingsPanel","formPanel","listPanel","pubPanel"].forEach(function(id){ $(id).hidden = false; });
+    ["settingsPanel","formPanel","listPanel","pubPanel"].forEach((id) => { $(id).hidden = false; });
     render();
-    msg("connMsg", listings.length + " prona u ngarkuan ✓", "ok");
-    $("settingsPanel").scrollIntoView({ behavior:"smooth" });
-  }).catch(function(e){
-    msg("connMsg", e.message, "bad");
-  }).then(function(){
-    $("btnConnect").disabled = false;
-  });
+    dataLoaded = true;
+    dirty = false;
+    msg("loadMsg", listings.length + " prona u ngarkuan ✓", "ok");
+  } catch (e) {
+    msg("loadMsg", e.message, "bad");
+  } finally {
+    $("btnReload").disabled = false;
+  }
+}
+
+$("btnReload").onclick = async () => {
+  if (isDirty() && !confirm("Keni ndryshime të papublikuara. Të ringarkohet gjithsesi?")) return;
+  newPhotos = {}; pendingPhoto = null; dirty = false; $("thumbBox").hidden = true;
+  dataLoaded = false;
+  await loadData();
 };
 
 function fillSettings(){
@@ -437,49 +664,48 @@ function fillSettings(){
   $("city").value = config.CITY;
   $("updated").value = config.LAST_UPDATED || monthName();
 }
-
 function monthName(){
-  var m = ["Janar","Shkurt","Mars","Prill","Maj","Qershor","Korrik","Gusht",
-           "Shtator","Tetor","Nëntor","Dhjetor"];
-  var d = new Date();
+  const m = ["Janar","Shkurt","Mars","Prill","Maj","Qershor","Korrik","Gusht",
+             "Shtator","Tetor","Nëntor","Dhjetor"];
+  const d = new Date();
   return m[d.getMonth()] + " " + d.getFullYear();
 }
 
 /* ===================================================================
-   Filenames and photos
+   Emrat e skedarëve dhe fotot
    =================================================================== */
-var MAP = {"ë":"e","Ë":"e","ç":"c","Ç":"c","á":"a","à":"a","â":"a","ä":"a","é":"e",
-           "è":"e","ê":"e","í":"i","ì":"i","î":"i","ó":"o","ò":"o","ô":"o","ö":"o",
-           "ú":"u","ù":"u","û":"u","ü":"u","ñ":"n","š":"s","ž":"z"};
-
+const MAP = {"ë":"e","Ë":"e","ç":"c","Ç":"c","á":"a","à":"a","â":"a","ä":"a","é":"e",
+             "è":"e","ê":"e","í":"i","ì":"i","î":"i","ó":"o","ò":"o","ô":"o","ö":"o",
+             "ú":"u","ù":"u","û":"u","ü":"u","ñ":"n","š":"s","ž":"z"};
 function slug(s){
   s = String(s || "").toLowerCase();
-  var out = "";
-  for (var i = 0; i < s.length; i++) out += (MAP[s[i]] !== undefined ? MAP[s[i]] : s[i]);
+  let out = "";
+  for (let i = 0; i < s.length; i++) out += (MAP[s[i]] !== undefined ? MAP[s[i]] : s[i]);
   return out.replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48) || "prona";
 }
 
 function processPhoto(file, baseName){
-  return new Promise(function(resolve, reject){
-    var reader = new FileReader();
-    reader.onerror = function(){ reject(new Error("S'u lexua skedari.")); };
-    reader.onload = function(){
-      var img = new Image();
-      img.onerror = function(){ reject(new Error("Foto e papërdorshme.")); };
-      img.onload = function(){
-        var MAXW = 1200, w = img.width, h = img.height;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("S'u lexua skedari."));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Foto e papërdorshme."));
+      img.onload = () => {
+        const MAXW = 1200;
+        let w = img.width, h = img.height;
         if (w > MAXW){ h = Math.round(h * MAXW / w); w = MAXW; }
-        var cv = document.createElement("canvas");
+        const cv = document.createElement("canvas");
         cv.width = w; cv.height = h;
-        var cx = cv.getContext("2d");
+        const cx = cv.getContext("2d");
         cx.fillStyle = "#140C1C"; cx.fillRect(0,0,w,h);
         cx.drawImage(img, 0, 0, w, h);
-        cv.toBlob(function(blob){
+        cv.toBlob((blob) => {
           if (!blob){ reject(new Error("S'u përpunua fotoja.")); return; }
           resolve({
             name: slug(baseName) + "-" + Date.now().toString(36).slice(-4) + ".jpg",
             blob: blob, dataUrl: cv.toDataURL("image/jpeg", 0.82),
-            w:w, h:h,
+            w: w, h: h,
             originalKB: Math.round(file.size/1024), newKB: Math.round(blob.size/1024)
           });
         }, "image/jpeg", 0.82);
@@ -492,175 +718,182 @@ function processPhoto(file, baseName){
 
 function handlePhotoFile(file){
   if (!file || !/^image\//.test(file.type)){ alert("Zgjidhni një foto (JPG ose PNG)."); return; }
-  var base = $("f_title").value.trim() || file.name.replace(/\.[^.]+$/,"");
-  processPhoto(file, base).then(function(p){
+  const base = $("f_title").value.trim() || file.name.replace(/\.[^.]+$/,"");
+  processPhoto(file, base).then((p) => {
     pendingPhoto = p;
     $("f_image").value = p.name;
     $("thumbImg").src = p.dataUrl;
-    $("thumbMeta").innerHTML = "<b>" + p.name + "</b><br>" + p.w + "×" + p.h + " px<br>" +
+    $("thumbMeta").innerHTML = "<b>" + esc(p.name) + "</b><br>" + p.w + "×" + p.h + " px<br>" +
       p.originalKB + " KB → <b>" + p.newKB + " KB</b>";
     $("thumbBox").hidden = false;
-  }).catch(function(e){ alert(e.message); });
+  }).catch((e) => alert(e.message));
 }
 
-$("dropZone").onclick = function(){ $("filePhoto").click(); };
-$("filePhoto").onchange = function(e){ if (e.target.files[0]) handlePhotoFile(e.target.files[0]); e.target.value=""; };
-["dragenter","dragover"].forEach(function(ev){
+$("dropZone").onclick = () => $("filePhoto").click();
+$("filePhoto").onchange = (e) => { if (e.target.files[0]) handlePhotoFile(e.target.files[0]); e.target.value = ""; };
+["dragenter","dragover"].forEach((ev) => {
   $("dropZone").addEventListener(ev, function(e){ e.preventDefault(); this.classList.add("over"); });
 });
-["dragleave","drop"].forEach(function(ev){
+["dragleave","drop"].forEach((ev) => {
   $("dropZone").addEventListener(ev, function(e){ e.preventDefault(); this.classList.remove("over"); });
 });
-$("dropZone").addEventListener("drop", function(e){ if (e.dataTransfer.files[0]) handlePhotoFile(e.dataTransfer.files[0]); });
-$("btnDropPhoto").onclick = function(){ pendingPhoto = null; $("thumbBox").hidden = true; $("f_image").value = ""; };
+$("dropZone").addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) handlePhotoFile(e.dataTransfer.files[0]); });
+$("btnDropPhoto").onclick = () => { pendingPhoto = null; $("thumbBox").hidden = true; $("f_image").value = ""; };
 
 /* ===================================================================
-   Form
+   Forma
    =================================================================== */
-var FIELDS = ["title","status","price","location","beds","baths","size","image","summary","details","features"];
+const FIELDS = ["title","status","price","location","beds","baths","size","image","summary","details","features"];
 
 function clearForm(){
   ["title","price","beds","baths","size","image","summary","details","features"]
-    .forEach(function(k){ $("f_"+k).value = ""; });
+    .forEach((k) => { $("f_"+k).value = ""; });
   pendingPhoto = null; $("thumbBox").hidden = true;
 }
-
 function exitEdit(){
   editIndex = -1;
-  $("formTitle").textContent = "3 · Shto një pronë";
+  $("formTitle").textContent = "2 · Shto një pronë";
   $("btnSave").textContent = "Shto pronën";
   $("btnCancel").hidden = true;
   $("formPanel").classList.remove("editing");
   clearForm();
 }
 
-$("btnSave").onclick = function(){
-  var o = {};
-  FIELDS.forEach(function(k){ o[k] = $("f_"+k).value.trim(); });
-
-  var required = ["title","price","location","beds","baths","size","summary"];
-  var missing = required.filter(function(k){ return !o[k]; });
+$("btnSave").onclick = () => {
+  const o = {};
+  FIELDS.forEach((k) => { o[k] = $("f_"+k).value.trim(); });
+  const required = ["title","price","location","beds","baths","size","summary"];
+  const missing = required.filter((k) => !o[k]);
   if (missing.length){
     alert("Plotësoni fushat e domosdoshme (" + missing.length + " mungojnë).");
     $("f_" + missing[0]).focus(); return;
   }
-
-  var rec = {
+  const rec = {
     title:o.title, status:o.status || "Për shitje", price:o.price,
     beds:parseInt(o.beds,10)||0, baths:parseInt(o.baths,10)||0,
     size:o.size, location:o.location, summary:o.summary,
     details:o.details || o.summary,
-    features:o.features.split(/\r?\n/).map(function(f){return f.trim();}).filter(Boolean),
+    features:o.features.split(/\r?\n/).map((f) => f.trim()).filter(Boolean),
     image:o.image ? ("images/" + o.image.replace(/^images\//,"")) : ""
   };
-
   if (pendingPhoto){
     newPhotos[pendingPhoto.name] = pendingPhoto;
     rec.image = "images/" + pendingPhoto.name;
   }
-
   if (editIndex >= 0){ listings[editIndex] = rec; msg("saveMsg","U përditësua ✓","ok"); }
   else { listings.push(rec); msg("saveMsg","U shtua ✓","ok"); }
-
-  setTimeout(function(){ msg("saveMsg",""); }, 2500);
+  dirty = true;
+  setTimeout(() => msg("saveMsg",""), 2500);
   exitEdit(); render(); $("f_title").focus();
 };
-
 $("btnCancel").onclick = exitEdit;
 $("btnClear").onclick = clearForm;
 
 /* ===================================================================
-   List
+   Lista
    =================================================================== */
-function esc(s){
-  return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function imageSrc(path){
+  const fname = (path || "").replace(/^images\//,"");
+  if (newPhotos[fname]) return newPhotos[fname].dataUrl;
+  if (path && CFG.SITE_BASE) return CFG.SITE_BASE.replace(/\/+$/,"") + "/" + path;
+  return PLACEHOLDER;
 }
 
 function render(){
-  var ul = $("list"); ul.innerHTML = "";
+  const ul = $("list");
+  ul.innerHTML = "";
   $("count").textContent = listings.length ? "(" + listings.length + ")" : "";
   $("listEmpty").style.display = listings.length ? "none" : "block";
 
-  listings.forEach(function(it, i){
-    var li = document.createElement("li");
+  listings.forEach((it, i) => {
+    const li = document.createElement("li");
 
-    var img = document.createElement("img");
+    const img = document.createElement("img");
     img.className = "li-img";
-    var fname = (it.image||"").replace(/^images\//,"");
-    img.src = newPhotos[fname] ? newPhotos[fname].dataUrl : PLACEHOLDER;
+    img.alt = "";
+    img.loading = "lazy";
+    img.src = imageSrc(it.image);
+    img.onerror = function(){ this.onerror = null; this.src = PLACEHOLDER; };
     li.appendChild(img);
 
-    var body = document.createElement("div");
+    const body = document.createElement("div");
     body.className = "li-body";
     body.innerHTML =
       '<div class="li-title">' + esc(it.title) +
-        (i===0 ? '<span class="badge feat">E veçuar</span>' : '') +
-        (/qira/i.test(it.status||"") ? '<span class="badge">Me qira</span>' : '') +
+      (i === 0 ? '<span class="badge feat">E veçuar</span>' : '') +
+      (/qira/i.test(it.status || "") ? '<span class="badge">Me qira</span>' : '') +
       '</div><div class="li-meta"><span class="px">' + esc(it.price) + '</span> · ' +
       esc(it.location) + ' · ' + it.beds + ' dh · ' + it.baths + ' bnj · ' + esc(it.size) + '</div>';
     li.appendChild(body);
 
-    var icons = document.createElement("div");
+    const icons = document.createElement("div");
     icons.className = "icons";
-    [["↑","Lart",function(){move(i,-1);}],["↓","Poshtë",function(){move(i,1);}],
-     ["✎","Redakto",function(){edit(i);}],["×","Fshij",function(){del(i);}]]
-    .forEach(function(b){
-      var el = document.createElement("button");
-      el.type="button"; el.textContent=b[0]; el.title=b[1]; el.onclick=b[2];
-      icons.appendChild(el);
-    });
+    [["↑","Lart",() => move(i,-1)],["↓","Poshtë",() => move(i,1)],
+     ["✎","Redakto",() => edit(i)],["×","Fshij",() => del(i)]]
+      .forEach((b) => {
+        const el = document.createElement("button");
+        el.type = "button"; el.textContent = b[0]; el.title = b[1]; el.onclick = b[2];
+        icons.appendChild(el);
+      });
     li.appendChild(icons);
+
     ul.appendChild(li);
   });
 }
 
 function move(i,d){
-  var j=i+d; if (j<0||j>=listings.length) return;
-  var t=listings[i]; listings[i]=listings[j]; listings[j]=t; render();
+  const j = i + d;
+  if (j < 0 || j >= listings.length) return;
+  const t = listings[i]; listings[i] = listings[j]; listings[j] = t;
+  dirty = true;
+  render();
 }
 
 function edit(i){
-  var it = listings[i];
+  const it = listings[i];
   editIndex = i;
-  $("f_title").value=it.title; $("f_status").value=it.status;
-  $("f_price").value=it.price; $("f_location").value=it.location;
-  $("f_beds").value=it.beds; $("f_baths").value=it.baths; $("f_size").value=it.size;
-  $("f_image").value=(it.image||"").replace(/^images\//,"");
-  $("f_summary").value=it.summary; $("f_details").value=it.details;
-  $("f_features").value=(it.features||[]).join("\n");
+  $("f_title").value = it.title; $("f_status").value = it.status;
+  $("f_price").value = it.price; $("f_location").value = it.location;
+  $("f_beds").value = it.beds; $("f_baths").value = it.baths; $("f_size").value = it.size;
+  $("f_image").value = (it.image || "").replace(/^images\//,"");
+  $("f_summary").value = it.summary; $("f_details").value = it.details;
+  $("f_features").value = (it.features || []).join("\n");
 
-  var fname=(it.image||"").replace(/^images\//,"");
+  const fname = (it.image || "").replace(/^images\//,"");
   pendingPhoto = null;
   if (newPhotos[fname]){
-    $("thumbImg").src=newPhotos[fname].dataUrl;
-    $("thumbMeta").innerHTML="<b>"+fname+"</b><br>foto e re";
-    $("thumbBox").hidden=false;
-  } else { $("thumbBox").hidden=true; }
+    $("thumbImg").src = newPhotos[fname].dataUrl;
+    $("thumbMeta").innerHTML = "<b>" + esc(fname) + "</b><br>foto e re";
+    $("thumbBox").hidden = false;
+  } else {
+    $("thumbBox").hidden = true;
+  }
 
-  $("formTitle").textContent="3 · Redakto pronën";
-  $("btnSave").textContent="Ruaj ndryshimet";
-  $("btnCancel").hidden=false;
+  $("formTitle").textContent = "2 · Redakto pronën";
+  $("btnSave").textContent = "Ruaj ndryshimet";
+  $("btnCancel").hidden = false;
   $("formPanel").classList.add("editing");
-  $("formPanel").scrollIntoView({behavior:"smooth",block:"start"});
+  $("formPanel").scrollIntoView({ behavior:"smooth", block:"start" });
 }
 
 function del(i){
   if (!confirm("Të fshihet \"" + listings[i].title + "\"?")) return;
   listings.splice(i,1);
-  if (editIndex===i) exitEdit();
+  dirty = true;
+  if (editIndex === i) exitEdit();
   render();
 }
 
 /* ===================================================================
-   Generate listings.js
+   Gjenerimi i listings.js
    =================================================================== */
 function q(s){
-  return '"' + String(s==null?"":s).replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\r?\n/g," ") + '"';
+  return '"' + String(s == null ? "" : s).replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\r?\n/g," ") + '"';
 }
 
 function buildJS(){
-  var T = config.TEXT || DEFAULT_TEXT;
-  var L = [];
+  const T = config.TEXT || DEFAULT_TEXT;
+  const L = [];
   L.push("/* =====================================================================");
   L.push("   ZONE REAL ESTATE — SKEDARI I PRONAVE");
   L.push("   =====================================================================");
@@ -670,20 +903,20 @@ function buildJS(){
   L.push("const DISPLAY_PHONE = " + q(config.DISPLAY_PHONE) + ";");
   L.push("const CALL_PHONE    = " + q(config.CALL_PHONE) + ";");
   L.push("");
-  L.push("const CITY = " + q(config.CITY) + ";");
+  L.push("const CITY         = " + q(config.CITY) + ";");
   L.push("const LAST_UPDATED = " + q(config.LAST_UPDATED) + ";");
   L.push("");
   L.push("const TEXT = {");
-  var keys = Object.keys(T);
-  keys.forEach(function(k,i){
-    var key = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(k) ? k : q(k);
-    L.push("  " + key + ": " + q(T[k]) + (i<keys.length-1 ? "," : ""));
+  const keys = Object.keys(T);
+  keys.forEach((k,i) => {
+    const key = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(k) ? k : q(k);
+    L.push("  " + key + ": " + q(T[k]) + (i < keys.length-1 ? "," : ""));
   });
   L.push("};");
   L.push("");
   L.push("const listings = [");
   L.push("");
-  listings.forEach(function(it,idx){
+  listings.forEach((it,idx) => {
     L.push("  {");
     L.push("    title: " + q(it.title) + ",");
     L.push("    status: " + q(it.status) + ",");
@@ -694,14 +927,16 @@ function buildJS(){
     L.push("    location: " + q(it.location) + ",");
     L.push("    summary: " + q(it.summary) + ",");
     L.push("    details: " + q(it.details || it.summary) + ",");
-    var f = it.features || [];
+    const f = it.features || [];
     if (f.length){
       L.push("    features: [");
-      f.forEach(function(x,j){ L.push("      " + q(x) + (j<f.length-1?",":"")); });
+      f.forEach((x,j) => L.push("      " + q(x) + (j < f.length-1 ? "," : "")));
       L.push("    ],");
-    } else { L.push("    features: [],"); }
+    } else {
+      L.push("    features: [],");
+    }
     L.push("    image: " + q(it.image));
-    L.push("  }" + (idx<listings.length-1 ? "," : ""));
+    L.push("  }" + (idx < listings.length-1 ? "," : ""));
     L.push("");
   });
   L.push("];");
@@ -712,79 +947,117 @@ function buildJS(){
 }
 
 /* ===================================================================
-   Publish
+   Publikimi — përmes API-së së sigurt
    =================================================================== */
-$("btnPublish").onclick = function(){
+$("btnPublish").onclick = async function(){
+  if (!me || !PUBLISH_ROLES.includes(me.role)){
+    msg("pubMsg", "Nuk keni leje për të publikuar.", "bad");
+    return;
+  }
+
   config.DISPLAY_PHONE = $("dispPhone").value.trim();
-  config.CALL_PHONE = $("callPhone").value.trim();
-  config.CITY = $("city").value.trim();
-  config.LAST_UPDATED = $("updated").value.trim();
+  config.CALL_PHONE    = $("callPhone").value.trim();
+  config.CITY          = $("city").value.trim();
+  config.LAST_UPDATED  = $("updated").value.trim();
 
   if (!listings.length){ alert("Shtoni së paku një pronë."); return; }
   if (!/^\+?[0-9]+$/.test(config.CALL_PHONE)){
     if (!confirm("Numri që thirret duket i pasaktë (vetëm + dhe shifra).\n\nTë vazhdohet?")) return;
   }
 
-  var code = buildJS();
+  const code = buildJS();
 
-  // Never publish a file that would break the live site.
+  // Kurrë mos publiko një skedar që do të prishte faqen live.
   try {
-    var check = new Function("window", code + "\nreturn window.ZONE_CONFIG;")({});
+    const check = new Function("window", code + "\nreturn window.ZONE_CONFIG;")({});
     if (!check || check.listings.length !== listings.length) throw new Error("mospërputhje");
-  } catch(e){
+  } catch (e) {
     alert("Gabim gjatë gjenerimit — asgjë nuk u dërgua.\n\n" + e.message);
     return;
   }
 
-  var btn = this;
+  const btn = this;
   btn.disabled = true;
   $("log").innerHTML = "";
   $("log").hidden = false;
   msg("pubMsg", "Duke publikuar…", "busy");
 
-  var names = Object.keys(newPhotos);
-  var chain = Promise.resolve();
-
-  // Photos first: if a photo fails, listings.js still points at a file
-  // that exists, so the site never ends up with broken images.
-  names.forEach(function(n){
-    chain = chain.then(function(){
+  try {
+    // Fotot së pari: nëse një foto dështon, listings.js ende tregon te një
+    // skedar që ekziston, kështu që faqja nuk mbetet me foto të thyera.
+    const names = Object.keys(newPhotos);
+    for (const n of names){
       log("Duke dërguar foton " + n + " …");
-      return blobToB64(newPhotos[n].blob).then(function(b64){
-        return putFile("images/" + n, b64, "Shto foton " + n);
-      }).then(function(){
-        log("  ✓ " + n + " u dërgua", "g");
-        delete newPhotos[n];
-      });
-    });
-  });
+      const b64 = await blobToB64(newPhotos[n].blob);
+      await callApi("upload_image", { name: n, contentBase64: b64 });
+      log("  ✓ " + n + " u dërgua", "g");
+      delete newPhotos[n];
+    }
 
-  chain.then(function(){
     log("Duke dërguar listings.js …");
-    return putFile("listings.js", utf8ToB64(code),
-                   "Përditëso pronat (" + listings.length + ")", gh.sha);
-  }).then(function(res){
-    gh.sha = res.content.sha;   // keep in sync for the next publish
+    const res = await callApi("publish_listings", {
+      content: code,
+      baseSha: repoInfo.sha,
+      listingCount: listings.length
+    });
+    repoInfo.sha = res.sha;   // mbahet i sinkronizuar për publikimin e radhës
     log("  ✓ listings.js u dërgua", "g");
     log("");
     log("U publikua. Faqja përditësohet për një deri dy minuta.", "g");
+    dirty = false;
     msg("pubMsg", "U publikua ✓", "ok");
     render();
-  }).catch(function(e){
+
+  } catch (e) {
     log("  ✗ " + e.message, "r");
     msg("pubMsg", "Dështoi — shihni detajet më poshtë.", "bad");
     if (e.status === 409){
-      log("Rifreskoni faqen dhe lidhuni sërish për të marrë versionin e fundit.", "r");
+      log("Klikoni «Ringarko» për të marrë versionin e fundit, pastaj provoni sërish.", "r");
     }
-  }).then(function(){
+  } finally {
     btn.disabled = false;
-  });
+  }
 };
 
-window.addEventListener("beforeunload", function(e){
-  if (listings.length && Object.keys(newPhotos).length){ e.preventDefault(); e.returnValue = ""; }
+window.addEventListener("beforeunload", (e) => {
+  if (isDirty()){ e.preventDefault(); e.returnValue = ""; }
 });
 
+/* ===================================================================
+   Sesioni: rikthim pas rifreskimit, skadim, dalje nga një skedë tjetër
+   =================================================================== */
+supabase.auth.onAuthStateChange(async (event, session) => {
+  if (event === "PASSWORD_RECOVERY"){
+    recovering = true;
+    msg("recoverMsg", "");
+    show("recover");
+    return;
+  }
+  if (recovering) return;
+
+  if (event === "SIGNED_OUT" || !session){
+    if (me){ me = null; dataLoaded = false; show("login"); }
+    return;
+  }
+  if (event === "SIGNED_IN" && !me){
+    await enterPanel();
+  }
+});
+
+// Rrjeta e sigurisë: nëse rinovimi i tokenit dështon në heshtje, kapeni.
+setInterval(async () => {
+  if (!me) return;
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) await handleExpired();
+}, 60000);
+
+/* Nisja */
+(async function boot(){
+  if (recovering){ show("recover"); return; }
+  const { data: { session } } = await supabase.auth.getSession();
+  if (recovering) return;
+  if (session) await enterPanel();
+  else show("login");
 })();
 </script>
 </body>
