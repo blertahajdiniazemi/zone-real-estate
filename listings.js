@@ -156,21 +156,6 @@ const listings = [
     image: "images/hillside-villa.svg"
   },
 
-  {
-    title: "Test Blerta",
-    status: "Për shitje",
-    price: "18000",
-    beds: 4,
-    baths: 2,
-    size: "150",
-    location: "Test",
-    summary: "Test",
-    details: "Test",
-    features: [
-      "Test"
-    ],
-    image: "images/test-xd5x.jpg"
-  }
 
 ];
 
