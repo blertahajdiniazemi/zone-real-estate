@@ -7,7 +7,7 @@
 const DISPLAY_PHONE = "+383 49 588 211";
 const CALL_PHONE    = "+38349588211";
 
-const CITY         = "Prishtinë";
+const CITY         = "Kosovë";
 const LAST_UPDATED = "Gusht 2026";
 
 const TEXT = {
