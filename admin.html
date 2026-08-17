@@ -4,7 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
 <title>Zone Real Estate — Administrimi</title>
+<script>
+/* Rivendosja e fjalëkalimit ka faqen e vet. Nëse një email i vjetër
+   (ose një konfigurim i vjetër i Supabase-it) e sjell përdoruesin këtu,
+   e përcjellim menjëherë — PARA se të ngarkohet biblioteka, që tokeni
+   i linkut të mos konsumohet nga kjo faqe dhe të humbasë. */
+(function () {
+  var raw = (location.search || "") + (location.hash || "");
+  var looksLikeRecovery =
+    /[#?&]type=recovery(&|$)/.test(raw) ||
+    /[#?&]token_hash=/.test(raw) ||
+    /[#?&]error_code=/.test(raw);
+  if (!looksLikeRecovery) return;
+  try {
+    if (sessionStorage.getItem("zone-reset-forwarded") === "1") return;  // asnjë cikël
+    sessionStorage.setItem("zone-reset-forwarded", "1");
+  } catch (e) { /* storage e bllokuar — përcillim gjithsesi, një herë */ }
+  location.replace("reset-password.html" + location.search + location.hash);
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -147,7 +167,7 @@ code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
       </div>
       <button class="primary" type="submit" id="btnLogin" style="width:100%">Hyr</button>
     </form>
-    <p class="msg" id="loginMsg"></p>
+    <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
     <p class="foot"><a id="linkForgot" role="button" tabindex="0">Keni harruar fjalëkalimin?</a></p>
   </div>
 </div>
@@ -164,32 +184,15 @@ code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
       </div>
       <button class="primary" type="submit" id="btnForgot" style="width:100%">Dërgo linkun</button>
     </form>
-    <p class="msg" id="forgotMsg"></p>
+    <p class="msg" id="forgotMsg" role="status" aria-live="polite"></p>
     <p class="foot"><a id="linkBackToLogin" role="button" tabindex="0">Kthehu te hyrja</a></p>
   </div>
 </div>
 
-<!-- ================= 4. FJALËKALIM I RI ================= -->
-<div class="screen" id="recover" hidden>
-  <div class="box">
-    <h1>Fjalëkalim i ri</h1>
-    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Zgjidhni një fjalëkalim me së paku 8 shenja.</p>
-    <form id="recoverForm" novalidate>
-      <div class="field">
-        <label for="newPass">Fjalëkalimi i ri</label>
-        <input id="newPass" type="password" autocomplete="new-password" required>
-      </div>
-      <div class="field">
-        <label for="newPass2">Përsëriteni</label>
-        <input id="newPass2" type="password" autocomplete="new-password" required>
-      </div>
-      <button class="primary" type="submit" id="btnRecover" style="width:100%">Ruaj fjalëkalimin</button>
-    </form>
-    <p class="msg" id="recoverMsg"></p>
-  </div>
-</div>
+<!-- Fjalëkalimi i ri vendoset te reset-password.html — një faqe e vetme,
+     një adresë e vetme në listën "Redirect URLs" të Supabase-it. -->
 
-<!-- ================= 5. QASJA E NDALUAR ================= -->
+<!-- ================= 4. QASJA E NDALUAR ================= -->
 <div class="screen" id="denied" hidden>
   <div class="box">
     <h1>Qasje e ndaluar</h1>
@@ -303,15 +306,19 @@ code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
 <script src="admin-config.js"></script>
 
 <script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  CFG, makeClient, ADMIN_STORAGE_KEY, MSG, authMessage, isNetworkError,
+  withTimeout, getSessionSafe, signOutSafe, normRole, isActive,
+  resetRedirectUrl, storageIsPersistent
+} from "./auth.js";
 
 "use strict";
 
 /* ===================================================================
    Konfigurimi
    =================================================================== */
-const CFG = window.ZONE_ADMIN_CONFIG || {};
-const PUBLISH_ROLES = CFG.PUBLISH_ROLES || ["admin", "editor"];
+const PUBLISH_ROLES = (CFG.PUBLISH_ROLES || ["admin", "editor"]).map(normRole);
+const PANEL_ROLES   = ["admin", "editor"];
 const ROLE_LABEL = { admin: "Administrator", editor: "Redaktor" };
 
 const $ = (id) => document.getElementById(id);
@@ -325,13 +332,12 @@ if (!CFG.SUPABASE_URL || !CFG.SUPABASE_ANON_KEY || !CFG.FUNCTION_URL ||
   throw new Error("admin-config.js is not filled in");
 }
 
-const supabase = createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY, {
-  auth: {
-    persistSession: true,       // sesioni mbijeton rifreskimin e faqes
-    autoRefreshToken: true,     // rinovohet vetë derisa është i vlefshëm
-    detectSessionInUrl: true,   // për linkun e rivendosjes së fjalëkalimit
-    storageKey: "zone-admin-auth"
-  }
+/* detectSessionInUrl është QËLLIMISHT i fikur këtu: kjo faqe nuk duhet
+   të konsumojë kurrë tokenët e një linku rivendosjeje. Ata i takojnë
+   faqes reset-password.html. */
+const supabase = makeClient({
+  storageKey: ADMIN_STORAGE_KEY,
+  detectSessionInUrl: false
 });
 
 /* ===================================================================
@@ -339,9 +345,11 @@ const supabase = createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY, {
    =================================================================== */
 let me = null;                 // { email, role, active }
 let dataLoaded = false;
-let entering = false;
-// Linku i rivendosjes së fjalëkalimit njihet para se të nisë çdo gjë tjetër.
-let recovering = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
+let entering = false;          // enterPanel po punon tashmë
+let signingIn = false;         // formulari i hyrjes po punon
+let forgotBusy = false;        // formulari i rivendosjes po punon
+let expiring = false;          // handleExpired po punon (pa cikle)
+let bootDone = false;          // nisja mbaroi
 
 let repoInfo = { branch: "", sha: null };
 let config = { DISPLAY_PHONE:"", CALL_PHONE:"", CITY:"", LAST_UPDATED:"", TEXT:null };
@@ -393,7 +401,7 @@ function isDirty(){
   return dirty || Object.keys(newPhotos).length > 0 || pendingPhoto !== null;
 }
 
-const SCREENS = ["boot","login","forgot","recover","denied","app"];
+const SCREENS = ["boot","login","forgot","denied","app"];
 function show(which){
   SCREENS.forEach((id) => { $(id).hidden = (id !== which); });
 }
@@ -421,19 +429,31 @@ function blobToB64(blob){
    Shfletuesi dërgon tokenin e Supabase, kurrë tokenin e GitHub.
    =================================================================== */
 class ApiError extends Error {
-  constructor(message, status){ super(message); this.status = status; }
+  constructor(message, status, code){
+    super(message);
+    this.status = status;
+    this.code = code || "";
+  }
 }
 
+/* Kodet 403 që do të thonë vërtet "kjo llogari nuk e hap panelin".
+   Çdo 403 tjetër (p.sh. mungesë leje vetëm për publikim) tregohet si
+   mesazh në vend, pa e nxjerrë njeriun nga paneli. */
+const PANEL_DENY_CODES = ["inactive", "no_profile", "role"];
+
 async function callApi(action, payload){
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  /* Nëse rinovimi i tokenit dështon për shkak të internetit, kjo NUK
+     është skadim sesioni dhe përdoruesi nuk duhet të nxirret jashtë. */
+  const { session, offline } = await getSessionSafe(supabase);
+  if (offline) throw new ApiError(MSG.network, 0, "offline");
+  if (!session){
     await handleExpired();
-    throw new ApiError("Sesioni ka skaduar. Kyçuni sërish.", 401);
+    throw new ApiError(MSG.expired, 401, "expired");
   }
 
   let res;
   try {
-    res = await fetch(CFG.FUNCTION_URL, {
+    res = await withTimeout(fetch(CFG.FUNCTION_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -441,29 +461,42 @@ async function callApi(action, payload){
         "apikey": CFG.SUPABASE_ANON_KEY
       },
       body: JSON.stringify(Object.assign({ action }, payload || {}))
-    });
+    }), 30000);
   } catch (e) {
-    throw new ApiError("Serveri nuk u arrit. Kontrolloni lidhjen me internetin.", 0);
+    throw new ApiError(isNetworkError(e) ? MSG.network : MSG.server, 0, "network");
   }
 
-  const text = await res.text();
+  const text = await res.text().catch(() => "");
   let body = null;
   try { body = text ? JSON.parse(text) : null; } catch (e) {}
 
   if (!res.ok) {
-    const message = (body && body.error) || ("Gabim serveri (" + res.status + ").");
-    if (res.status === 401) { await handleExpired(message); }
-    if (res.status === 403) { showDenied(message); }
-    throw new ApiError(message, res.status);
+    const code = (body && body.code) || "";
+    /* Funksioni përgjigjet gjithmonë shqip. Nëse jo (p.sh. platforma e
+       ndaloi kërkesën para funksionit), nuk e nxjerrim tekstin e tij. */
+    const message = (body && body.error) ||
+      (res.status === 401 ? MSG.expired : res.status >= 500 ? MSG.server : MSG.generic);
+
+    if (res.status === 401){ await handleExpired(message); }
+    else if (res.status === 403 && PANEL_DENY_CODES.includes(code)){ showDenied(message); }
+
+    throw new ApiError(message, res.status, code);
   }
   return body;
 }
 
 async function handleExpired(text){
-  me = null; dataLoaded = false;
-  try { await supabase.auth.signOut(); } catch (e) {}
-  show("login");
-  msg("loginMsg", text || "Sesioni ka skaduar. Kyçuni sërish.", "bad");
+  if (expiring) return;
+  expiring = true;
+  try {
+    me = null; dataLoaded = false;
+    await signOutSafe(supabase, "local");
+    show("login");
+    msg("loginMsg", text || MSG.expired, "bad");
+    $("email").focus();
+  } finally {
+    expiring = false;
+  }
 }
 
 function showDenied(text){
@@ -474,48 +507,72 @@ function showDenied(text){
 /* ===================================================================
    Rrjedha e hyrjes
    =================================================================== */
+function setLoginBusy(busy){
+  const btn = $("btnLogin");
+  btn.disabled = busy;
+  btn.textContent = busy ? "Duke u kyçur…" : "Hyr";
+  if (busy) btn.setAttribute("aria-busy", "true"); else btn.removeAttribute("aria-busy");
+  $("email").disabled = busy;
+  $("password").disabled = busy;
+  $("linkForgot").setAttribute("aria-disabled", busy ? "true" : "false");
+}
+
 $("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (signingIn) return;                       // mbron nga klikimet e shumëfishta
+
   const email = $("email").value.trim();
   const password = $("password").value;
 
   if (!email || !password) { msg("loginMsg", "Plotësoni email-in dhe fjalëkalimin.", "bad"); return; }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg("loginMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    msg("loginMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return;
+  }
 
-  $("btnLogin").disabled = true;
-  $("btnLogin").textContent = "Duke u kyçur…";
-  msg("loginMsg", "");
+  signingIn = true;
+  setLoginBusy(true);
+  msg("loginMsg", "Duke u kyçur…", "busy");
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  let result;
+  try {
+    result = await withTimeout(supabase.auth.signInWithPassword({ email, password }), 25000);
+  } catch (err) {
+    signingIn = false;
+    setLoginBusy(false);
+    msg("loginMsg", authMessage(err, MSG.server), "bad");
+    return;
+  }
 
-  $("btnLogin").disabled = false;
-  $("btnLogin").textContent = "Hyr";
+  const error = result && result.error;
+  const session = result && result.data && result.data.session;
 
   if (error) {
-    msg("loginMsg", loginErrorText(error), "bad");
+    signingIn = false;
+    setLoginBusy(false);
+    msg("loginMsg", authMessage(error, MSG.generic), "bad");
     $("password").value = "";
     $("password").focus();
     return;
   }
-  $("password").value = "";
-  await enterPanel();
-});
 
-function loginErrorText(error){
-  const raw = (error && error.message ? error.message : "").toLowerCase();
-  const code = error && error.code ? error.code : "";
-  if (code === "invalid_credentials" || raw.includes("invalid login credentials"))
-    return "Email ose fjalëkalim i gabuar.";
-  if (raw.includes("email not confirmed"))
-    return "Email-i nuk është konfirmuar ende. Kontrolloni kutinë postare.";
-  if (code === "user_banned" || raw.includes("banned"))
-    return "Kjo llogari është çaktivizuar.";
-  if (code === "over_request_rate_limit" || raw.includes("rate limit") || raw.includes("too many"))
-    return "Shumë përpjekje. Prisni pak minuta dhe provoni sërish.";
-  if (raw.includes("failed to fetch") || raw.includes("network"))
-    return "Nuk u arrit serveri. Kontrolloni lidhjen me internetin.";
-  return "Kyçja dështoi. Provoni sërish ose kontaktoni administratorin.";
-}
+  /* Supabase mund të kthejë përdorues pa sesion (p.sh. email i
+     pakonfirmuar). Pa këtë kontroll, faqja "kyçej" dhe pastaj ngecte. */
+  if (!session) {
+    signingIn = false;
+    setLoginBusy(false);
+    msg("loginMsg", MSG.notConfirmed, "bad");
+    $("password").value = "";
+    return;
+  }
+
+  $("password").value = "";
+  try {
+    await enterPanel();
+  } finally {
+    signingIn = false;
+    setLoginBusy(false);
+  }
+});
 
 /* Rivendosja e fjalëkalimit */
 function clickable(id, fn){
@@ -523,47 +580,100 @@ function clickable(id, fn){
   el.onclick = fn;
   el.onkeydown = (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fn(); } };
 }
-clickable("linkForgot", () => { $("forgotEmail").value = $("email").value.trim(); msg("forgotMsg",""); show("forgot"); });
-clickable("linkBackToLogin", () => { msg("loginMsg",""); show("login"); });
+clickable("linkForgot", () => {
+  if (signingIn) return;
+  $("forgotEmail").value = $("email").value.trim();
+  msg("forgotMsg", "");
+  show("forgot");
+  $("forgotEmail").focus();
+});
+clickable("linkBackToLogin", () => {
+  if (forgotBusy) return;
+  msg("loginMsg", "");
+  show("login");
+  $("email").focus();
+});
 
 $("forgotForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (forgotBusy) return;                      // mbron nga klikimet e shumëfishta
+
   const email = $("forgotEmail").value.trim();
   if (!email) { msg("forgotMsg", "Shkruani email-in tuaj.", "bad"); return; }
-  $("btnForgot").disabled = true;
-  msg("forgotMsg", "Duke dërguar…", "busy");
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: location.origin + location.pathname
-  });
-  $("btnForgot").disabled = false;
-  if (error) { msg("forgotMsg", "Nuk u dërgua dot. Provoni sërish.", "bad"); return; }
-  msg("forgotMsg", "Nëse adresa ekziston, linku u dërgua ✓", "ok");
-});
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    msg("forgotMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return;
+  }
 
-$("recoverForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const a = $("newPass").value, b = $("newPass2").value;
-  if (a.length < 8) { msg("recoverMsg", "Fjalëkalimi duhet së paku 8 shenja.", "bad"); return; }
-  if (a !== b) { msg("recoverMsg", "Fjalëkalimet nuk përputhen.", "bad"); return; }
-  $("btnRecover").disabled = true;
-  msg("recoverMsg", "Duke ruajtur…", "busy");
-  const { error } = await supabase.auth.updateUser({ password: a });
-  $("btnRecover").disabled = false;
-  if (error) { msg("recoverMsg", "Nuk u ruajt dot. Provoni linkun sërish.", "bad"); return; }
-  msg("recoverMsg", "U ruajt ✓", "ok");
-  recovering = false;
-  $("newPass").value = ""; $("newPass2").value = "";
-  await enterPanel();
+  const redirectTo = resetRedirectUrl();
+  if (!redirectTo) {
+    msg("forgotMsg", "Faqja duhet hapur nga interneti, jo si skedar lokal.", "bad");
+    return;
+  }
+
+  forgotBusy = true;
+  const btn = $("btnForgot");
+  btn.disabled = true;
+  btn.setAttribute("aria-busy", "true");
+  btn.textContent = "Duke dërguar…";
+  $("forgotEmail").disabled = true;
+  msg("forgotMsg", "Duke dërguar…", "busy");
+
+  try {
+    const { error } = await withTimeout(
+      supabase.auth.resetPasswordForEmail(email, { redirectTo }), 25000);
+
+    /* Kritike: mesazhi i suksesit shfaqet VETËM kur Supabase e pranoi
+       vërtet kërkesën. Më parë çdo përgjigje dilte si sukses, prandaj
+       njerëzit prisnin një email që nuk ishte nisur kurrë. */
+    if (error) {
+      msg("forgotMsg", authMessage(error, MSG.emailNotSent), "bad");
+      return;
+    }
+
+    /* Kërkesa kaloi. Formulimi mbetet neutral me qëllim: nuk zbulojmë
+       nëse adresa ekziston apo jo. */
+    msg("forgotMsg", "Nëse adresa ekziston, linku u dërgua ✓", "ok");
+    $("forgotEmail").blur();
+
+  } catch (err) {
+    msg("forgotMsg", authMessage(err, MSG.server), "bad");
+  } finally {
+    forgotBusy = false;
+    btn.disabled = false;
+    btn.removeAttribute("aria-busy");
+    btn.textContent = "Dërgo linkun";
+    $("forgotEmail").disabled = false;
+  }
 });
 
 /* Dalja */
+let loggingOut = false;
+
 async function doLogout(){
+  if (loggingOut) return;                      // mbron nga klikimet e shumëfishta
   if (isDirty() && !confirm("Keni ndryshime të papublikuara. Të dilni gjithsesi?")) return;
+
+  loggingOut = true;
+  $("btnLogout").disabled = true;
+  $("btnDeniedOut").disabled = true;
+
+  /* Gjendja pastrohet e para. Kështu, edhe nëse rrjeti bie gjatë daljes,
+     paneli nuk mbetet i hapur me të dhëna të vjetra. */
   me = null; dataLoaded = false;
   newPhotos = {}; pendingPhoto = null; listings = []; dirty = false;
-  await supabase.auth.signOut();
+
+  /* Dalja nuk dështon kurrë lokalisht, edhe kur tokeni ka skaduar. */
+  await signOutSafe(supabase, "global");
+
   show("login");
-  msg("loginMsg", "");
+  msg("loginMsg", "Dolët nga llogaria.", "ok");
+  $("email").value = "";
+  $("password").value = "";
+  $("email").focus();
+
+  loggingOut = false;
+  $("btnLogout").disabled = false;
+  $("btnDeniedOut").disabled = false;
 }
 $("btnLogout").onclick = doLogout;
 $("btnDeniedOut").onclick = doLogout;
@@ -588,32 +698,50 @@ async function enterPanelInner(){
   let profile;
   try {
     const r = await callApi("me");
-    profile = r.profile;
+    profile = r && r.profile;
+    if (!profile) throw new ApiError(MSG.server, 500, "");
   } catch (e) {
-    if (e.status === 403 || e.status === 401) return;  // ekranet u shfaqën tashmë
+    /* 401 dhe 403-shet e panelit i kanë shfaqur tashmë ekranet e veta. */
+    if (e.status === 401) return;
+    if (e.status === 403 && PANEL_DENY_CODES.includes(e.code)) return;
+    /* Gjithçka tjetër — rrjet, server, kohë e mbaruar — nuk është faji i
+       përdoruesit. E kthejmë te hyrja me një mesazh që e kupton. */
+    me = null;
     show("login");
-    msg("loginMsg", e.message, "bad");
+    msg("loginMsg", e.message || MSG.server, "bad");
     return;
   }
 
-  me = profile;
+  /* Roli krahasohet i pastruar: "Admin", "admin " dhe "admin" janë i
+     njëjti rol. Më parë çdo ndryshim i vogël shkronjash e bllokonte
+     një përdorues krejtësisht të vlefshëm. */
+  me = Object.assign({}, profile, { role: normRole(profile.role) });
 
-  if (!me.active) { showDenied("Llogaria juaj është çaktivizuar. Kontaktoni një administrator."); return; }
-  if (!PUBLISH_ROLES.includes(me.role) && me.role !== "admin") {
+  if (!isActive(me)) {
+    showDenied("Përdorues joaktiv. Kontaktoni administratorin.");
+    return;
+  }
+  if (!PANEL_ROLES.includes(me.role)) {
     showDenied("Roli juaj nuk lejon qasje në këtë panel.");
     return;
   }
 
-  $("whoEmail").textContent = me.email;
+  $("whoEmail").textContent = me.email || "";
   $("whoRole").textContent = ROLE_LABEL[me.role] || me.role;
   $("whoRole").className = "rolebadge" + (me.role === "admin" ? " admin" : "");
 
-  const canPublish = PUBLISH_ROLES.includes(me.role);
+  /* Serveri mbetet burimi i vërtetës. Kjo vetëm fsheh butonat. */
+  const canPublish = (me.canPublish === true) || PUBLISH_ROLES.includes(me.role);
   $("btnPublish").disabled = !canPublish;
   $("pubBlocked").hidden = canPublish;
   $("pubReminder").hidden = !canPublish;
 
   show("app");
+
+  if (!storageIsPersistent()) {
+    msg("loadMsg", "Shfletuesi nuk po ruan sesionin. Do të dilni kur ta mbyllni skedën.", "busy");
+  }
+
   if (!dataLoaded) await loadData();
 }
 
@@ -950,7 +1078,7 @@ function buildJS(){
    Publikimi — përmes API-së së sigurt
    =================================================================== */
 $("btnPublish").onclick = async function(){
-  if (!me || !PUBLISH_ROLES.includes(me.role)){
+  if (!me || !((me.canPublish === true) || PUBLISH_ROLES.includes(me.role))){
     msg("pubMsg", "Nuk keni leje për të publikuar.", "bad");
     return;
   }
@@ -1025,39 +1153,99 @@ window.addEventListener("beforeunload", (e) => {
 
 /* ===================================================================
    Sesioni: rikthim pas rifreskimit, skadim, dalje nga një skedë tjetër
-   =================================================================== */
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (event === "PASSWORD_RECOVERY"){
-    recovering = true;
-    msg("recoverMsg", "");
-    show("recover");
-    return;
-  }
-  if (recovering) return;
+   ===================================================================
 
-  if (event === "SIGNED_OUT" || !session){
-    if (me){ me = null; dataLoaded = false; show("login"); }
+   RREGULL: brenda onAuthStateChange nuk thirret KURRË një funksion
+   tjetër i Supabase-it me await. Supabase e mban një bllokim të
+   brendshëm ndërsa njofton dëgjuesit; nëse brenda tij kërkohet
+   getSession(), të dyja presin njëra-tjetrën përgjithmonë. Kjo ishte
+   arsyeja kryesore pse kyçja "ngecte" herë pas here me kredenciale
+   krejtësisht të sakta. Puna e vërtetë shtyhet me setTimeout(…, 0),
+   jashtë bllokimit.                                                   */
+
+function defer(fn){ setTimeout(fn, 0); }
+
+supabase.auth.onAuthStateChange((event, session) => {
+  /* Vetëm punë e shpejtë dhe sinkrone këtu brenda. */
+
+  if (event === "SIGNED_OUT" || (!session && event !== "INITIAL_SESSION")){
+    if (me || dataLoaded){
+      me = null; dataLoaded = false;
+      defer(() => {
+        show("login");
+        msg("loginMsg", "Dolët nga llogaria.", "");
+      });
+    }
     return;
   }
-  if (event === "SIGNED_IN" && !me){
-    await enterPanel();
+
+  /* Tokeni u rinovua vetë — nuk ka çfarë të bëjmë, sesioni vazhdon. */
+  if (event === "TOKEN_REFRESHED") return;
+
+  /* Kyçje nga një skedë tjetër, ose rikthim i sesionit. Kur kyçja bëhet
+     nga vetë ky formular, e trajton formulari — që të mos hyjmë dy herë. */
+  if (event === "SIGNED_IN" && session && !me && !signingIn && bootDone){
+    defer(() => { enterPanel(); });
   }
 });
 
-// Rrjeta e sigurisë: nëse rinovimi i tokenit dështon në heshtje, kapeni.
+/* Rrjeta e sigurisë: kap një sesion që ka rënë pa lajmëruar.
+   Nuk nxjerr jashtë asnjë përdorues vetëm sepse interneti u ndërpre. */
 setInterval(async () => {
-  if (!me) return;
-  const { data: { session } } = await supabase.auth.getSession();
+  if (!me || expiring || document.hidden) return;
+  const { session, offline } = await getSessionSafe(supabase, 20000);
+  if (offline) return;                    // problem interneti, jo skadim
   if (!session) await handleExpired();
 }, 60000);
 
-/* Nisja */
+/* Kur pajisja kthehet online, kontrollojmë menjëherë nëse sesioni rron. */
+window.addEventListener("online", async () => {
+  if (!me || expiring) return;
+  const { session, offline } = await getSessionSafe(supabase, 20000);
+  if (!offline && !session) await handleExpired();
+});
+
+/* ===================================================================
+   Nisja
+   =================================================================== */
 (async function boot(){
-  if (recovering){ show("recover"); return; }
-  const { data: { session } } = await supabase.auth.getSession();
-  if (recovering) return;
+  show("boot");
+
+  /* Mesazhet që vijnë nga faqja e rivendosjes së fjalëkalimit. */
+  const q = new URLSearchParams(location.search);
+  const justReset = q.get("reset") === "1";
+  const openForgot = q.get("forgot") === "1";
+  if (justReset || openForgot){
+    try { history.replaceState(null, "", location.pathname); } catch (_) {}
+  }
+
+  function toLogin(text, cls){
+    show("login");
+    if (text) msg("loginMsg", text, cls || "");
+    if (openForgot){
+      show("forgot");
+      msg("forgotMsg", "");
+    }
+    $(openForgot ? "forgotEmail" : "email").focus();
+  }
+
+  const { session, offline, error } = await getSessionSafe(supabase, 15000);
+  bootDone = true;
+
+  if (justReset){
+    /* Fjalëkalimi sapo u ndryshua: gjithmonë kërkohet kyçje e re. */
+    if (session) await signOutSafe(supabase, "local");
+    toLogin(MSG.changed, "ok");
+    return;
+  }
+
+  if (offline){
+    toLogin(authMessage(error, MSG.network), "bad");
+    return;
+  }
+
   if (session) await enterPanel();
-  else show("login");
+  else toLogin("");
 })();
 </script>
 </body>
