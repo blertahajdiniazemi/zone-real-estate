@@ -28,7 +28,7 @@
    SUPABASE_URL dhe SUPABASE_SERVICE_ROLE_KEY i vendos vetë Supabase.
    ===================================================================== */
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.112.3";
 
 /* ------------------------------------------------------------------ */
 /* Konfigurimi                                                         */
@@ -60,9 +60,15 @@ const IMAGE_NAME_RE   = /^[a-z0-9][a-z0-9._-]{0,80}\.(jpg|jpeg|png|webp)$/;
 
 class HttpError extends Error {
   status: number;
-  constructor(status: number, message: string) {
+  /** Kod i lexueshëm nga programi. Frontend-i vendos me të nëse duhet
+   *  nxjerrë përdoruesi nga paneli apo vetëm t'i tregohet një mesazh.
+   *  "inactive" | "no_profile" | "role" bllokojnë panelin;
+   *  "action_role" ndalon vetëm një veprim. */
+  code: string;
+  constructor(status: number, message: string, code = "") {
     super(message);
     this.status = status;
+    this.code = code;
   }
 }
 
@@ -104,14 +110,27 @@ interface Profile {
   full_name: string | null;
 }
 
+/** Rolet krahasohen gjithmonë të pastruara. Një rol i ruajtur si
+ *  "Admin", "ADMIN" ose "editor " në bazën e të dhënave është i njëjti
+ *  rol — më parë çdo ndryshim i vogël bllokonte një përdorues të vlefshëm. */
+function normRole(role: unknown): string {
+  return String(role ?? "").trim().toLowerCase();
+}
+
+/** Vetëm `false` e qartë do të thotë i çaktivizuar. Nëse kolona mungon
+ *  ose është NULL (profile të vjetra), llogaria trajtohet si aktive. */
+function isActive(profile: { active?: unknown }): boolean {
+  return profile.active !== false;
+}
+
 async function authenticate(req: Request): Promise<Profile> {
   const header = req.headers.get("Authorization") ?? "";
   const token = header.replace(/^Bearer\s+/i, "").trim();
-  if (!token) throw new HttpError(401, "Nuk jeni i kyçur.");
+  if (!token) throw new HttpError(401, "Nuk jeni i kyçur.", "expired");
 
   const { data, error } = await admin.auth.getUser(token);
   if (error || !data?.user) {
-    throw new HttpError(401, "Sesioni ka skaduar. Kyçuni sërish.");
+    throw new HttpError(401, "Sesioni ka skaduar. Kyçuni sërish.", "expired");
   }
 
   const { data: profile, error: pErr } = await admin
@@ -120,19 +139,38 @@ async function authenticate(req: Request): Promise<Profile> {
     .eq("id", data.user.id)
     .maybeSingle();
 
-  if (pErr) throw new HttpError(500, "Profili nuk u lexua dot.");
+  if (pErr) {
+    console.error("profiles read failed:", pErr.message);
+    throw new HttpError(500, "Gabim nga serveri. Provoni sërish pas pak.");
+  }
   if (!profile) {
-    throw new HttpError(403, "Llogaria juaj nuk ka profil. Kontaktoni një administrator.");
+    throw new HttpError(403,
+      "Llogaria juaj nuk ka profil. Kontaktoni një administrator.", "no_profile");
   }
-  if (!profile.active) {
-    throw new HttpError(403, "Llogaria juaj është çaktivizuar.");
+  if (!isActive(profile)) {
+    throw new HttpError(403, "Përdorues joaktiv. Kontaktoni administratorin.", "inactive");
   }
-  return profile as Profile;
+
+  /* Roli kthehet i normalizuar, që të gjitha kontrollet më poshtë të
+     punojnë mbi të njëjtën formë. */
+  return {
+    ...(profile as Profile),
+    role: normRole(profile.role),
+    email: profile.email ?? data.user.email ?? "",
+  };
 }
 
+/** Kontroll roli për një veprim të vetëm. Nuk e mbyll panelin. */
 function requireRole(profile: Profile, allowed: string[]): void {
-  if (!allowed.includes(profile.role)) {
-    throw new HttpError(403, "Roli juaj nuk lejon këtë veprim.");
+  if (!allowed.map(normRole).includes(normRole(profile.role))) {
+    throw new HttpError(403, "Roli juaj nuk lejon këtë veprim.", "action_role");
+  }
+}
+
+/** Kontroll roli për hapjen e vetë panelit. Ky e mbyll panelin. */
+function requirePanelRole(profile: Profile): void {
+  if (!PANEL_ROLES.map(normRole).includes(normRole(profile.role))) {
+    throw new HttpError(403, "Roli juaj nuk lejon qasje në këtë panel.", "role");
   }
 }
 
@@ -243,20 +281,21 @@ function utf8ToB64(str: string): string {
 
 /** Kush jam unë? Frontend-i e përdor për të shfaqur email-in dhe rolin. */
 function actionMe(profile: Profile) {
+  requirePanelRole(profile);
   return {
     profile: {
       email: profile.email,
       full_name: profile.full_name,
-      role: profile.role,
-      active: profile.active,
-      canPublish: PUBLISH_ROLES.includes(profile.role),
+      role: normRole(profile.role),
+      active: isActive(profile),
+      canPublish: PUBLISH_ROLES.includes(normRole(profile.role)),
     },
   };
 }
 
 /** 5a. Lexo listings.js aktual bashkë me sha-në për kontrollin e konfliktit. */
 async function actionLoad(profile: Profile) {
-  requireRole(profile, PANEL_ROLES);
+  requirePanelRole(profile);
   const branch = await resolveBranch();
   const file = await getFile(LISTINGS_PATH, branch);
   if (!file) throw new HttpError(502, "listings.js nuk u gjet në depo.");
@@ -449,7 +488,7 @@ Deno.serve(async (req: Request) => {
 
   } catch (e) {
     if (e instanceof HttpError) {
-      return json({ error: e.message }, e.status, origin);
+      return json({ error: e.message, code: e.code }, e.status, origin);
     }
     // Asnjë detaj i brendshëm nuk shkon te shfletuesi.
     console.error("Unhandled error:", e);
