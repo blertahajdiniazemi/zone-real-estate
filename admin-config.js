@@ -33,6 +33,17 @@ window.ZONE_ADMIN_CONFIG = {
      në listën e pronave. Lëreni bosh nëse nuk jeni të sigurt. */
   SITE_BASE: "",
 
+  /* Adresa e prodhimit, PA vijë në fund.
+     Përdoret vetëm si rezervë kur faqja hapet si skedar lokal (file://).
+     Në internet, adresa e rivendosjes llogaritet vetë nga faqja aktuale,
+     prandaj admin.html punon njësoj në domenin tuaj, në github.io
+     dhe në localhost pa asnjë ndryshim këtu. */
+  SITE_URL: "https://realestate.zonegroup-ks.com",
+
+  /* Faqja ku çon linku i rivendosjes së fjalëkalimit.
+     Kjo duhet të përputhet me listën "Redirect URLs" në Supabase. */
+  RESET_PATH: "reset-password.html",
+
   /* Rolet që lejohen të publikojnë. Serveri e zbaton të njëjtën listë;
      ndryshimi këtu nuk i jep leje askujt — vetëm fsheh butonat. */
   PUBLISH_ROLES: ["admin", "editor"]
