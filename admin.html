@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<title>Zone Real Estate — Administrimi</title>
+<meta name="theme-color" content="#0E0D12">
+<title>Paneli Administrativ — Zone Group Real Estate</title>
+
 <script>
 /* Rivendosja e fjalëkalimit ka faqen e vet. Nëse një email i vjetër
    (ose një konfigurim i vjetër i Supabase-it) e sjell përdoruesin këtu,
@@ -25,1228 +27,174 @@
   location.replace("reset-password.html" + location.search + location.hash);
 })();
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --void:#140C1C; --void-2:#1E1229;
-  --flux-1:#E0518A; --flux-2:#F2874E; --flux-3:#8B5CD6; --gold:#F6C56B;
-  --lume:#FFF1E2; --lume-mid:rgba(255,241,226,.66); --lume-dim:rgba(255,241,226,.40);
-  --glass:rgba(255,241,226,.045); --edge:rgba(255,241,226,.14);
-  --ok:#6BD39B; --bad:#E0518A;
-}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--void);color:var(--lume);
-  font-family:"Outfit",system-ui,sans-serif;font-weight:300;line-height:1.55;padding-bottom:90px}
-.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid var(--edge);padding:24px 0 20px;margin-bottom:24px;
-  background:linear-gradient(160deg,rgba(139,92,214,.18),transparent)}
-h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(24px,4vw,34px);
-  letter-spacing:-.02em;margin:0 0 6px}
-.sub{color:var(--lume-mid);margin:0;max-width:660px;font-size:15px}
-h2{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 4px}
-.hint{color:var(--lume-dim);font-size:13px;margin:0 0 16px}
-.panel{background:var(--glass);border:1px solid var(--edge);border-radius:20px;
-  padding:22px;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.full{grid-column:1/-1}
-label{display:block;font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;
-  letter-spacing:.13em;color:var(--lume-dim);margin-bottom:6px}
-input,textarea,select{width:100%;background:rgba(20,12,28,.72);color:var(--lume);
-  border:1px solid var(--edge);border-radius:11px;padding:10px 13px;
-  font-family:"Outfit",sans-serif;font-size:15px;font-weight:300}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)}
-textarea{min-height:84px;resize:vertical}
-.field{margin-bottom:14px}
-button{font:inherit;cursor:pointer;border:none;border-radius:40px;padding:12px 24px;
-  font-family:"DM Mono",monospace;font-size:13.5px;font-weight:500}
-button[disabled]{opacity:.45;cursor:not-allowed}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.primary{background:linear-gradient(120deg,var(--gold),var(--flux-2) 58%,var(--flux-1));color:var(--void)}
-.ghost{background:none;border:1px solid var(--edge);color:var(--lume-mid)}
-.ghost:hover:not([disabled]){border-color:var(--gold);color:var(--lume)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.drop{border:1.5px dashed var(--edge);border-radius:14px;padding:20px;text-align:center;
-  color:var(--lume-dim);font-size:14px;cursor:pointer}
-.drop:hover,.drop.over{border-color:var(--gold);background:rgba(246,197,107,.06)}
-.thumb{display:flex;gap:14px;align-items:center;margin-top:13px;flex-wrap:wrap}
-.thumb img{width:104px;height:78px;object-fit:cover;border-radius:10px;border:1px solid var(--edge)}
-.thumb .meta{font-family:"DM Mono",monospace;font-size:12px;color:var(--lume-mid);line-height:1.7}
-.thumb .meta b{color:var(--gold);font-weight:500}
-ul.list{list-style:none;padding:0;margin:0}
-ul.list li{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--edge)}
-ul.list li:last-child{border-bottom:none}
-.li-img{width:62px;height:47px;flex:none;border-radius:8px;border:1px solid var(--edge);object-fit:cover}
-.li-body{flex:1;min-width:0}
-.li-title{font-family:"Fraunces",serif;font-weight:600;font-size:16px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.li-meta{font-family:"DM Mono",monospace;font-size:11.5px;color:var(--lume-dim);margin-top:2px}
-.li-meta .px{color:var(--gold)}
-.badge{display:inline-block;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-left:6px;
-  background:linear-gradient(120deg,var(--flux-3),var(--flux-1));color:var(--lume)}
-.badge.feat{background:linear-gradient(120deg,var(--gold),var(--flux-2));color:var(--void)}
-.icons{display:flex;gap:3px;flex:none}
-.icons button{background:none;border:1px solid var(--edge);color:var(--lume-dim);
-  width:32px;height:32px;padding:0;border-radius:9px;font-size:14px;line-height:1}
-.icons button:hover{border-color:var(--gold);color:var(--lume)}
-.empty{color:var(--lume-dim);font-family:"DM Mono",monospace;font-size:13px;text-align:center;padding:24px 0}
-.note{background:rgba(139,92,214,.12);border:1px solid rgba(139,92,214,.34);border-radius:13px;
-  padding:13px 17px;font-size:13.5px;color:var(--lume-mid);margin-top:14px}
-.note.warn{background:rgba(224,81,138,.10);border-color:rgba(224,81,138,.35)}
-.note b{color:var(--lume);font-weight:500}
-.note a{color:var(--gold)}
-.msg{font-family:"DM Mono",monospace;font-size:13px;margin-left:4px}
-.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)} .msg.busy{color:var(--gold)}
-.editing{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(246,197,107,.3)}
-.log{font-family:"DM Mono",monospace;font-size:12.5px;color:var(--lume-mid);
-  background:rgba(10,5,16,.6);border:1px solid var(--edge);border-radius:13px;
-  padding:14px 16px;margin-top:14px;max-height:210px;overflow-y:auto;white-space:pre-wrap}
-.log .g{color:var(--ok)} .log .r{color:var(--bad)}
-code{font-family:"DM Mono",monospace;font-size:.92em;color:var(--lume)}
 
-/* ---------- Ekranet e hyrjes ---------- */
-.screen{position:fixed;inset:0;background:var(--void);z-index:99;display:grid;place-items:center;
-  padding:24px;overflow-y:auto}
-.screen .box{width:min(420px,100%);text-align:center}
-.screen h1{margin-bottom:10px}
-.screen form{text-align:left;margin-top:20px}
-.screen .field{margin-bottom:14px}
-.screen .foot{margin-top:16px;font-family:"DM Mono",monospace;font-size:12.5px}
-.screen .foot a{color:var(--gold);cursor:pointer;text-decoration:none}
-.screen .foot a:hover{text-decoration:underline}
-.screen .msg{display:block;min-height:20px;margin:12px 0 0;text-align:center}
-@media(max-width:520px){
-  .screen{padding:18px;align-content:center}
-  .screen button{width:100%}
-}
-.boot{z-index:120;color:var(--lume-dim);font-family:"DM Mono",monospace;font-size:13px}
-
-/* ---------- Shiriti i punonjësit ---------- */
-.userbar{display:flex;gap:12px;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;margin-top:18px}
-.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0;
-  font-family:"DM Mono",monospace;font-size:12.5px;color:var(--lume-dim)}
-.who .em{color:var(--lume);max-width:min(60vw,320px);overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-.rolebadge{display:inline-block;font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;padding:3px 9px;border-radius:20px;
-  background:linear-gradient(120deg,var(--flux-3),var(--flux-1));color:var(--lume)}
-.rolebadge.admin{background:linear-gradient(120deg,var(--gold),var(--flux-2));color:var(--void)}
-.userbar button{padding:9px 18px}
-@media(max-width:520px){.userbar{gap:10px}.userbar button{width:100%}}
-
-/* ---------- Gjendjet e ngarkimit ---------- */
-.dots::after{content:"";animation:dots 1.2s steps(4,end) infinite}
-@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
-@media(prefers-reduced-motion:reduce){.dots::after{content:"…";animation:none}}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin/admin.css">
 </head>
 <body>
 
-<!-- ================= 1. KONTROLLI I SESIONIT ================= -->
-<div class="screen boot" id="boot">
-  <div class="box"><span class="dots">Duke kontrolluar sesionin</span></div>
+<a class="skip-link" href="#viewRoot">Kapërce te përmbajtja</a>
+
+<!-- ================================================================
+     1 · KONTROLLI I SESIONIT
+     ================================================================ -->
+<div class="screen" id="screen-boot">
+  <div class="boot-screen">
+    <span class="spinner" aria-hidden="true"></span>
+    <p class="boot-screen__text" id="bootText" role="status">Duke kontrolluar sesionin…</p>
+  </div>
 </div>
 
-<!-- ================= 2. HYRJA ================= -->
-<div class="screen" id="login" hidden>
-  <div class="box">
-    <h1>Administrimi</h1>
-    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Kyçuni me email-in dhe fjalëkalimin e punës.</p>
+<!-- ================================================================
+     2 · HYRJA
+     ================================================================ -->
+<div class="screen screen--auth" id="screen-login" hidden>
+  <div class="auth-box">
+    <div class="auth-box__brand">
+      <span class="brandmark">
+        <span class="brandmark__dot" aria-hidden="true"></span>
+        <span>ZONE GROUP
+          <span class="brandmark__sub">Real Estate</span>
+        </span>
+      </span>
+    </div>
+
+    <h1 class="auth-box__title">Mirë se vini</h1>
+    <p class="auth-box__lede">Hyni në panelin administrativ të Zone Real Estate.</p>
+
+    <p class="auth-msg" id="loginMsg" role="status" aria-live="polite"></p>
+
     <form id="loginForm" novalidate>
       <div class="field">
-        <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="username" inputmode="email"
-               placeholder="emri@kompania.com" required>
+        <label class="label" for="email">Email</label>
+        <input class="input" id="email" type="email" autocomplete="username"
+               inputmode="email" placeholder="emri@kompania.com" required>
       </div>
       <div class="field">
-        <label for="password">Fjalëkalimi</label>
-        <input id="password" type="password" autocomplete="current-password" required>
+        <label class="label" for="password">Fjalëkalimi</label>
+        <input class="input" id="password" type="password" autocomplete="current-password" required>
       </div>
-      <button class="primary" type="submit" id="btnLogin" style="width:100%">Hyr</button>
+      <button class="btn btn--primary btn--block" type="submit" id="btnLogin">Kyçu</button>
     </form>
-    <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
-    <p class="foot"><a id="linkForgot" role="button" tabindex="0">Keni harruar fjalëkalimin?</a></p>
+
+    <div class="auth-box__foot">
+      <button class="linkbtn" type="button" id="linkForgot">Keni harruar fjalëkalimin?</button>
+    </div>
   </div>
 </div>
 
-<!-- ================= 3. RIVENDOSJA E FJALËKALIMIT ================= -->
-<div class="screen" id="forgot" hidden>
-  <div class="box">
-    <h1>Rivendos fjalëkalimin</h1>
-    <p class="sub" style="color:var(--lume-dim);margin:0 auto">Do t'ju dërgojmë një link në email.</p>
+<!-- ================================================================
+     3 · RIVENDOSJA E FJALËKALIMIT
+     ================================================================ -->
+<div class="screen screen--auth" id="screen-forgot" hidden>
+  <div class="auth-box">
+    <div class="auth-box__brand">
+      <span class="brandmark">
+        <span class="brandmark__dot" aria-hidden="true"></span>
+        <span>ZONE GROUP
+          <span class="brandmark__sub">Real Estate</span>
+        </span>
+      </span>
+    </div>
+
+    <h1 class="auth-box__title">Rivendos fjalëkalimin</h1>
+    <p class="auth-box__lede">Shkruani email-in tuaj dhe do t'ju dërgojmë një link.</p>
+
+    <p class="auth-msg" id="forgotMsg" role="status" aria-live="polite"></p>
+
     <form id="forgotForm" novalidate>
       <div class="field">
-        <label for="forgotEmail">Email</label>
-        <input id="forgotEmail" type="email" autocomplete="username" inputmode="email" required>
+        <label class="label" for="forgotEmail">Email</label>
+        <input class="input" id="forgotEmail" type="email" autocomplete="username"
+               inputmode="email" required>
       </div>
-      <button class="primary" type="submit" id="btnForgot" style="width:100%">Dërgo linkun</button>
+      <button class="btn btn--primary btn--block" type="submit" id="btnForgot">Dërgo linkun</button>
     </form>
-    <p class="msg" id="forgotMsg" role="status" aria-live="polite"></p>
-    <p class="foot"><a id="linkBackToLogin" role="button" tabindex="0">Kthehu te hyrja</a></p>
+
+    <div class="auth-box__foot">
+      <button class="linkbtn" type="button" id="linkBackToLogin">Kthehu te hyrja</button>
+    </div>
   </div>
 </div>
 
-<!-- Fjalëkalimi i ri vendoset te reset-password.html — një faqe e vetme,
-     një adresë e vetme në listën "Redirect URLs" të Supabase-it. -->
-
-<!-- ================= 4. QASJA E NDALUAR ================= -->
-<div class="screen" id="denied" hidden>
-  <div class="box">
-    <h1>Qasje e ndaluar</h1>
-    <p class="sub" style="color:var(--lume-dim);margin:0 auto" id="deniedMsg"></p>
-    <div style="margin-top:22px"><button class="ghost" id="btnDeniedOut">Dil</button></div>
+<!-- ================================================================
+     4 · QASJA E NDALUAR
+     ================================================================ -->
+<div class="screen screen--auth" id="screen-denied" hidden>
+  <div class="auth-box">
+    <h1 class="auth-box__title">Qasje e ndaluar</h1>
+    <p class="auth-box__lede" id="deniedMsg"></p>
+    <button class="btn btn--ghost" type="button" id="btnDeniedOut">Dil</button>
   </div>
 </div>
 
-<!-- ================= 6. PANELI ================= -->
-<div id="app" hidden>
-  <header>
-    <div class="wrap">
-      <h1>Paneli i administrimit</h1>
-      <p class="sub">Shtoni dhe redaktoni pronat, pastaj publikoni drejtpërdrejt në faqe. Ndryshimet dalin live për një deri dy minuta.</p>
-      <div class="userbar">
-        <span class="who">
-          <span class="em" id="whoEmail"></span>
-          <span class="rolebadge" id="whoRole"></span>
+<!-- ================================================================
+     5 · PANELI
+     ================================================================ -->
+<div class="app" id="app" hidden>
+
+  <!-- ---------- Sidebar ---------- -->
+  <aside class="sidebar" id="sidebar" aria-label="Menyja kryesore">
+    <div class="sidebar__brand">
+      <span class="brandmark">
+        <span class="brandmark__dot" aria-hidden="true"></span>
+        <span>ZONE GROUP
+          <span class="brandmark__sub">Real Estate</span>
         </span>
-        <span class="row">
-          <button class="ghost" id="btnReload">Ringarko</button>
-          <button class="ghost" id="btnLogout">Dil</button>
-        </span>
-      </div>
-      <p class="msg" id="loadMsg" style="margin-left:0"></p>
+      </span>
+    </div>
+
+    <nav class="sidebar__nav" id="sidebarNav"></nav>
+
+    <div class="sidebar__foot">
+      <button class="sidebar__toggle" type="button" id="sidebarToggle"
+              aria-label="Zgjero ose mblidh menynë">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        <span>Mblidh menynë</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ---------- Header ---------- -->
+  <header class="header">
+    <button class="header__burger" type="button" id="burger"
+            aria-label="Hap menynë" aria-expanded="false" aria-controls="sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+           stroke-linecap="round" aria-hidden="true">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+
+    <div class="header__titles">
+      <h1 class="header__title" id="headerTitle">Paneli Kryesor</h1>
+      <nav class="breadcrumbs" id="breadcrumbs" aria-label="Shtegu"></nav>
+    </div>
+
+    <div class="header__search" id="headerSearch"></div>
+    <div class="header__spacer"></div>
+
+    <div class="header__actions">
+      <button class="pub-state" type="button" id="pubState" hidden></button>
+      <div id="headerQuick"></div>
+      <div id="headerProfile"></div>
     </div>
   </header>
 
-  <div class="wrap">
+  <!-- ---------- Përmbajtja ---------- -->
+  <main class="main" id="main">
+    <div class="main__inner" id="viewRoot" tabindex="-1"></div>
+  </main>
 
-    <!-- 1 · SETTINGS -->
-    <div class="panel" id="settingsPanel" hidden>
-      <h2>1 · Cilësimet</h2>
-      <p class="hint">Këto shfaqen në të gjithë faqen.</p>
-      <div class="grid">
-        <div class="field"><label for="dispPhone">Numri që shfaqet</label><input id="dispPhone"></div>
-        <div class="field"><label for="callPhone">Numri që thirret (vetëm shifra)</label><input id="callPhone"></div>
-        <div class="field"><label for="city">Zona</label><input id="city"></div>
-        <div class="field"><label for="updated">Përditësuar</label><input id="updated"></div>
-      </div>
-    </div>
-
-    <!-- 2 · FORM -->
-    <div class="panel" id="formPanel" hidden>
-      <h2 id="formTitle">2 · Shto një pronë</h2>
-      <p class="hint">Fushat me yll janë të domosdoshme.</p>
-      <div class="grid">
-        <div class="field"><label for="f_title">Titulli *</label><input id="f_title" placeholder="Shtëpi në Arbëri"></div>
-        <div class="field"><label for="f_status">Statusi *</label>
-          <select id="f_status"><option>Për shitje</option><option>Me qira</option></select></div>
-        <div class="field"><label for="f_price">Çmimi *</label><input id="f_price" placeholder="185.000 €"></div>
-        <div class="field"><label for="f_location">Lokacioni *</label><input id="f_location" placeholder="Arbëri, Prishtinë"></div>
-        <div class="field"><label for="f_beds">Dhoma gjumi *</label><input id="f_beds" type="number" min="0"></div>
-        <div class="field"><label for="f_baths">Banjo *</label><input id="f_baths" type="number" min="0"></div>
-        <div class="field"><label for="f_size">Sipërfaqja *</label><input id="f_size" placeholder="140 m²"></div>
-        <div class="field"><label for="f_image">Emri i fotos</label><input id="f_image" placeholder="plotësohet vetë"></div>
-        <div class="field full"><label for="f_summary">Përshkrimi i shkurtër *</label><textarea id="f_summary"></textarea></div>
-        <div class="field full"><label for="f_details">Përshkrimi i plotë</label><textarea id="f_details"></textarea></div>
-        <div class="field full"><label for="f_features">Karakteristikat — një për rresht</label><textarea id="f_features"></textarea></div>
-        <div class="field full">
-          <label>Fotoja</label>
-          <div class="drop" id="dropZone">Klikoni ose tërhiqni një foto këtu<br>
-            <span style="font-size:12.5px;opacity:.7">Zvogëlohet vetë në 1200px dhe riemërtohet pa ë, ç apo hapësira</span>
-          </div>
-          <input type="file" id="filePhoto" accept="image/*" hidden>
-          <div class="thumb" id="thumbBox" hidden>
-            <img id="thumbImg" alt="">
-            <div class="meta" id="thumbMeta"></div>
-            <button class="ghost" id="btnDropPhoto" style="padding:8px 15px">Hiqe</button>
-          </div>
-        </div>
-      </div>
-      <div class="row" style="margin-top:6px">
-        <button class="primary" id="btnSave">Shto pronën</button>
-        <button class="ghost" id="btnCancel" hidden>Anulo</button>
-        <button class="ghost" id="btnClear">Pastro</button>
-        <span class="msg ok" id="saveMsg"></span>
-      </div>
-    </div>
-
-    <!-- 3 · LIST -->
-    <div class="panel" id="listPanel" hidden>
-      <h2>3 · Pronat <span id="count" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:15px"></span></h2>
-      <p class="hint">E para në listë shfaqet si “E veçuar” në ballinë.</p>
-      <ul class="list" id="list"></ul>
-      <p class="empty" id="listEmpty">Ende asnjë pronë.</p>
-    </div>
-
-    <!-- 4 · PUBLISH -->
-    <div class="panel" id="pubPanel" hidden>
-      <h2>4 · Publiko</h2>
-      <p class="hint">Ndryshimet dërgohen përmes serverit të sigurt dhe dalin live për një deri dy minuta.</p>
-      <div class="row">
-        <button class="primary" id="btnPublish">Publiko ndryshimet</button>
-        <span class="msg" id="pubMsg"></span>
-      </div>
-      <div class="log" id="log" hidden></div>
-      <div class="note warn" id="pubBlocked" hidden>
-        <b>Nuk keni leje për të publikuar.</b>
-        Roli juaj nuk lejon dërgimin e ndryshimeve. Kontaktoni një administrator.
-      </div>
-      <div class="note warn" id="pubReminder">
-        <b>Para se ta mbyllni:</b> ndryshimet e paruajtura humbin. Klikoni <b>Publiko</b> kur të mbaroni.
-      </div>
-    </div>
-
-  </div>
 </div>
 
 <!-- Konfigurimi publik: vetëm URL dhe çelësi anon. Asnjë sekret këtu. -->
 <script src="admin-config.js"></script>
+<script type="module" src="admin/app.js"></script>
 
-<script type="module">
-import {
-  CFG, makeClient, ADMIN_STORAGE_KEY, MSG, authMessage, isNetworkError,
-  withTimeout, getSessionSafe, signOutSafe, normRole, isActive,
-  resetRedirectUrl, storageIsPersistent
-} from "./auth.js";
-
-"use strict";
-
-/* ===================================================================
-   Konfigurimi
-   =================================================================== */
-const PUBLISH_ROLES = (CFG.PUBLISH_ROLES || ["admin", "editor"]).map(normRole);
-const PANEL_ROLES   = ["admin", "editor"];
-const ROLE_LABEL = { admin: "Administrator", editor: "Redaktor" };
-
-const $ = (id) => document.getElementById(id);
-
-if (!CFG.SUPABASE_URL || !CFG.SUPABASE_ANON_KEY || !CFG.FUNCTION_URL ||
-    CFG.SUPABASE_URL.indexOf("YOUR-PROJECT-REF") !== -1) {
-  document.body.innerHTML =
-    '<div class="screen"><div class="box"><h1>Konfigurim i paplotësuar</h1>' +
-    '<p class="sub" style="color:var(--lume-dim)">Plotësoni <code>admin-config.js</code> me URL-në e Supabase, ' +
-    'çelësin publik anon dhe adresën e funksionit.</p></div></div>';
-  throw new Error("admin-config.js is not filled in");
-}
-
-/* detectSessionInUrl është QËLLIMISHT i fikur këtu: kjo faqe nuk duhet
-   të konsumojë kurrë tokenët e një linku rivendosjeje. Ata i takojnë
-   faqes reset-password.html. */
-const supabase = makeClient({
-  storageKey: ADMIN_STORAGE_KEY,
-  detectSessionInUrl: false
-});
-
-/* ===================================================================
-   Gjendja
-   =================================================================== */
-let me = null;                 // { email, role, active }
-let dataLoaded = false;
-let entering = false;          // enterPanel po punon tashmë
-let signingIn = false;         // formulari i hyrjes po punon
-let forgotBusy = false;        // formulari i rivendosjes po punon
-let expiring = false;          // handleExpired po punon (pa cikle)
-let bootDone = false;          // nisja mbaroi
-
-let repoInfo = { branch: "", sha: null };
-let config = { DISPLAY_PHONE:"", CALL_PHONE:"", CITY:"", LAST_UPDATED:"", TEXT:null };
-let listings = [];
-let newPhotos = {};            // filename -> { blob, dataUrl, ... }
-let editIndex = -1;
-let pendingPhoto = null;
-let dirty = false;             // ka ndryshime të papublikuara?
-
-const DEFAULT_TEXT = {
-  statusShitje:"Për shitje", statusQira:"Me qira",
-  butoniThirr:"Telefono për këtë", butoniDetajet:"Detajet", eVecuar:"E veçuar",
-  "specÇmimi":"Çmimi", specDhoma:"Dhoma gjumi", specBanjo:"Banjo", specSiperfaqja:"Sipërfaqja",
-  shkurtDhoma:"dh", shkurtBanjo:"bnj",
-  karakteristikat:"Karakteristikat", telefono:"Telefono",
-  shenimiThirrjes:"Pyetni për këtë pronë me emër —",
-  shikoDetajet:"Shiko detajet për", prona:"prona", pronaNjejes:"pronë", aktive:"aktive",
-  bosh:"Asnjë pronë në këtë kategori për momentin. Telefononi",
-  boshFund:"dhe pyesni çfarë vjen së shpejti.", shtoFoto:"SHTO FOTO"
-};
-
-const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48">' +
-  '<rect width="64" height="48" fill="#241435"/>' +
-  '<path d="M32 16 L22 25 L25 25 L25 33 L39 33 L39 25 L42 25 Z" fill="none" ' +
-  'stroke="#F6C56B" stroke-width="1.6" stroke-linejoin="round" opacity="0.55"/></svg>');
-
-/* ===================================================================
-   Ndihmësa të vegjël
-   =================================================================== */
-function msg(id, text, cls){
-  const el = $(id);
-  el.textContent = text || "";
-  el.className = "msg" + (cls ? " " + cls : "");
-}
-function log(text, cls){
-  const el = $("log");
-  el.hidden = false;
-  const span = document.createElement("span");
-  if (cls) span.className = cls;
-  span.textContent = text + "\n";
-  el.appendChild(span);
-  el.scrollTop = el.scrollHeight;
-}
-function esc(s){
-  return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
-function isDirty(){
-  return dirty || Object.keys(newPhotos).length > 0 || pendingPhoto !== null;
-}
-
-const SCREENS = ["boot","login","forgot","denied","app"];
-function show(which){
-  SCREENS.forEach((id) => { $(id).hidden = (id !== which); });
-}
-
-/* ===================================================================
-   Base64 që i mbijeton shkronjave shqipe
-   =================================================================== */
-function utf8ToB64(str){
-  const bytes = new TextEncoder().encode(str);
-  let bin = "";
-  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin);
-}
-function blobToB64(blob){
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(String(r.result).split(",")[1]);
-    r.onerror = rej;
-    r.readAsDataURL(blob);
-  });
-}
-
-/* ===================================================================
-   API e sigurt — GitHub preket VETËM nga serveri.
-   Shfletuesi dërgon tokenin e Supabase, kurrë tokenin e GitHub.
-   =================================================================== */
-class ApiError extends Error {
-  constructor(message, status, code){
-    super(message);
-    this.status = status;
-    this.code = code || "";
-  }
-}
-
-/* Kodet 403 që do të thonë vërtet "kjo llogari nuk e hap panelin".
-   Çdo 403 tjetër (p.sh. mungesë leje vetëm për publikim) tregohet si
-   mesazh në vend, pa e nxjerrë njeriun nga paneli. */
-const PANEL_DENY_CODES = ["inactive", "no_profile", "role"];
-
-async function callApi(action, payload){
-  /* Nëse rinovimi i tokenit dështon për shkak të internetit, kjo NUK
-     është skadim sesioni dhe përdoruesi nuk duhet të nxirret jashtë. */
-  const { session, offline } = await getSessionSafe(supabase);
-  if (offline) throw new ApiError(MSG.network, 0, "offline");
-  if (!session){
-    await handleExpired();
-    throw new ApiError(MSG.expired, 401, "expired");
-  }
-
-  let res;
-  try {
-    res = await withTimeout(fetch(CFG.FUNCTION_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + session.access_token,
-        "apikey": CFG.SUPABASE_ANON_KEY
-      },
-      body: JSON.stringify(Object.assign({ action }, payload || {}))
-    }), 30000);
-  } catch (e) {
-    throw new ApiError(isNetworkError(e) ? MSG.network : MSG.server, 0, "network");
-  }
-
-  const text = await res.text().catch(() => "");
-  let body = null;
-  try { body = text ? JSON.parse(text) : null; } catch (e) {}
-
-  if (!res.ok) {
-    const code = (body && body.code) || "";
-    /* Funksioni përgjigjet gjithmonë shqip. Nëse jo (p.sh. platforma e
-       ndaloi kërkesën para funksionit), nuk e nxjerrim tekstin e tij. */
-    const message = (body && body.error) ||
-      (res.status === 401 ? MSG.expired : res.status >= 500 ? MSG.server : MSG.generic);
-
-    if (res.status === 401){ await handleExpired(message); }
-    else if (res.status === 403 && PANEL_DENY_CODES.includes(code)){ showDenied(message); }
-
-    throw new ApiError(message, res.status, code);
-  }
-  return body;
-}
-
-async function handleExpired(text){
-  if (expiring) return;
-  expiring = true;
-  try {
-    me = null; dataLoaded = false;
-    await signOutSafe(supabase, "local");
-    show("login");
-    msg("loginMsg", text || MSG.expired, "bad");
-    $("email").focus();
-  } finally {
-    expiring = false;
-  }
-}
-
-function showDenied(text){
-  $("deniedMsg").textContent = text || "Llogaria juaj nuk ka leje për këtë panel.";
-  show("denied");
-}
-
-/* ===================================================================
-   Rrjedha e hyrjes
-   =================================================================== */
-function setLoginBusy(busy){
-  const btn = $("btnLogin");
-  btn.disabled = busy;
-  btn.textContent = busy ? "Duke u kyçur…" : "Hyr";
-  if (busy) btn.setAttribute("aria-busy", "true"); else btn.removeAttribute("aria-busy");
-  $("email").disabled = busy;
-  $("password").disabled = busy;
-  $("linkForgot").setAttribute("aria-disabled", busy ? "true" : "false");
-}
-
-$("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (signingIn) return;                       // mbron nga klikimet e shumëfishta
-
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) { msg("loginMsg", "Plotësoni email-in dhe fjalëkalimin.", "bad"); return; }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    msg("loginMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return;
-  }
-
-  signingIn = true;
-  setLoginBusy(true);
-  msg("loginMsg", "Duke u kyçur…", "busy");
-
-  let result;
-  try {
-    result = await withTimeout(supabase.auth.signInWithPassword({ email, password }), 25000);
-  } catch (err) {
-    signingIn = false;
-    setLoginBusy(false);
-    msg("loginMsg", authMessage(err, MSG.server), "bad");
-    return;
-  }
-
-  const error = result && result.error;
-  const session = result && result.data && result.data.session;
-
-  if (error) {
-    signingIn = false;
-    setLoginBusy(false);
-    msg("loginMsg", authMessage(error, MSG.generic), "bad");
-    $("password").value = "";
-    $("password").focus();
-    return;
-  }
-
-  /* Supabase mund të kthejë përdorues pa sesion (p.sh. email i
-     pakonfirmuar). Pa këtë kontroll, faqja "kyçej" dhe pastaj ngecte. */
-  if (!session) {
-    signingIn = false;
-    setLoginBusy(false);
-    msg("loginMsg", MSG.notConfirmed, "bad");
-    $("password").value = "";
-    return;
-  }
-
-  $("password").value = "";
-  try {
-    await enterPanel();
-  } finally {
-    signingIn = false;
-    setLoginBusy(false);
-  }
-});
-
-/* Rivendosja e fjalëkalimit */
-function clickable(id, fn){
-  const el = $(id);
-  el.onclick = fn;
-  el.onkeydown = (e) => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fn(); } };
-}
-clickable("linkForgot", () => {
-  if (signingIn) return;
-  $("forgotEmail").value = $("email").value.trim();
-  msg("forgotMsg", "");
-  show("forgot");
-  $("forgotEmail").focus();
-});
-clickable("linkBackToLogin", () => {
-  if (forgotBusy) return;
-  msg("loginMsg", "");
-  show("login");
-  $("email").focus();
-});
-
-$("forgotForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (forgotBusy) return;                      // mbron nga klikimet e shumëfishta
-
-  const email = $("forgotEmail").value.trim();
-  if (!email) { msg("forgotMsg", "Shkruani email-in tuaj.", "bad"); return; }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    msg("forgotMsg", "Adresa e email-it nuk duket e saktë.", "bad"); return;
-  }
-
-  const redirectTo = resetRedirectUrl();
-  if (!redirectTo) {
-    msg("forgotMsg", "Faqja duhet hapur nga interneti, jo si skedar lokal.", "bad");
-    return;
-  }
-
-  forgotBusy = true;
-  const btn = $("btnForgot");
-  btn.disabled = true;
-  btn.setAttribute("aria-busy", "true");
-  btn.textContent = "Duke dërguar…";
-  $("forgotEmail").disabled = true;
-  msg("forgotMsg", "Duke dërguar…", "busy");
-
-  try {
-    const { error } = await withTimeout(
-      supabase.auth.resetPasswordForEmail(email, { redirectTo }), 25000);
-
-    /* Kritike: mesazhi i suksesit shfaqet VETËM kur Supabase e pranoi
-       vërtet kërkesën. Më parë çdo përgjigje dilte si sukses, prandaj
-       njerëzit prisnin një email që nuk ishte nisur kurrë. */
-    if (error) {
-      msg("forgotMsg", authMessage(error, MSG.emailNotSent), "bad");
-      return;
-    }
-
-    /* Kërkesa kaloi. Formulimi mbetet neutral me qëllim: nuk zbulojmë
-       nëse adresa ekziston apo jo. */
-    msg("forgotMsg", "Nëse adresa ekziston, linku u dërgua ✓", "ok");
-    $("forgotEmail").blur();
-
-  } catch (err) {
-    msg("forgotMsg", authMessage(err, MSG.server), "bad");
-  } finally {
-    forgotBusy = false;
-    btn.disabled = false;
-    btn.removeAttribute("aria-busy");
-    btn.textContent = "Dërgo linkun";
-    $("forgotEmail").disabled = false;
-  }
-});
-
-/* Dalja */
-let loggingOut = false;
-
-async function doLogout(){
-  if (loggingOut) return;                      // mbron nga klikimet e shumëfishta
-  if (isDirty() && !confirm("Keni ndryshime të papublikuara. Të dilni gjithsesi?")) return;
-
-  loggingOut = true;
-  $("btnLogout").disabled = true;
-  $("btnDeniedOut").disabled = true;
-
-  /* Gjendja pastrohet e para. Kështu, edhe nëse rrjeti bie gjatë daljes,
-     paneli nuk mbetet i hapur me të dhëna të vjetra. */
-  me = null; dataLoaded = false;
-  newPhotos = {}; pendingPhoto = null; listings = []; dirty = false;
-
-  /* Dalja nuk dështon kurrë lokalisht, edhe kur tokeni ka skaduar. */
-  await signOutSafe(supabase, "global");
-
-  show("login");
-  msg("loginMsg", "Dolët nga llogaria.", "ok");
-  $("email").value = "";
-  $("password").value = "";
-  $("email").focus();
-
-  loggingOut = false;
-  $("btnLogout").disabled = false;
-  $("btnDeniedOut").disabled = false;
-}
-$("btnLogout").onclick = doLogout;
-$("btnDeniedOut").onclick = doLogout;
-
-/* ===================================================================
-   Hyrja në panel: verifikimi i rolit, pastaj ngarkimi i të dhënave
-   =================================================================== */
-async function enterPanel(){
-  if (entering) return;
-  entering = true;
-  try {
-    await enterPanelInner();
-  } finally {
-    entering = false;
-  }
-}
-
-async function enterPanelInner(){
-  show("boot");
-  $("boot").querySelector(".box").innerHTML = '<span class="dots">Duke verifikuar lejet</span>';
-
-  let profile;
-  try {
-    const r = await callApi("me");
-    profile = r && r.profile;
-    if (!profile) throw new ApiError(MSG.server, 500, "");
-  } catch (e) {
-    /* 401 dhe 403-shet e panelit i kanë shfaqur tashmë ekranet e veta. */
-    if (e.status === 401) return;
-    if (e.status === 403 && PANEL_DENY_CODES.includes(e.code)) return;
-    /* Gjithçka tjetër — rrjet, server, kohë e mbaruar — nuk është faji i
-       përdoruesit. E kthejmë te hyrja me një mesazh që e kupton. */
-    me = null;
-    show("login");
-    msg("loginMsg", e.message || MSG.server, "bad");
-    return;
-  }
-
-  /* Roli krahasohet i pastruar: "Admin", "admin " dhe "admin" janë i
-     njëjti rol. Më parë çdo ndryshim i vogël shkronjash e bllokonte
-     një përdorues krejtësisht të vlefshëm. */
-  me = Object.assign({}, profile, { role: normRole(profile.role) });
-
-  if (!isActive(me)) {
-    showDenied("Përdorues joaktiv. Kontaktoni administratorin.");
-    return;
-  }
-  if (!PANEL_ROLES.includes(me.role)) {
-    showDenied("Roli juaj nuk lejon qasje në këtë panel.");
-    return;
-  }
-
-  $("whoEmail").textContent = me.email || "";
-  $("whoRole").textContent = ROLE_LABEL[me.role] || me.role;
-  $("whoRole").className = "rolebadge" + (me.role === "admin" ? " admin" : "");
-
-  /* Serveri mbetet burimi i vërtetës. Kjo vetëm fsheh butonat. */
-  const canPublish = (me.canPublish === true) || PUBLISH_ROLES.includes(me.role);
-  $("btnPublish").disabled = !canPublish;
-  $("pubBlocked").hidden = canPublish;
-  $("pubReminder").hidden = !canPublish;
-
-  show("app");
-
-  if (!storageIsPersistent()) {
-    msg("loadMsg", "Shfletuesi nuk po ruan sesionin. Do të dilni kur ta mbyllni skedën.", "busy");
-  }
-
-  if (!dataLoaded) await loadData();
-}
-
-/* ===================================================================
-   Ngarkimi i listings.js përmes serverit
-   =================================================================== */
-async function loadData(){
-  $("btnReload").disabled = true;
-  msg("loadMsg", "Duke ngarkuar pronat…", "busy");
-  try {
-    const r = await callApi("load");
-    repoInfo.branch = r.branch;
-    repoInfo.sha = r.sha;
-
-    const cfg = new Function("window", r.content + "\nreturn window.ZONE_CONFIG;")({});
-    if (!cfg || !cfg.listings) throw new Error("listings.js nuk u lexua dot.");
-
-    config.DISPLAY_PHONE = cfg.DISPLAY_PHONE || "";
-    config.CALL_PHONE    = cfg.CALL_PHONE || "";
-    config.CITY          = cfg.CITY || "";
-    config.LAST_UPDATED  = cfg.LAST_UPDATED || "";
-    config.TEXT          = cfg.TEXT || null;
-    listings = cfg.listings.slice();
-
-    fillSettings();
-    ["settingsPanel","formPanel","listPanel","pubPanel"].forEach((id) => { $(id).hidden = false; });
-    render();
-    dataLoaded = true;
-    dirty = false;
-    msg("loadMsg", listings.length + " prona u ngarkuan ✓", "ok");
-  } catch (e) {
-    msg("loadMsg", e.message, "bad");
-  } finally {
-    $("btnReload").disabled = false;
-  }
-}
-
-$("btnReload").onclick = async () => {
-  if (isDirty() && !confirm("Keni ndryshime të papublikuara. Të ringarkohet gjithsesi?")) return;
-  newPhotos = {}; pendingPhoto = null; dirty = false; $("thumbBox").hidden = true;
-  dataLoaded = false;
-  await loadData();
-};
-
-function fillSettings(){
-  $("dispPhone").value = config.DISPLAY_PHONE;
-  $("callPhone").value = config.CALL_PHONE;
-  $("city").value = config.CITY;
-  $("updated").value = config.LAST_UPDATED || monthName();
-}
-function monthName(){
-  const m = ["Janar","Shkurt","Mars","Prill","Maj","Qershor","Korrik","Gusht",
-             "Shtator","Tetor","Nëntor","Dhjetor"];
-  const d = new Date();
-  return m[d.getMonth()] + " " + d.getFullYear();
-}
-
-/* ===================================================================
-   Emrat e skedarëve dhe fotot
-   =================================================================== */
-const MAP = {"ë":"e","Ë":"e","ç":"c","Ç":"c","á":"a","à":"a","â":"a","ä":"a","é":"e",
-             "è":"e","ê":"e","í":"i","ì":"i","î":"i","ó":"o","ò":"o","ô":"o","ö":"o",
-             "ú":"u","ù":"u","û":"u","ü":"u","ñ":"n","š":"s","ž":"z"};
-function slug(s){
-  s = String(s || "").toLowerCase();
-  let out = "";
-  for (let i = 0; i < s.length; i++) out += (MAP[s[i]] !== undefined ? MAP[s[i]] : s[i]);
-  return out.replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48) || "prona";
-}
-
-function processPhoto(file, baseName){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("S'u lexua skedari."));
-    reader.onload = () => {
-      const img = new Image();
-      img.onerror = () => reject(new Error("Foto e papërdorshme."));
-      img.onload = () => {
-        const MAXW = 1200;
-        let w = img.width, h = img.height;
-        if (w > MAXW){ h = Math.round(h * MAXW / w); w = MAXW; }
-        const cv = document.createElement("canvas");
-        cv.width = w; cv.height = h;
-        const cx = cv.getContext("2d");
-        cx.fillStyle = "#140C1C"; cx.fillRect(0,0,w,h);
-        cx.drawImage(img, 0, 0, w, h);
-        cv.toBlob((blob) => {
-          if (!blob){ reject(new Error("S'u përpunua fotoja.")); return; }
-          resolve({
-            name: slug(baseName) + "-" + Date.now().toString(36).slice(-4) + ".jpg",
-            blob: blob, dataUrl: cv.toDataURL("image/jpeg", 0.82),
-            w: w, h: h,
-            originalKB: Math.round(file.size/1024), newKB: Math.round(blob.size/1024)
-          });
-        }, "image/jpeg", 0.82);
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function handlePhotoFile(file){
-  if (!file || !/^image\//.test(file.type)){ alert("Zgjidhni një foto (JPG ose PNG)."); return; }
-  const base = $("f_title").value.trim() || file.name.replace(/\.[^.]+$/,"");
-  processPhoto(file, base).then((p) => {
-    pendingPhoto = p;
-    $("f_image").value = p.name;
-    $("thumbImg").src = p.dataUrl;
-    $("thumbMeta").innerHTML = "<b>" + esc(p.name) + "</b><br>" + p.w + "×" + p.h + " px<br>" +
-      p.originalKB + " KB → <b>" + p.newKB + " KB</b>";
-    $("thumbBox").hidden = false;
-  }).catch((e) => alert(e.message));
-}
-
-$("dropZone").onclick = () => $("filePhoto").click();
-$("filePhoto").onchange = (e) => { if (e.target.files[0]) handlePhotoFile(e.target.files[0]); e.target.value = ""; };
-["dragenter","dragover"].forEach((ev) => {
-  $("dropZone").addEventListener(ev, function(e){ e.preventDefault(); this.classList.add("over"); });
-});
-["dragleave","drop"].forEach((ev) => {
-  $("dropZone").addEventListener(ev, function(e){ e.preventDefault(); this.classList.remove("over"); });
-});
-$("dropZone").addEventListener("drop", (e) => { if (e.dataTransfer.files[0]) handlePhotoFile(e.dataTransfer.files[0]); });
-$("btnDropPhoto").onclick = () => { pendingPhoto = null; $("thumbBox").hidden = true; $("f_image").value = ""; };
-
-/* ===================================================================
-   Forma
-   =================================================================== */
-const FIELDS = ["title","status","price","location","beds","baths","size","image","summary","details","features"];
-
-function clearForm(){
-  ["title","price","beds","baths","size","image","summary","details","features"]
-    .forEach((k) => { $("f_"+k).value = ""; });
-  pendingPhoto = null; $("thumbBox").hidden = true;
-}
-function exitEdit(){
-  editIndex = -1;
-  $("formTitle").textContent = "2 · Shto një pronë";
-  $("btnSave").textContent = "Shto pronën";
-  $("btnCancel").hidden = true;
-  $("formPanel").classList.remove("editing");
-  clearForm();
-}
-
-$("btnSave").onclick = () => {
-  const o = {};
-  FIELDS.forEach((k) => { o[k] = $("f_"+k).value.trim(); });
-  const required = ["title","price","location","beds","baths","size","summary"];
-  const missing = required.filter((k) => !o[k]);
-  if (missing.length){
-    alert("Plotësoni fushat e domosdoshme (" + missing.length + " mungojnë).");
-    $("f_" + missing[0]).focus(); return;
-  }
-  const rec = {
-    title:o.title, status:o.status || "Për shitje", price:o.price,
-    beds:parseInt(o.beds,10)||0, baths:parseInt(o.baths,10)||0,
-    size:o.size, location:o.location, summary:o.summary,
-    details:o.details || o.summary,
-    features:o.features.split(/\r?\n/).map((f) => f.trim()).filter(Boolean),
-    image:o.image ? ("images/" + o.image.replace(/^images\//,"")) : ""
-  };
-  if (pendingPhoto){
-    newPhotos[pendingPhoto.name] = pendingPhoto;
-    rec.image = "images/" + pendingPhoto.name;
-  }
-  if (editIndex >= 0){ listings[editIndex] = rec; msg("saveMsg","U përditësua ✓","ok"); }
-  else { listings.push(rec); msg("saveMsg","U shtua ✓","ok"); }
-  dirty = true;
-  setTimeout(() => msg("saveMsg",""), 2500);
-  exitEdit(); render(); $("f_title").focus();
-};
-$("btnCancel").onclick = exitEdit;
-$("btnClear").onclick = clearForm;
-
-/* ===================================================================
-   Lista
-   =================================================================== */
-function imageSrc(path){
-  const fname = (path || "").replace(/^images\//,"");
-  if (newPhotos[fname]) return newPhotos[fname].dataUrl;
-  if (path && CFG.SITE_BASE) return CFG.SITE_BASE.replace(/\/+$/,"") + "/" + path;
-  return PLACEHOLDER;
-}
-
-function render(){
-  const ul = $("list");
-  ul.innerHTML = "";
-  $("count").textContent = listings.length ? "(" + listings.length + ")" : "";
-  $("listEmpty").style.display = listings.length ? "none" : "block";
-
-  listings.forEach((it, i) => {
-    const li = document.createElement("li");
-
-    const img = document.createElement("img");
-    img.className = "li-img";
-    img.alt = "";
-    img.loading = "lazy";
-    img.src = imageSrc(it.image);
-    img.onerror = function(){ this.onerror = null; this.src = PLACEHOLDER; };
-    li.appendChild(img);
-
-    const body = document.createElement("div");
-    body.className = "li-body";
-    body.innerHTML =
-      '<div class="li-title">' + esc(it.title) +
-      (i === 0 ? '<span class="badge feat">E veçuar</span>' : '') +
-      (/qira/i.test(it.status || "") ? '<span class="badge">Me qira</span>' : '') +
-      '</div><div class="li-meta"><span class="px">' + esc(it.price) + '</span> · ' +
-      esc(it.location) + ' · ' + it.beds + ' dh · ' + it.baths + ' bnj · ' + esc(it.size) + '</div>';
-    li.appendChild(body);
-
-    const icons = document.createElement("div");
-    icons.className = "icons";
-    [["↑","Lart",() => move(i,-1)],["↓","Poshtë",() => move(i,1)],
-     ["✎","Redakto",() => edit(i)],["×","Fshij",() => del(i)]]
-      .forEach((b) => {
-        const el = document.createElement("button");
-        el.type = "button"; el.textContent = b[0]; el.title = b[1]; el.onclick = b[2];
-        icons.appendChild(el);
-      });
-    li.appendChild(icons);
-
-    ul.appendChild(li);
-  });
-}
-
-function move(i,d){
-  const j = i + d;
-  if (j < 0 || j >= listings.length) return;
-  const t = listings[i]; listings[i] = listings[j]; listings[j] = t;
-  dirty = true;
-  render();
-}
-
-function edit(i){
-  const it = listings[i];
-  editIndex = i;
-  $("f_title").value = it.title; $("f_status").value = it.status;
-  $("f_price").value = it.price; $("f_location").value = it.location;
-  $("f_beds").value = it.beds; $("f_baths").value = it.baths; $("f_size").value = it.size;
-  $("f_image").value = (it.image || "").replace(/^images\//,"");
-  $("f_summary").value = it.summary; $("f_details").value = it.details;
-  $("f_features").value = (it.features || []).join("\n");
-
-  const fname = (it.image || "").replace(/^images\//,"");
-  pendingPhoto = null;
-  if (newPhotos[fname]){
-    $("thumbImg").src = newPhotos[fname].dataUrl;
-    $("thumbMeta").innerHTML = "<b>" + esc(fname) + "</b><br>foto e re";
-    $("thumbBox").hidden = false;
-  } else {
-    $("thumbBox").hidden = true;
-  }
-
-  $("formTitle").textContent = "2 · Redakto pronën";
-  $("btnSave").textContent = "Ruaj ndryshimet";
-  $("btnCancel").hidden = false;
-  $("formPanel").classList.add("editing");
-  $("formPanel").scrollIntoView({ behavior:"smooth", block:"start" });
-}
-
-function del(i){
-  if (!confirm("Të fshihet \"" + listings[i].title + "\"?")) return;
-  listings.splice(i,1);
-  dirty = true;
-  if (editIndex === i) exitEdit();
-  render();
-}
-
-/* ===================================================================
-   Gjenerimi i listings.js
-   =================================================================== */
-function q(s){
-  return '"' + String(s == null ? "" : s).replace(/\\/g,"\\\\").replace(/"/g,'\\"').replace(/\r?\n/g," ") + '"';
-}
-
-function buildJS(){
-  const T = config.TEXT || DEFAULT_TEXT;
-  const L = [];
-  L.push("/* =====================================================================");
-  L.push("   ZONE REAL ESTATE — SKEDARI I PRONAVE");
-  L.push("   =====================================================================");
-  L.push("   Gjeneruar nga paneli i administrimit më " + new Date().toLocaleString("sq"));
-  L.push("   ===================================================================== */");
-  L.push("");
-  L.push("const DISPLAY_PHONE = " + q(config.DISPLAY_PHONE) + ";");
-  L.push("const CALL_PHONE    = " + q(config.CALL_PHONE) + ";");
-  L.push("");
-  L.push("const CITY         = " + q(config.CITY) + ";");
-  L.push("const LAST_UPDATED = " + q(config.LAST_UPDATED) + ";");
-  L.push("");
-  L.push("const TEXT = {");
-  const keys = Object.keys(T);
-  keys.forEach((k,i) => {
-    const key = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(k) ? k : q(k);
-    L.push("  " + key + ": " + q(T[k]) + (i < keys.length-1 ? "," : ""));
-  });
-  L.push("};");
-  L.push("");
-  L.push("const listings = [");
-  L.push("");
-  listings.forEach((it,idx) => {
-    L.push("  {");
-    L.push("    title: " + q(it.title) + ",");
-    L.push("    status: " + q(it.status) + ",");
-    L.push("    price: " + q(it.price) + ",");
-    L.push("    beds: " + (parseInt(it.beds,10)||0) + ",");
-    L.push("    baths: " + (parseInt(it.baths,10)||0) + ",");
-    L.push("    size: " + q(it.size) + ",");
-    L.push("    location: " + q(it.location) + ",");
-    L.push("    summary: " + q(it.summary) + ",");
-    L.push("    details: " + q(it.details || it.summary) + ",");
-    const f = it.features || [];
-    if (f.length){
-      L.push("    features: [");
-      f.forEach((x,j) => L.push("      " + q(x) + (j < f.length-1 ? "," : "")));
-      L.push("    ],");
-    } else {
-      L.push("    features: [],");
-    }
-    L.push("    image: " + q(it.image));
-    L.push("  }" + (idx < listings.length-1 ? "," : ""));
-    L.push("");
-  });
-  L.push("];");
-  L.push("");
-  L.push("window.ZONE_CONFIG = { DISPLAY_PHONE, CALL_PHONE, CITY, LAST_UPDATED, TEXT, listings };");
-  L.push("");
-  return L.join("\n");
-}
-
-/* ===================================================================
-   Publikimi — përmes API-së së sigurt
-   =================================================================== */
-$("btnPublish").onclick = async function(){
-  if (!me || !((me.canPublish === true) || PUBLISH_ROLES.includes(me.role))){
-    msg("pubMsg", "Nuk keni leje për të publikuar.", "bad");
-    return;
-  }
-
-  config.DISPLAY_PHONE = $("dispPhone").value.trim();
-  config.CALL_PHONE    = $("callPhone").value.trim();
-  config.CITY          = $("city").value.trim();
-  config.LAST_UPDATED  = $("updated").value.trim();
-
-  if (!listings.length){ alert("Shtoni së paku një pronë."); return; }
-  if (!/^\+?[0-9]+$/.test(config.CALL_PHONE)){
-    if (!confirm("Numri që thirret duket i pasaktë (vetëm + dhe shifra).\n\nTë vazhdohet?")) return;
-  }
-
-  const code = buildJS();
-
-  // Kurrë mos publiko një skedar që do të prishte faqen live.
-  try {
-    const check = new Function("window", code + "\nreturn window.ZONE_CONFIG;")({});
-    if (!check || check.listings.length !== listings.length) throw new Error("mospërputhje");
-  } catch (e) {
-    alert("Gabim gjatë gjenerimit — asgjë nuk u dërgua.\n\n" + e.message);
-    return;
-  }
-
-  const btn = this;
-  btn.disabled = true;
-  $("log").innerHTML = "";
-  $("log").hidden = false;
-  msg("pubMsg", "Duke publikuar…", "busy");
-
-  try {
-    // Fotot së pari: nëse një foto dështon, listings.js ende tregon te një
-    // skedar që ekziston, kështu që faqja nuk mbetet me foto të thyera.
-    const names = Object.keys(newPhotos);
-    for (const n of names){
-      log("Duke dërguar foton " + n + " …");
-      const b64 = await blobToB64(newPhotos[n].blob);
-      await callApi("upload_image", { name: n, contentBase64: b64 });
-      log("  ✓ " + n + " u dërgua", "g");
-      delete newPhotos[n];
-    }
-
-    log("Duke dërguar listings.js …");
-    const res = await callApi("publish_listings", {
-      content: code,
-      baseSha: repoInfo.sha,
-      listingCount: listings.length
-    });
-    repoInfo.sha = res.sha;   // mbahet i sinkronizuar për publikimin e radhës
-    log("  ✓ listings.js u dërgua", "g");
-    log("");
-    log("U publikua. Faqja përditësohet për një deri dy minuta.", "g");
-    dirty = false;
-    msg("pubMsg", "U publikua ✓", "ok");
-    render();
-
-  } catch (e) {
-    log("  ✗ " + e.message, "r");
-    msg("pubMsg", "Dështoi — shihni detajet më poshtë.", "bad");
-    if (e.status === 409){
-      log("Klikoni «Ringarko» për të marrë versionin e fundit, pastaj provoni sërish.", "r");
-    }
-  } finally {
-    btn.disabled = false;
-  }
-};
-
-window.addEventListener("beforeunload", (e) => {
-  if (isDirty()){ e.preventDefault(); e.returnValue = ""; }
-});
-
-/* ===================================================================
-   Sesioni: rikthim pas rifreskimit, skadim, dalje nga një skedë tjetër
-   ===================================================================
-
-   RREGULL: brenda onAuthStateChange nuk thirret KURRË një funksion
-   tjetër i Supabase-it me await. Supabase e mban një bllokim të
-   brendshëm ndërsa njofton dëgjuesit; nëse brenda tij kërkohet
-   getSession(), të dyja presin njëra-tjetrën përgjithmonë. Kjo ishte
-   arsyeja kryesore pse kyçja "ngecte" herë pas here me kredenciale
-   krejtësisht të sakta. Puna e vërtetë shtyhet me setTimeout(…, 0),
-   jashtë bllokimit.                                                   */
-
-function defer(fn){ setTimeout(fn, 0); }
-
-supabase.auth.onAuthStateChange((event, session) => {
-  /* Vetëm punë e shpejtë dhe sinkrone këtu brenda. */
-
-  if (event === "SIGNED_OUT" || (!session && event !== "INITIAL_SESSION")){
-    if (me || dataLoaded){
-      me = null; dataLoaded = false;
-      defer(() => {
-        show("login");
-        msg("loginMsg", "Dolët nga llogaria.", "");
-      });
-    }
-    return;
-  }
-
-  /* Tokeni u rinovua vetë — nuk ka çfarë të bëjmë, sesioni vazhdon. */
-  if (event === "TOKEN_REFRESHED") return;
-
-  /* Kyçje nga një skedë tjetër, ose rikthim i sesionit. Kur kyçja bëhet
-     nga vetë ky formular, e trajton formulari — që të mos hyjmë dy herë. */
-  if (event === "SIGNED_IN" && session && !me && !signingIn && bootDone){
-    defer(() => { enterPanel(); });
-  }
-});
-
-/* Rrjeta e sigurisë: kap një sesion që ka rënë pa lajmëruar.
-   Nuk nxjerr jashtë asnjë përdorues vetëm sepse interneti u ndërpre. */
-setInterval(async () => {
-  if (!me || expiring || document.hidden) return;
-  const { session, offline } = await getSessionSafe(supabase, 20000);
-  if (offline) return;                    // problem interneti, jo skadim
-  if (!session) await handleExpired();
-}, 60000);
-
-/* Kur pajisja kthehet online, kontrollojmë menjëherë nëse sesioni rron. */
-window.addEventListener("online", async () => {
-  if (!me || expiring) return;
-  const { session, offline } = await getSessionSafe(supabase, 20000);
-  if (!offline && !session) await handleExpired();
-});
-
-/* ===================================================================
-   Nisja
-   =================================================================== */
-(async function boot(){
-  show("boot");
-
-  /* Mesazhet që vijnë nga faqja e rivendosjes së fjalëkalimit. */
-  const q = new URLSearchParams(location.search);
-  const justReset = q.get("reset") === "1";
-  const openForgot = q.get("forgot") === "1";
-  if (justReset || openForgot){
-    try { history.replaceState(null, "", location.pathname); } catch (_) {}
-  }
-
-  function toLogin(text, cls){
-    show("login");
-    if (text) msg("loginMsg", text, cls || "");
-    if (openForgot){
-      show("forgot");
-      msg("forgotMsg", "");
-    }
-    $(openForgot ? "forgotEmail" : "email").focus();
-  }
-
-  const { session, offline, error } = await getSessionSafe(supabase, 15000);
-  bootDone = true;
-
-  if (justReset){
-    /* Fjalëkalimi sapo u ndryshua: gjithmonë kërkohet kyçje e re. */
-    if (session) await signOutSafe(supabase, "local");
-    toLogin(MSG.changed, "ok");
-    return;
-  }
-
-  if (offline){
-    toLogin(authMessage(error, MSG.network), "bad");
-    return;
-  }
-
-  if (session) await enterPanel();
-  else toLogin("");
-})();
-</script>
 </body>
 </html>

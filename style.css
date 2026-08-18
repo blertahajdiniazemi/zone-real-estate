@@ -1268,3 +1268,52 @@ img { display: block; max-width: 100%; }
   .wake { display: none; }
   .card:hover { transform: none; }
 }
+
+/* =====================================================================
+   GALERIA E FOTOGRAFIVE
+   ---------------------------------------------------------------------
+   Shfaqet vetëm kur një pronë ka më shumë se një fotografi. Pronat me
+   një fotografi të vetme duken saktësisht si më parë.
+   ===================================================================== */
+
+.detail__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 8px;
+  padding: 12px 32px 0;
+}
+
+.detail__thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  opacity: .62;
+  transition: opacity .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.detail__thumb:hover { opacity: 1; transform: translateY(-2px); }
+.detail__thumb.is-active { opacity: 1; border-color: #EF6A87; }
+.detail__thumb:focus-visible { outline: 2px solid #EF6A87; outline-offset: 2px; }
+
+/* Numëruesi i fotografive mbi kartelë */
+.card__shots {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: #FFF4EF;
+  background: rgba(20, 12, 28, .74);
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
+@media (max-width: 620px) {
+  .detail__gallery { padding: 12px 20px 0; grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); }
+}

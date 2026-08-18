@@ -11,8 +11,79 @@
   var CFG = window.ZONE_CONFIG || {};
   var DISPLAY_PHONE = CFG.DISPLAY_PHONE || "";
   var CALL_PHONE = CFG.CALL_PHONE || "";
-  var listings = CFG.listings || [];
   var T = CFG.TEXT || {};
+
+  /* -------------------------------------------------------------------
+     Compatibility layer
+
+     listings.js is written by the admin panel and may contain records in
+     either shape:
+
+       old   { status, image, ... }
+       new   { transactionType, lifecycle, published, coverImage, images[],
+               featured, featuredOrder, ... }
+
+     Everything below reads through these three helpers, so a file
+     containing a mix of both still renders correctly. A record with no
+     `published` field is treated as published — that is what every
+     listing written before this change was.
+     ------------------------------------------------------------------- */
+
+  var allListings = CFG.listings || [];
+
+  /* Drafts, deactivated and archived properties are stored in the file
+     but must never reach the page. */
+  var listings = [];
+  for (var n = 0; n < allListings.length; n++) {
+    if (allListings[n] && allListings[n].published !== false) listings.push(allListings[n]);
+  }
+
+  /** Cover photo, whichever field carries it. */
+  function coverOf(item) {
+    if (!item) return "";
+    if (item.coverImage) return item.coverImage;
+    if (item.images && item.images.length) return item.images[0];
+    return item.image || "";
+  }
+
+  /** Every photo, oldest field shape included. */
+  function photosOf(item) {
+    if (!item) return [];
+    if (item.images && item.images.length) return item.images;
+    var single = coverOf(item);
+    return single ? [single] : [];
+  }
+
+  /** Index of the property to show in the hero.
+   *
+   *  Previously this was always listings[0], which meant re-ordering the
+   *  file silently changed what was featured. Now the `featured` flag
+   *  decides, and the array position means nothing. The old behaviour is
+   *  kept only as a fallback for files written before the flag existed. */
+  /** The filter buttons carry the Albanian status text ("Për shitje").
+   *  Matching still works on that text, but goes through transactionType
+   *  first so a future label change cannot break filtering. */
+  function matchesFilter(item, filter) {
+    if (!item) return false;
+    if (item.status === filter) return true;
+    var wantsRent = String(filter).toLowerCase()
+      .indexOf(String(T.statusQira || "Me qira").toLowerCase()) !== -1;
+    return item.transactionType
+      ? (wantsRent ? item.transactionType === "rent" : item.transactionType === "sale")
+      : false;
+  }
+
+  function featuredIndex() {
+    var best = -1;
+    var bestOrder = Infinity;
+    for (var i = 0; i < listings.length; i++) {
+      if (!listings[i] || listings[i].featured !== true) continue;
+      var order = typeof listings[i].featuredOrder === "number"
+        ? listings[i].featuredOrder : 9999;
+      if (order < bestOrder) { bestOrder = order; best = i; }
+    }
+    return best !== -1 ? best : (listings.length ? 0 : -1);
+  }
 
   var activeFilter = "all";
   var lastFocused = null;
@@ -46,6 +117,9 @@
   function isRent(item) {
     // Matched against the Albanian word so the violet "Me qira" badge
     // shows on the right cards.
+    /* The new field is unambiguous; the old one is text that has to be
+       matched loosely. Prefer the field when it is present. */
+    if (item && item.transactionType) return item.transactionType === "rent";
     var rentWord = String(T.statusQira || "Me qira").toLowerCase();
     return String(item.status || "").toLowerCase().indexOf(rentWord) !== -1;
   }
@@ -63,11 +137,12 @@
     if (el) el.textContent = value;
   }
 
-  /* The hero drop shows whichever listing is first in listings.js,
-     so re-ordering that file changes what's featured. */
+  /* The hero drop shows the property marked "E veçuar" in the admin
+     panel. File order no longer has any effect on this. */
   function fillHeroDrop() {
     var drop = document.getElementById("heroDrop");
-    var item = listings[0];
+    var index = featuredIndex();
+    var item = index !== -1 ? listings[index] : null;
     if (!drop || !item) {
       if (drop) drop.style.display = "none";
       return;
@@ -75,14 +150,14 @@
     var photo = document.getElementById("heroDropPhoto");
     if (photo) {
       photo.alt = item.title;
-      attachImage(photo, item.image);
+      attachImage(photo, coverOf(item));
     }
     setText("heroDropTitle", item.title);
     setText("heroDropPrice", item.price || "");
     drop.setAttribute("aria-label", (T.shikoDetajet || "Shiko detajet për") + " " + item.title);
     drop.addEventListener("click", function () {
       lastFocused = drop;
-      openDetail(0);
+      openDetail(index);
     });
   }
 
@@ -116,6 +191,9 @@
       '<figure class="card__figure">' +
         '<img class="card__photo" alt="' + esc(item.title) + '" loading="lazy">' +
         '<span class="card__caustic" aria-hidden="true"></span>' +
+        (photosOf(item).length > 1
+          ? '<span class="card__shots">' + photosOf(item).length + ' &#128247;</span>'
+          : '') +
         '<span class="' + stampClass + '">' + esc(item.status || "For Sale") + '</span>' +
       '</figure>' +
       '<div class="card__body">' +
@@ -137,7 +215,7 @@
         '</div>' +
       '</div>';
 
-    attachImage(card.querySelector(".card__photo"), item.image);
+    attachImage(card.querySelector(".card__photo"), coverOf(item));
 
     // The call link is excluded so tapping it dials rather than opening.
     card.addEventListener("click", function (event) {
@@ -164,7 +242,7 @@
 
     var visible = [];
     for (var i = 0; i < listings.length; i++) {
-      if (activeFilter === "all" || listings[i].status === activeFilter) visible.push(i);
+      if (activeFilter === "all" || matchesFilter(listings[i], activeFilter)) visible.push(i);
     }
 
     if (count) {
@@ -247,8 +325,21 @@
 
     var stampClass = isRent(item) ? "detail__stamp detail__stamp--rent" : "detail__stamp";
 
+    var shots = photosOf(item);
+    var gallery = "";
+    if (shots.length > 1) {
+      gallery = '<div class="detail__gallery">';
+      for (var k = 0; k < shots.length; k++) {
+        gallery += '<img class="detail__thumb' + (k === 0 ? " is-active" : "") +
+          '" data-src="' + esc(shots[k]) + '" alt="' + esc(item.title) +
+          " — " + (k + 1) + '" loading="lazy">';
+      }
+      gallery += "</div>";
+    }
+
     body.innerHTML =
       '<img class="detail__photo" alt="' + esc(item.title) + '">' +
+      gallery +
       '<div class="detail__body">' +
         '<span class="' + stampClass + '">' + esc(item.status || "For Sale") + "</span>" +
         '<h2 class="detail__title" id="detailTitle">' + esc(item.title) + "</h2>" +
@@ -267,7 +358,23 @@
         '<p class="detail__callnote">' + esc(T.shenimiThirrjes || "") + " " + esc(item.title) + "</p>" +
       "</div>";
 
-    attachImage(body.querySelector(".detail__photo"), item.image);
+    attachImage(body.querySelector(".detail__photo"), coverOf(item));
+
+    /* Gallery: clicking a thumbnail swaps the main photo. Only rendered
+       when the property actually has more than one image, so listings
+       written before multi-image support look exactly as before. */
+    var main = body.querySelector(".detail__photo");
+    var thumbs = body.querySelectorAll(".detail__thumb");
+    for (var g = 0; g < thumbs.length; g++) {
+      attachImage(thumbs[g], thumbs[g].getAttribute("data-src"));
+      (function (btn) {
+        btn.addEventListener("click", function () {
+          attachImage(main, btn.getAttribute("data-src"));
+          for (var h = 0; h < thumbs.length; h++) thumbs[h].classList.remove("is-active");
+          btn.classList.add("is-active");
+        });
+      })(thumbs[g]);
+    }
 
     panel.hidden = false;
     document.body.classList.add("is-locked");
